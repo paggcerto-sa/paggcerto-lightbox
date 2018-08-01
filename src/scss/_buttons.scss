@@ -1,0 +1,47 @@
+.paggcerto-lightbox-close
+{
+  background: map-get($grays, "white");
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 2px map-get($grays, "600");
+  float: right;
+  font-size: 18pt;
+  margin-top: -15px;
+  margin-right: -15px;
+  width: 35px;
+  height: 35px;
+
+  &::before {
+    content: "\00d7";
+    color: map-get($grays, "700");
+    display: block;
+    text-align: center;
+  }
+}
+
+.btn-card
+{
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: .3125rem;
+  color: map-get($grays, "600");
+  font-size: 85%;
+  font-weight: bold;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color .3s ease;
+  width: 7.5rem;
+
+  &:disabled,
+  &:disabled:hover
+  {
+    border-color: transparent;
+    opacity: .5;
+  }
+
+  &:hover,
+  &:focus
+  {
+    border-color: map-get($grays, "300");
+  }
+}

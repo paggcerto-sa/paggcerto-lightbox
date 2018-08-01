@@ -1,0 +1,98 @@
+.icon-alert,
+.icon-btn,
+.icon-logo,
+.icon-payment
+{
+  background-image: $lightbox-icons;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.icon-btn
+{
+  background-size: 744px 175px;
+  height: 52px;
+
+  &.credit
+  {
+    background-position: 0 -71px;
+    width: 64px;
+  }
+
+  &.debit
+  {
+    background-position: -91px -71px;
+    width: 64px;
+  }
+
+  &.bank-slip
+  {
+    background-position: -191px -71px;
+    width: 55px;
+  }
+}
+
+.icon-logo {
+  background-size: 475px 112px;
+  background-position: 0 -91px;
+  margin: .3125rem;
+  opacity: .75;
+  float: right;
+  height: 24px;
+  width: 108px;
+}
+
+.icon-payment
+{
+  background-size: 475px 112px;
+  height: 32px;
+  margin: 0 2px;
+
+  &.visa
+  {
+    background-position: 0 0;
+    width: 60px;
+  }
+
+  &.mastercard
+  {
+    background-position: -68px 0;
+    width: 50px;
+  }
+
+  &.elo
+  {
+    background-position: -132px 0;
+    width: 36px;
+  }
+
+  &.dinersclub
+  {
+    background-position: -182px 0;
+    width: 38px;
+  }
+
+  &.hipercard
+  {
+    background-position: -233px 0;
+    width: 75px;
+  }
+
+  &.amex
+  {
+    background-position: -320px 0;
+    width: 65px;
+  }
+
+  &.banese
+  {
+    background-position: -397px 0;
+    width: 30px;
+  }
+
+  &.bank-slip
+  {
+    background-position: -442px 0;
+    width: 37px;
+  }
+}

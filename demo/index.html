@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="favicon.ico" rel="icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" />
+  <link href="../dist/paggcerto-lightbox.min.css" rel="stylesheet">
+  <title>Paggcerto Lightbox</title>
+  <style>
+    html, body {
+      background: #f8f9fa;
+      height: 100%;
+    }
+    textarea {
+      min-height: 100%;
+      resize: none;
+    }
+    .callout {
+      background: #f8f9fa;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      border-left: .25rem solid #3ca2e0;
+      border-radius: .25rem;
+    }
+    .callout p:last-child
+    {
+      margin-bottom: 0;
+    }
+    .container-fluid {
+      height: 80%;
+    }
+    .nav-item a {
+      text-decoration: none;
+    }
+    .pagg {
+      color: #0a72ba;
+    }
+    .certo {
+      color: #ff7e00;
+    }
+    .lightbox {
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <span class="navbar-brand">
+      <span class="pagg">Pagg</span><span class="certo">certo</span>
+      <span class="lightbox">Lightbox</span>
+    </span>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <button id="btnExecuteCode" type="button" class="btn btn-outline-primary">
+          Executar <small class="icon-control-play"></small>
+        </button>
+        <button id="btnResetCode" type="button" class="btn btn-light">
+          Resetar <small class="icon-refresh"></small>
+        </button>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="https://github.com/paggcerto-sa/paggcerto-lightbox">
+          <i class="icon-social-github"></i>
+        </a>
+        <br>
+        <a href="#help" data-toggle="modal">
+          <i class="icon-question"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div id="help" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Como configurar o lightbox
+          </h5>
+        </div>
+        <div class="modal-body">
+          <h6>Acesso ao ambiente:</h6>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-nowrap"><code>environment</code></td>
+                <td>Define o ambiente: <code>sandbox</code> (ambiente de teste) ou <code>production</code> (ambiente de produção).</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>token</code></td>
+                <td>Token do usuário gerado após a <a href="https://desenvolvedor.paggcerto.com.br/v2/account/#operation/autenticar-com-credenciais">autenticação</a>.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h6>Valor do pagamento:</h6>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-nowrap"><code>amount</code></td>
+                <td>Habilita (<code>null</code>) ou desabilita o campo de valor para edição.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h6>Método de pagamento:</h6>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-nowrap"><code>credit</code></td>
+                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com cartão de crédito. Mínimo R$ 5,00.</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>debit</code></td>
+                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com cartão de débito. Mínimo R$ 1,00.</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>bankSlip</code></td>
+                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com boleto.  Mínimo R$ 10,00.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            <p>Se somente um método de pagamento estiver habilitado (<code>true</code>) o lightbox iniciará diretamente nessa opção.</p>
+            <p>Se nenhum método de pagamento estiver habilitado o lightbox não iniciará.</p>
+          </div>
+          <h6>Pagadores:</h6>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-nowrap"><code>sellingKey</code></td>
+                <td>Código que associa o seu ID ao pagamento processado pela Paggcerto.</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>fullName</code></td>
+                <td>Nome de quem está pagando (pessoa ou empresa).</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>taxDocument</code></td>
+                <td>CPF/CNPJ de quem está pagando.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h6>Eventos:</h6>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-nowrap"><code>success</code></td>
+                <td>Executado quando o pagamento é realizado com sucesso.</td>
+              </tr>
+              <tr>
+                <td class="text-nowrap"><code>fail</code></td>
+                <td>Executado quando ocorre algum erro no pagamento.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Entendi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid mt-2">
+    <textarea class="form-control">{
+  "environment": "sandbox",
+  "token": "&lt;User-Token&gt;",
+  "payment": {
+    "amount": null,
+    "credit": true,
+    "debit": true,
+    "bankSlip": true,
+    "payers": [{
+      "sellingKey": null,
+      "fullName": "Maria dos Santos",
+      "taxDocument": "123.123.123.-87"
+    }]
+  },
+  "success": function (payment) {
+    console.log(payment);
+  },
+  "fail": function (paymentError) {
+    console.log(paymentError);
+  }
+}</textarea>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="../dist/paggcerto-lightbox.min.js"></script>
+  <script>
+    var $textarea = $('textarea');
+    var defaultCode = $textarea.val();
+
+    try {
+      var code = localStorage.getItem('code') || defaultCode;
+
+      $textarea.val(code);
+
+      $('#btnExecuteCode').on('click', function() {
+        localStorage.setItem('code', $textarea.val());
+      });
+
+      $('#btnResetCode').on('click', function reset() {
+        localStorage.removeItem('code');
+      });
+    } catch (e) { }
+
+    $('#btnExecuteCode').on('click', function() {
+      try {
+        eval('paggcerto.lightbox(' + $('textarea').val() + ')');
+      } catch (e) {
+        alert('Syntax error. Please review your code.');
+      }
+    });
+
+    $('#btnResetCode').on('click', function reset() {
+      $textarea.val(defaultCode);
+    });
+  </script>
+</body>
+</html>

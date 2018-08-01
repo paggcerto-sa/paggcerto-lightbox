@@ -1,0 +1,74 @@
+//
+// Color system
+//
+
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$grays: () !default;
+$grays: map-merge((
+  "white": $white,
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900,
+  "black": $black
+), $grays);
+
+$blue:    #2687E9 !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$colors: () !default;
+$colors: map-merge((
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+), $colors);
+
+//
+// Lightbox variables
+//
+
+$lightbox-icons: url("../demo/lightbox-icons.svg") !default;
+$lightbox-font-family: Arial, sans-serif !default;
+$lightbox-font-size: 1rem !default;
+$lightbox-bg: $white !default;
+$lightbox-bg-backdrop: transparentize($black, .5) !default;
+$lightbox-border-radius: .625rem !default;
+$lightbox-inner-border: 1px solid map-get($grays, "400") !default;
+$lightbox-padding: 1.875rem 3.125rem !default;
+$lightbox-width: 50rem !default;
+$lightbox-zindex: 2050 !default;
+$lightbox-zindex-backdrop: 2040 !default;

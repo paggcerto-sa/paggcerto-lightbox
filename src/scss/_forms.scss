@@ -1,0 +1,36 @@
+label
+{
+  display: inline-block;
+  font-size: 80%;
+  margin-bottom: $label-margin-bottom;
+  font-weight: bold;
+}
+
+select option:first-child
+{
+  color: map-get($grays, "600");
+}
+
+.input-amount
+{
+  border: 1px dashed map-get($colors, "blue");
+  border-radius: 100%;
+  width: 12rem;
+  height: 12rem;
+  padding: .25rem;
+
+  input
+  {
+    border: .3125rem solid map-get($colors, "blue");
+    border-radius: 100%;
+    color: map-get($colors, "blue");
+    display: block;
+    margin: auto;
+    padding: 1.25rem;
+    font-size: 16pt;
+    outline: 0;
+    text-align: center;
+    width: 11.35rem;
+    height: 11.35rem;
+  }
+}

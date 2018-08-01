@@ -1,0 +1,42 @@
+/*!
+ * Paggcerto v1.0.0-alpha.1
+ * Copyright 2018 Paggcerto
+ */
+
+#paggcerto-lightbox
+{
+  @import 'variables';
+
+  @import "node_modules/bootstrap/scss/functions";
+  @import "node_modules/bootstrap/scss/variables";
+  @import "node_modules/bootstrap/scss/mixins";
+  @import "node_modules/bootstrap/scss/mixins/breakpoints";
+  @import "node_modules/bootstrap/scss/mixins/grid-framework";
+  @import "node_modules/bootstrap/scss/mixins/grid";
+  @import "node_modules/bootstrap/scss/alert";
+  @import "node_modules/bootstrap/scss/buttons";
+  @import "node_modules/bootstrap/scss/forms";
+  @import "node_modules/bootstrap/scss/grid";
+  @import "node_modules/bootstrap/scss/reboot";
+  @import "node_modules/bootstrap/scss/utilities";
+
+  @import 'buttons';
+  @import 'forms';
+  @import 'icons';
+  @import 'lightbox';
+}
+
+body.paggcerto-lightbox-show #paggcerto-lightbox
+{
+  .paggcerto-lightbox-backdrop,
+  .paggcerto-lightbox-dialog
+  {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .paggcerto-lightbox-dialog
+  {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}

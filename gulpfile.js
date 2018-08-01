@@ -9,16 +9,16 @@ const source = require('vinyl-source-stream')
 const uglify = require('gulp-uglify')
 
 gulp.task('build-sass', () => {
-  return gulp.src('src/scss/paggcerto-lightbox.scss')
+  return gulp.src('src/scss/compile.scss')
     .pipe(sass({ outputStyle: 'compressed' }).on('error', (e) => console.log(e)))
     .pipe(autoprefixer({ browsers: ['last 2 versions'], cascade: false }))
-    .pipe(rename({ extname: '.min.css' }))
+    .pipe(rename({ basename: 'paggcerto-lightbox', extname: '.min.css' }))
     .pipe(gulp.dest('dist'))
 });
 
 gulp.task('build-js', () => {
   return browserify({
-    entries: ['src/js/paggcerto-lightbox.js'],
+    entries: ['src/js/index.js'],
     paths: ['./'],
     fullPaths: false,
     transform: [babelify.configure({ presets: ['env'] })]
