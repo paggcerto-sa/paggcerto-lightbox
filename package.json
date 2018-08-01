@@ -1,0 +1,44 @@
+{
+  "name": "paggcerto-lightbox",
+  "title": "Paggcerto Lightbox",
+  "version": "1.0.0-alpha.1",
+  "homepage": "https://github.com/paggcerto-sa/paggcerto-lightbox",
+  "author": "Paggcerto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paggcerto-sa/paggcerto-lightbox/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:paggcerto-sa/paggcerto-lightbox.git"
+  },
+  "scripts": {
+    "start": "gulp start",
+    "build-js": "gulp build-js",
+    "build-sass": "gulp build-sass",
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "jquery-mask-plugin": "^1.14.15",
+    "jquery-maskmoney": "^3.0.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-file-include": "^2.0.1",
+    "gulp-html-extend": "^1.1.6",
+    "gulp-htmlmin": "^4.0.0",
+    "gulp-rename": "^1.3.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "editor.minimap.enabled": false,
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.exclude": {
+        "**/.vscode": true,
+        "**/node_modules": true
+    }
+}
