@@ -1,12 +1,15 @@
-import 'src/js/jquery/mask-money'
-import { ClassName, Event, Payment } from 'src/js/constants'
+import { NAMESPACE, ClassName, Event, Payment } from 'src/js/constants'
+import CardOnlineForm from './card-online-form'
+import InputAmountPartial from 'src/js/partials/input-amount-partial'
+import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
 
 const Selector = {
-  BTN_BANK_SLIP: 'pagg_btnBankSlip',
-  BTN_CREDIT: 'pagg_btnCredit',
-  BTN_DEBIT: 'pagg_btnDebit',
-  BTN_CANCEL: 'pagg_btnCancel',
-  INPUT_AMOUNT: 'pagg_inputAmount'
+  BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
+  BTN_CREDIT: `${NAMESPACE}_btnCredit`,
+  BTN_DEBIT: `${NAMESPACE}_btnDebit`,
+  BTN_CANCEL: `${NAMESPACE}_btnCancel`,
+  INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
+  PAY_METHODS: `${NAMESPACE}_payMethods`
 }
 
 const VIEW = `
@@ -17,9 +20,7 @@ const VIEW = `
     <div class="row">
       <div class="col border-right">
         <div class="form-group">
-          <div class="input-amount">
-            <input id="${Selector.INPUT_AMOUNT}" type="text" maxlength="12">
-          </div>
+          <span id="${Selector.INPUT_AMOUNT}"></span>
         </div>
       </div>
       <div class="col">
@@ -39,52 +40,51 @@ const VIEW = `
     </div>
   </div>
   <div class="${ClassName.FOOTER} text-center">
-    <span class="icon-payment visa"></span>
-    <span class="icon-payment mastercard"></span>
-    <span class="icon-payment elo"></span>
-    <span class="icon-payment dinersclub"></span>
-    <span class="icon-payment hipercard"></span>
-    <span class="icon-payment amex"></span>
-    <span class="icon-payment banese"></span>
-    <span class="icon-payment bank-slip"></span>
+    <span id="${Selector.PAY_METHODS}"></span>
   </div>
 `;
 
 class PayMethodForm {
-  constructor($lightboxContent, options, store) {
-    this._$lightboxContent = $lightboxContent
+  constructor($container, options, store) {
+    this._$container = $container
     this._options = options
     this._store = store
   }
 
-  _checkBankSlipButton($bankSlipButton) {
+  _checkBankSlipButton() {
     if (!this._options.payment.bankSlip) {
-      $bankSlipButton.remove()
+      this._$bankSlipButton.remove()
     } else if (this._store.amount >= Payment.MINIMUM_BANK_SLIP_AMOUNT) {
-      $bankSlipButton.removeAttr('disabled')
+      this._$bankSlipButton.removeAttr('disabled')
     } else {
-      $bankSlipButton.attr('disabled', true)
+      this._$bankSlipButton.attr('disabled', true)
     }
   }
 
-  _checkCreditButton($creditButton) {
+  _checkCreditButton() {
     if (!this._options.payment.credit) {
-      $creditButton.remove()
+      this._$creditButton.remove()
     } else if (this._store.amount >= Payment.MINIMUM_CREDIT_AMOUNT) {
-      $creditButton.removeAttr('disabled')
+      this._$creditButton.removeAttr('disabled')
     } else {
-      $creditButton.attr('disabled', true)
+      this._$creditButton.attr('disabled', true)
     }
   }
 
-  _checkDebitButton($debitButton) {
+  _checkDebitButton() {
     if (!this._options.payment.debit) {
-      $debitButton.remove()
+      this._$debitButton.remove()
     } else if (this._store.amount >= Payment.MINIMUM_DEBIT_AMOUNT) {
-      $debitButton.removeAttr('disabled')
+      this._$debitButton.removeAttr('disabled')
     } else {
-      $debitButton.attr('disabled', true)
+      this._$debitButton.attr('disabled', true)
     }
+  }
+
+  _checkMethodButtons() {
+    this._checkBankSlipButton()
+    this._checkCreditButton()
+    this._checkDebitButton()
   }
 
   _payWithBankSlip() {
@@ -92,51 +92,40 @@ class PayMethodForm {
   }
 
   _payWithCreditCard() {
-    // TODO
+    const cardOnlineForm = new CardOnlineForm(this._$container, this._options, this._store)
+    cardOnlineForm.render()
   }
 
   _payWithDebitCard() {
     // TODO
   }
 
+  _renderFooter() {
+    const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
+    const inputAmountPartial = new InputAmountPartial($inputAmount, this._store)
+    inputAmountPartial.onChange(() => this._checkMethodButtons()).render()
+
+    const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
+    const paymentIconsPartial = new PaymentIconsPartial($payMethods)
+    paymentIconsPartial.render()
+  }
+
   render() {
-    this._$lightboxContent.html(VIEW)
+    this._$container.html(VIEW)
 
-    const $inputAmount = this._$lightboxContent.find(`#${Selector.INPUT_AMOUNT}`)
-    const $bankSlipButton = this._$lightboxContent.find(`#${Selector.BTN_BANK_SLIP}`)
-    const $creditButton = this._$lightboxContent.find(`#${Selector.BTN_CREDIT}`)
-    const $debitButton = this._$lightboxContent.find(`#${Selector.BTN_DEBIT}`)
+    this._$bankSlipButton = this._$container.find(`#${Selector.BTN_BANK_SLIP}`)
+    this._$creditButton = this._$container.find(`#${Selector.BTN_CREDIT}`)
+    this._$debitButton = this._$container.find(`#${Selector.BTN_DEBIT}`)
 
-    $inputAmount
-      .maskMoney({
-        affixesStay: true,
-        prefix:'R$ ',
-        allowZero: true,
-        allowNegative: false,
-        thousands:'.',
-        decimal:','
-      })
-      .on('keyup.maskMoney', () => {
-        this._store.amount = $inputAmount.maskMoney('unmasked').get(0)
-        this._store.amountText = $inputAmount.val()
-        this._checkBankSlipButton($bankSlipButton)
-        this._checkCreditButton($creditButton)
-        this._checkDebitButton($debitButton)
-      })
-      .val(this._store.amountText || 'R$ 0,00')
-      .trigger('keyup.maskMoney')
+    if (this._options.payment.onlyBankSlip) this._payWithBankSlip()
+    if (this._options.payment.onlyCredit) this._payWithCreditCard()
+    if (this._options.payment.onlyDebit) this._payWithDebitCard()
 
-      if (this._options.payment.onlyBankSlip) this._payWithBankSlip()
-      $bankSlipButton.on(Event.CLICK, () => this._payWithBankSlip())
+    this._$bankSlipButton.on(Event.CLICK, () => this._payWithBankSlip())
+    this._$creditButton.on(Event.CLICK, () => this._payWithCreditCard())
+    this._$debitButton.on(Event.CLICK, () => this._payWithDebitCard())
 
-      if (this._options.payment.onlyCredit) this._payWithCreditCard()
-      $creditButton.on(Event.CLICK, () => this._payWithCreditCard())
-
-      if (this._options.payment.onlyDebit) this._payWithDebitCard()
-      $debitButton.on(Event.CLICK, () => this._payWithDebitCard())
-
-      // Focus is not triggered before modal's transition is complete
-      setTimeout(() => $inputAmount.focus(), 75)
+    this._renderFooter()
   }
 }
 

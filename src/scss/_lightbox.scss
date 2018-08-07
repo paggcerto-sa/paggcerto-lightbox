@@ -22,12 +22,6 @@
     border-radius: $lightbox-border-radius;
     box-shadow: 0 5px 50px map-get($grays, "700");
 
-    .paggcerto-lightbox-header,
-    .paggcerto-lightbox-footer
-    {
-      padding: $lightbox-padding;
-    }
-
     .paggcerto-lightbox-body
     {
       @extend .container-fluid;
@@ -49,6 +43,7 @@
       border-bottom: $lightbox-inner-border;
       font-size: 80%;
       font-weight: bold;
+      padding: 1.875rem 3.125rem;
       text-align: center;
     }
 
@@ -58,6 +53,9 @@
       border-bottom-left-radius: $lightbox-border-radius;
       border-bottom-right-radius: $lightbox-border-radius;
       border-top: $lightbox-inner-border;
+      display: flex;
+      justify-content: center;
+      align-content: center;
     }
   }
 }

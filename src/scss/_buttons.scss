@@ -29,7 +29,7 @@
   font-weight: bold;
   padding: 2rem;
   text-align: center;
-  transition: border-color .3s ease;
+  transition: border-color .3s ease, opacity .3s ease;
   width: 7.5rem;
 
   &:disabled,
@@ -43,5 +43,49 @@
   &:focus
   {
     border-color: map-get($grays, "300");
+  }
+}
+
+.btn-footer
+{
+  background-color: transparent;
+  border: 0 solid map-get($grays, "300");
+  border-radius: 0;
+  color: map-get($grays, "600");
+  font-size: 75%;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 1rem 0;
+  width: 150px;
+
+  &.continue
+  {
+    border-left-width: .0625rem;
+    border-bottom-right-radius: $lightbox-border-radius;
+    margin-left: auto;
+
+    &:disabled *,
+    &:disabled:hover *
+    {
+      opacity: .5;
+    }
+  }
+
+  &.go-back
+  {
+    border-right-width: .0625rem;
+    border-bottom-left-radius: $lightbox-border-radius;
+    margin-right: auto;
+
+    &:disabled,
+    &:disabled:hover
+    {
+      border: none;
+
+      *
+      {
+        visibility: hidden;
+      }
+    }
   }
 }

@@ -1,0 +1,23 @@
+.pay-method-icons
+{
+  padding: 1.875rem 0;
+
+  .icon-payment
+  {
+    opacity: .25;
+    transition: opacity .3s ease;
+
+    &.active
+    {
+      opacity: 1;
+    }
+  }
+}
+
+.pay-method-text
+{
+  display: inline-block;
+  font-size: 85%;
+  font-weight: bold;
+  padding-top: .625rem;
+}

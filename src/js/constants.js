@@ -12,8 +12,15 @@ const ClassName = {
   SHOW: `${ID}-show`
 }
 
+const Delay = {
+  LIGHTBOX_SHOW_ANIMATION: 50,
+  INPUT_AMOUNT_FOCUS: 75
+}
+
 const Event = {
-  CLICK: `click.${NAMESPACE}`
+  CHANGE: `change.${NAMESPACE}`,
+  CLICK: `click.${NAMESPACE}`,
+  KEY_UP: `keyup.${NAMESPACE}`
 }
 
 const Payment = {
@@ -24,6 +31,7 @@ const Payment = {
 
 export {
   ID,
+  Delay,
   Event,
   NAMESPACE,
   ClassName,

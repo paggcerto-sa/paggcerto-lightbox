@@ -32,5 +32,10 @@ select option:first-child
     text-align: center;
     width: 11.35rem;
     height: 11.35rem;
+
+    &:disabled
+    {
+      background-color: map-get($grays, "100");
+    }
   }
 }
