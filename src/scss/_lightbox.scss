@@ -1,0 +1,77 @@
+.paggcerto-lightbox-dialog
+{
+  color: map-get($grays, "700");
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9) translate(-50%, -50%);
+  transform-origin: 0 0;
+  transition: all .25s;
+  font-family: $lightbox-font-family;
+  font-size: $lightbox-font-size;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: $lightbox-width;
+  z-index: $lightbox-zindex;
+
+  .paggcerto-lightbox-content
+  {
+    background-color: $lightbox-bg;
+    border-radius: $lightbox-border-radius;
+    box-shadow: 0 5px 50px map-get($grays, "700");
+
+    .paggcerto-lightbox-header,
+    .paggcerto-lightbox-footer
+    {
+      padding: $lightbox-padding;
+    }
+
+    .paggcerto-lightbox-body
+    {
+      @extend .container-fluid;
+
+      > .row > .col
+      {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 30px;
+        padding-bottom: 15px;
+      }
+    }
+
+    .paggcerto-lightbox-header
+    {
+      border-top-left-radius: $lightbox-border-radius;
+      border-top-right-radius: $lightbox-border-radius;
+      border-bottom: $lightbox-inner-border;
+      font-size: 80%;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .paggcerto-lightbox-footer
+    {
+      background-color: $lightbox-bg;
+      border-bottom-left-radius: $lightbox-border-radius;
+      border-bottom-right-radius: $lightbox-border-radius;
+      border-top: $lightbox-inner-border;
+    }
+  }
+}
+
+.paggcerto-lightbox-backdrop
+{
+  background-color: $lightbox-bg-backdrop;
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $lightbox-zindex-backdrop;
+  transition: all .25s;
+}
