@@ -1,4 +1,5 @@
 .icon-alert,
+.icon-arrow,
 .icon-btn,
 .icon-logo,
 .icon-payment
@@ -6,6 +7,24 @@
   background-image: $lightbox-icons;
   background-repeat: no-repeat;
   display: inline-block;
+}
+
+.icon-arrow
+{
+  background-size: 744px 175px;
+  height: 32px;
+
+  &.left
+  {
+    background-position: -268px -78px;
+    width: 32px;
+  }
+
+  &.right
+  {
+    background-position: -340px -78px;
+    width: 32px;
+  }
 }
 
 .icon-btn

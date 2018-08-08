@@ -1,5 +1,5 @@
 import $ from 'node_modules/jquery'
-import { ID, ClassName, Event } from './constants'
+import { ID, ClassName, Delay, Event } from './constants'
 import PayMethodForm from 'src/js/forms/pay-method-form'
 
 const VIEW = `
@@ -8,7 +8,9 @@ const VIEW = `
     <div class="${ClassName.DIALOG}">
       <button type="button" class="${ClassName.BTN_CLOSE}"></button>
       <div class="${ClassName.CONTENT}"></div>
-      <span class="icon-logo"></span>
+      <a href="https://www.paggcerto.com.br/" target="_blank">
+        <span class="icon-logo"></span>
+      </a>
     </div>
   </div>
 `
@@ -36,7 +38,7 @@ class Lightbox {
     payMethodForm.render()
 
     // Used for transition run properly after append VIEW to DOM
-    setTimeout(() => { $body.addClass(`${ClassName.SHOW}`) }, 50)
+    setTimeout(() => { $body.addClass(`${ClassName.SHOW}`) }, Delay.LIGHTBOX_SHOW_ANIMATION)
   }
 }
 

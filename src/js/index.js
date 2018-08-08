@@ -3,6 +3,7 @@
  * Copyright 2018 Paggcerto
  */
 
+import 'node_modules/babel-polyfill'
 import Lightbox from './lightbox'
 import LightboxOptions from './lightbox-options'
 
