@@ -9,4 +9,4 @@ Plugin JavaScript que permite efetuar pagamentos usando uma janela que se sobrep
 
 ## Bugs e funcionalidades
 
-Por favor, sinta-se a vontade para [inicar uma issue](https://github.com/paggcerto-sa/checkout-lightbox/issues).
+Por favor, sinta-se a vontade para [inicar uma issue](https://github.com/paggcerto-sa/paggcerto-lightbox/issues).
