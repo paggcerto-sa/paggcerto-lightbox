@@ -37,7 +37,7 @@ const VIEW = `
     <span id="${Selector.PAY_METHODS}"></span>
     <button id="${Selector.BTN_CONTINUE}" type="button" class="btn-footer continue">
       <span class="icon-arrow right"></span><br>
-      <span>Finalizar</span>
+      <span>Continuar</span>
     </button>
   </div>
 `;
