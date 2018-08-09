@@ -67,7 +67,7 @@ $lightbox-font-size: 1rem !default;
 $lightbox-bg: $white !default;
 $lightbox-bg-backdrop: transparentize($black, .5) !default;
 $lightbox-border-radius: .625rem !default;
-$lightbox-inner-border: 1px solid map-get($grays, "400") !default;
+$lightbox-inner-border: .0625rem solid map-get($grays, "400") !default;
 $lightbox-width: 50rem !default;
 $lightbox-zindex: 2050 !default;
 $lightbox-zindex-backdrop: 2040 !default;

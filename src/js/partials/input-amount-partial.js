@@ -9,9 +9,9 @@ const VIEW = `
 `;
 
 class InputAmountPartial {
-  constructor($container, store) {
+  constructor($container, options) {
     this._$container = $container
-    this._store = store
+    this._options = options
     this._attributes = {}
     this._events = {}
   }
@@ -33,11 +33,11 @@ class InputAmountPartial {
         decimal: ','
       })
       .on('keyup.maskMoney', () => {
-        this._store.amount = this._$input.maskMoney('unmasked').get(0)
-        this._store.amountText = this._$input.val()
+        this._options.payment.amount = this._$input.maskMoney('unmasked').get(0)
+        this._options.payment.amountText = this._$input.val()
         this._callbackChange()
       })
-      .val(this._store.amountText || 'R$ 0,00')
+      .val(this._options.payment.amountText || 'R$ 0,00')
       .trigger('keyup.maskMoney')
   }
 
@@ -49,12 +49,10 @@ class InputAmountPartial {
 
   disabled(disabled) {
     this._attributes.disabled = disabled
-    return this
   }
 
   onChange(event) {
     this._events.onChange = event
-    return this
   }
 
   render() {

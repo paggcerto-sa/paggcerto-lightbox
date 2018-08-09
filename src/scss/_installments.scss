@@ -1,0 +1,87 @@
+.installment-options
+{
+  font-weight: normal;
+  max-height: 12.5rem;
+  overflow: auto;
+  position: relative;
+  width: 100%;
+
+  > label
+  {
+    display: block;
+    font-size: 13pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    input[type=radio]
+    {
+      position: absolute;
+      opacity: 0;
+
+      &,
+      &::after,
+      &::before,
+      & *,
+      & *::after,
+      & *::before,
+      & + span
+      {
+        box-sizing: border-box;
+
+        &::selection
+        {
+          background: none;
+        }
+      }
+
+      &:focus + .installment-option,
+      &:checked + .installment-option
+      {
+        background-color: map-get($grays, "200");
+      }
+    }
+
+    .installment-option
+    {
+      background-color: transparent;
+      border-radius: .3125rem;
+      display: block;
+      padding: .3125rem 0;
+      width: 100%;
+      transition: background-color .3s ease;
+
+      .installment-number,
+      .installment-value
+      {
+        display: inline-block;
+        vertical-align: middle;
+        height: 2.5rem;
+
+        &::before
+        {
+          content: "";
+          display: inline-block;
+          vertical-align: middle;
+          height: 100%;
+        }
+      }
+
+      .installment-number
+      {
+        border: .0625rem solid map-get($colors, "blue");
+        border-radius: 50%;
+        color: map-get($colors, "blue");
+        padding-top: .125rem;
+        text-align: center;
+        width: 2.5rem;
+      }
+
+      .installment-value
+      {
+        margin-left: .625rem;
+      }
+    }
+  }
+}

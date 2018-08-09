@@ -20,6 +20,10 @@ class Textual {
     this._str = str || ''
   }
 
+  isNullOrWhiteSpace() {
+    return this._str === null || this._str === undefined || !!this._str.match(/^ *$/);
+  }
+
   removeAccents() {
     let formattedStr = this._str
 

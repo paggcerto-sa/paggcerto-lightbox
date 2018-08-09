@@ -18,7 +18,7 @@ gulp.task('build-sass', () => {
 
 gulp.task('build-js', () => {
   return browserify({
-    entries: ['src/js/index.js'],
+    entries: ['src/js/bundle.js'],
     paths: ['./'],
     fullPaths: false,
     transform: [babelify.configure({ presets: ['env'] })]

@@ -3,51 +3,60 @@ class LightboxOptions {
     this._options = options
   }
 
-  _isNotDefined(value) {
-    return value === null || value === undefined
+  _isArray(value) {
+    return value instanceof Array
+  }
+
+  _isBoolean(value) {
+    return typeof value === 'boolean'
+  }
+
+  _isObject(value) {
+    return typeof value === 'object'
+  }
+
+  _isString(value) {
+    return typeof value === 'string'
+  }
+
+  _isFunction(value) {
+    return typeof value === 'function'
   }
 
   _validate() {
-    if (typeof this._options !== 'object') throw new Error('Invalid options: Expected Object.')
-    if (typeof this._options.token !== 'string') throw new Error('Invalid options.token: Expected String.')
-    if (typeof this._options.payment !== 'object') throw new Error('Invalid options.payment: Expected Object.')
-    if (!(this._options.payment.payers instanceof Array)) throw new Error('Invalid options.payment.payers: Expected Array.')
+    if (!this._isObject(this._options)) throw new Error('Invalid options: Expected Object.')
+    if (!this._isString(this._options.token)) throw new Error('Invalid options.token: Expected String.')
+    if (!this._isObject(this._options.payment)) throw new Error('Invalid options.payment: Expected Object.')
+    if (!this._isBoolean(this._options.payment.acceptBankSlip)) throw new Error('Invalid options.payment.acceptBankSlip: Expected Boolean.')
+    if (!this._isBoolean(this._options.payment.acceptCredit)) throw new Error('Invalid options.payment.acceptCredit: Expected Boolean.')
+    if (!this._isBoolean(this._options.payment.acceptDebit)) throw new Error('Invalid options.payment.acceptDebit: Expected Boolean.')
+    if (!this._isArray(this._options.payment.payers)) throw new Error('Invalid options.payment.payers: Expected Array.')
 
     this._options.payment.payers.forEach((payer, index) => {
-      if (typeof payer !== 'object') throw new Error(`Invalid options.payment.payers[${index}]: Expected Object.`)
-      if (typeof payer.fullName !== 'string') throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
-      if (typeof payer.taxDocument !== 'string') throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
+      if (!this._isObject(payer)) throw new Error(`Invalid options.payment.payers[${index}]: Expected Object.`)
+      if (!this._isString(payer.fullName)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
+      if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
     })
 
-    if (typeof this._options.success !== 'function') throw new Error('Invalid options.success: Expected Function.')
-    if (typeof this._options.fail !== 'function') throw new Error('Invalid options.fail: Expected Function.')
+    if (!this._isFunction(this._options.success)) throw new Error('Invalid options.success: Expected Function.')
+    if (!this._isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
   }
 
   _setDefaultValues() {
     this._options.payment = this._options.payment || {}
-
-    if (this._isNotDefined(this._options.payment.credit)) {
-      this._options.payment.credit = true
-    }
-
-    if (this._isNotDefined(this._options.payment.debit)) {
-      this._options.payment.debit = true
-    }
-
-    if (this._isNotDefined(this._options.payment.bankSlip)) {
-      this._options.payment.bankSlip = true
-    }
-
-    if (this._isNotDefined(this._options.payment.payers)) {
-      this._options.payment.payers = []
-    }
+    this._options.payment.bankSlip = null
+    this._options.payment.card = null
   }
 
   _setHelperValues() {
-    this._options.payment.onlyBankSlip = this._options.payment.bankSlip && !(this._options.payment.credit || this._options.payment.debit)
-    this._options.payment.onlyCredit = this._options.payment.credit && !(this._options.payment.debit || this._options.payment.bankSlip)
-    this._options.payment.onlyDebit = this._options.payment.debit && !(this._options.payment.credit || this._options.payment.bankSlip)
-    this._options.payment.allMethodsDisabled = !(this._options.payment.bankSlip || this._options.payment.credit || this._options.payment.debit)
+    const acceptBankSlip = this._options.payment.acceptBankSlip
+    const acceptCredit = this._options.payment.acceptCredit
+    const acceptDebit = this._options.payment.acceptDebit
+
+    this._options.payment.onlyBankSlip = acceptBankSlip && !(acceptCredit || acceptDebit)
+    this._options.payment.onlyCredit = acceptCredit && !(acceptDebit || acceptBankSlip)
+    this._options.payment.onlyDebit = acceptDebit && !(acceptCredit || acceptBankSlip)
+    this._options.payment.noMethodAccepted = !(acceptBankSlip || acceptCredit || acceptDebit)
   }
 
   asObject() {
