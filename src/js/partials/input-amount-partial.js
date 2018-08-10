@@ -3,7 +3,7 @@ import 'src/js/jquery/mask-money'
 import { Delay } from 'src/js/constants'
 
 const VIEW = `
-  <div class="input-amount">
+  <div class="form-circle form-circle-primary">
     <input type="text" maxlength="12">
   </div>
 `;

@@ -11,19 +11,21 @@ select option:first-child
   color: map-get($grays, "600");
 }
 
-.input-amount
+.form-circle
 {
-  border: .0625rem dashed map-get($colors, "blue");
+  border: .0625rem dashed map-get($grays, "400");
   border-radius: 100%;
   width: 12rem;
   height: 12rem;
   padding: .25rem;
+  margin-bottom: $form-group-margin-bottom;
 
-  input
+  input,
+  span
   {
-    border: .3125rem solid map-get($colors, "blue");
+    border: .3125rem solid map-get($grays, "400");
     border-radius: 100%;
-    color: map-get($colors, "blue");
+    color: map-get($theme-colors, "primary");
     display: block;
     margin: auto;
     padding: 1.25rem;
@@ -32,10 +34,24 @@ select option:first-child
     text-align: center;
     width: 11.35rem;
     height: 11.35rem;
+  }
 
-    &:disabled
-    {
-      background-color: map-get($grays, "100");
-    }
+  input:disabled
+  {
+    background-color: map-get($grays, "white");
+  }
+
+  &.form-circle-primary,
+  &.form-circle-primary input,
+  &.form-circle-primary span
+  {
+    border-color: map-get($theme-colors, "primary");
+  }
+
+  &.form-circle-danger,
+  &.form-circle-danger input,
+  &.form-circle-danger span
+  {
+    border-color: map-get($theme-colors, "danger");
   }
 }

@@ -44,6 +44,7 @@ class LightboxOptions {
 
   _setDefaultValues() {
     this._options.payment = this._options.payment || {}
+    this._options.payment.processing = false
     this._options.payment.bankSlip = null
     this._options.payment.card = null
   }

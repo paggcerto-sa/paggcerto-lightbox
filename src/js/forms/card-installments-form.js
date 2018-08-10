@@ -1,5 +1,6 @@
 import { NAMESPACE, ClassName, Event } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
+import CardProcessingForm from './card-processing-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import InstallmentOptionsPartial from 'src/js/partials/installment-options-partial'
 import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
@@ -52,8 +53,9 @@ class CardInstallmentsForm {
     const $btnContinue = this._$container.find(`#${Selector.BTN_CONTINUE}`)
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
 
-    $btnContinue.on(Event.CLICK, () => {
-      // TODO
+    $btnContinue.on(Event.CLICK, async () => {
+      const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
+      await cardProcessingForm.render()
     })
 
     $btnGoBack.on(Event.CLICK, () => {
