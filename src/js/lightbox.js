@@ -16,19 +16,18 @@ const VIEW = `
 `
 
 class Lightbox {
-  constructor(options, store) {
+  constructor(options) {
     this._options = options
-    this._store = store
   }
 
   show() {
-    if (this._options.payment.allMethodsDisabled) return
+    if (this._options.payment.noMethodAccepted) return
 
     const $body = $('body').append(VIEW)
     const $lightbox = $body.find(`#${ID}`)
     const $lightboxContent = $lightbox.find(`.${ClassName.CONTENT}`)
     const $closeButton = $lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
-    const payMethodForm = new PayMethodForm($lightboxContent, this._options, this._store)
+    const payMethodForm = new PayMethodForm($lightboxContent, this._options)
 
     $closeButton.on(Event.CLICK, () => {
       $body.removeClass(`${ClassName.SHOW}`)
