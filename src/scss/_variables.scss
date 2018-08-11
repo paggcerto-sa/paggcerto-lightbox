@@ -1,6 +1,4 @@
-//
 // Color system
-//
 
 $white:    #fff !default;
 $gray-100: #f8f9fa !default;
@@ -72,9 +70,13 @@ $spacers: map-merge(
   $spacers
 );
 
-//
+// Forms
+
+$input-group-addon-color:         $white !default;
+$input-group-addon-bg:            $blue !default;
+$input-group-addon-border-color:  $blue !default;
+
 // Lightbox
-//
 
 $lightbox-icons: url("../demo/lightbox-icons.svg") !default;
 $lightbox-font-family: Arial, sans-serif !default;

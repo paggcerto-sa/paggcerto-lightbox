@@ -17,10 +17,11 @@ const Delay = {
   INPUT_AMOUNT_FOCUS: 75
 }
 
-const Event = {
+const EventName = {
   CHANGE: `change.${NAMESPACE}`,
   CLICK: `click.${NAMESPACE}`,
-  KEY_UP: `keyup.${NAMESPACE}`
+  KEY_UP: `keyup.${NAMESPACE}`,
+  SUBMIT: `submit.${NAMESPACE}`
 }
 
 const Payment = {
@@ -32,7 +33,7 @@ const Payment = {
 export {
   ID,
   Delay,
-  Event,
+  EventName,
   NAMESPACE,
   ClassName,
   Payment

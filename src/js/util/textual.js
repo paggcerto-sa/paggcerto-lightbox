@@ -21,7 +21,7 @@ class Textual {
   }
 
   isNullOrWhiteSpace() {
-    return this._str === null || this._str === undefined || !!this._str.match(/^ *$/);
+    return this._str === null || this._str === undefined || !!this._str.match(/^ *$/)
   }
 
   removeAccents() {

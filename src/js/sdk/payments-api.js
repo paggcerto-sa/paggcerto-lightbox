@@ -29,6 +29,15 @@ class PaymentsApi {
       data: JSON.stringify(payment)
     })
   }
+
+  async sendCardReceipt(nsu, contact) {
+    return await $.ajax({
+      url: Sandbox.SEND_CARD_RECEIPT.replace(':nsu', nsu),
+      method: 'POST',
+      headers: this._headers(),
+      data: JSON.stringify(contact)
+    })
+  }
 }
 
 export default PaymentsApi

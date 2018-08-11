@@ -35,7 +35,7 @@ const VIEW = `
   <div class="${ClassName.FOOTER} text-center">
     <span id="${Selector.PAY_METHODS}"></span>
   </div>
-`;
+`
 
 class CardProcessingForm {
   constructor($container, options) {

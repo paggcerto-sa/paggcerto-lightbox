@@ -1,15 +1,14 @@
 import 'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js'
-import { NAMESPACE, ClassName, Event } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import Bins from 'src/js/sdk/bins'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
 import CardInstallmentsForm from './card-installments-form'
 import PayMethodForm from './pay-method-form'
-import StateValidation from 'src/js/jquery/state-validation'
+import FormState from 'src/js/jquery/form-state'
 import Textual from 'src/js/util/textual'
 
 const Selector = {
-  BTN_CONTINUE: `${NAMESPACE}_btnContinue`,
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
   INPUT_CARD_NUMBER: `${NAMESPACE}_inputCardNumber`,
@@ -21,64 +20,66 @@ const Selector = {
 }
 
 const VIEW = `
-  <div class="${ClassName.HEADER}">
-    Insira os dados do cartão:
-  </div>
-  <div class="${ClassName.BODY}">
-    <div class="row">
-      <div class="col border-right">
-        <div class="form-group text-center">
-          <span id="${Selector.INPUT_AMOUNT}"></span>
-          <span class="pay-method-text">Crédito</span>
+  <form novalidate>
+    <div class="${ClassName.HEADER}">
+      Insira os dados do cartão:
+    </div>
+    <div class="${ClassName.BODY}">
+      <div class="row">
+        <div class="col border-right">
+          <div class="form-group text-center">
+            <span id="${Selector.INPUT_AMOUNT}"></span>
+            <span class="pay-method-text">Crédito</span>
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <div>
-          <div class="form-group">
-            <label>Número do cartão:</label>
-            <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000">
-          </div>
-          <div class="form-group">
-            <label>Nome do titular do cartão:</label>
-            <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão">
-          </div>
-          <div class="row">
-            <div class="col-8">
-              <div class="form-group">
-                <label>Validade:</label>
-                <div>
-                  <select id="${Selector.SELECT_MONTH}" class="form-control d-inline w-45">
-                    <option>MM</option>
-                  </select>
-                  <select id="${Selector.SELECT_YEAR}" class="form-control d-inline w-45">
-                    <option>AA</option>
-                  </select>
+        <div class="col">
+          <div>
+            <div class="form-group">
+              <label>Número do cartão:</label>
+              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="form-group">
+              <label>Nome do titular do cartão:</label>
+              <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão">
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <div class="form-group">
+                  <label>Validade:</label>
+                  <div>
+                    <select id="${Selector.SELECT_MONTH}" class="form-control d-inline w-45">
+                      <option>MM</option>
+                    </select>
+                    <select id="${Selector.SELECT_YEAR}" class="form-control d-inline w-45">
+                      <option>AA</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label>CVV:</label>
-                <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="0000">
+              <div class="col-4">
+                <div class="form-group">
+                  <label>CVV:</label>
+                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="0000">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="${ClassName.FOOTER} text-center">
-    <button id="${Selector.BTN_GO_BACK}" type="button" class="btn-footer go-back">
-      <span class="icon-arrow left"></span><br>
-      <span>Voltar</span>
-    </button>
-    <span id="${Selector.PAY_METHODS}"></span>
-    <button id="${Selector.BTN_CONTINUE}" type="button" class="btn-footer continue">
-      <span class="icon-arrow right"></span><br>
-      <span>Continuar</span>
-    </button>
-  </div>
-`;
+    <div class="${ClassName.FOOTER} text-center">
+      <button id="${Selector.BTN_GO_BACK}" type="button" class="btn-footer go-back">
+        <span class="icon-arrow left"></span><br>
+        <span>Voltar</span>
+      </button>
+      <span id="${Selector.PAY_METHODS}"></span>
+      <button type="submit" class="btn-footer continue">
+        <span class="icon-arrow right"></span><br>
+        <span>Continuar</span>
+      </button>
+    </div>
+  </form>
+`
 
 class CardOnlineForm {
   constructor($container, options) {
@@ -88,31 +89,26 @@ class CardOnlineForm {
   }
 
   _bindButtons() {
-    const $btnContinue = this._$container.find(`#${Selector.BTN_CONTINUE}`)
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
-
-    this._state = new StateValidation($btnContinue)
-    this._state.update({
-      cardNumber: !!this._options.payment.card.number,
-      holderName: !!this._options.payment.card.holderName,
-      expiryMonth: !!this._options.payment.card.expirationMonth,
-      expiryYear: !!this._options.payment.card.expirationYear,
-      cvv: !!this._options.payment.card.cvv
-    })
-
-    $btnContinue.on(Event.CLICK, () => {
-      const cardInstallmentsForm = new CardInstallmentsForm(this._$container, this._options)
-      cardInstallmentsForm.render()
-    })
 
     if (this._options.payment.onlyCreditEnabled) {
       $btnGoBack.attr('disabled', true)
       return
     }
 
-    $btnGoBack.on(Event.CLICK, () => {
+    $btnGoBack.on(EventName.CLICK, () => {
       const payMethodForm = new PayMethodForm(this._$container, this._options)
       payMethodForm.render()
+    })
+  }
+
+  _bindForm() {
+    this._$form = this._$container.find('form')
+
+    this._$form.on(EventName.SUBMIT, () => {
+      if (this._formState.invalid) return
+      const cardInstallmentsForm = new CardInstallmentsForm(this._$container, this._options)
+      cardInstallmentsForm.render()
     })
   }
 
@@ -125,7 +121,7 @@ class CardOnlineForm {
 
         const bins = new Bins(this._options.token)
         this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
-        this._state.update({ cardNumber: !!this._options.payment.card.bin })
+        this._formState.update({ cardNumber: !!this._options.payment.card.bin })
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
         this._paymentIconsPartial.activeIcon(cardBrand)
@@ -139,13 +135,13 @@ class CardOnlineForm {
     const $inputHolderName = this._$container.find(`#${Selector.INPUT_HOLDER_NAME}`)
 
     $inputHolderName
-      .on(Event.KEY_UP, () => {
+      .on(EventName.KEY_UP, () => {
         this._options.payment.card.holderName = $inputHolderName.val()
 
         const holderName = new Textual(this._options.payment.card.holderName)
         const isValid = !holderName.isNullOrWhiteSpace() && holderName.isProperName()
 
-        this._state.update({ holderName: isValid })
+        this._formState.update({ holderName: isValid })
       })
       .val(this._options.payment.card.holderName)
   }
@@ -154,9 +150,9 @@ class CardOnlineForm {
     const $inputCvv = this._$container.find(`#${Selector.INPUT_CVV}`)
 
     $inputCvv
-      .on(Event.KEY_UP, () => {
+      .on(EventName.KEY_UP, () => {
         this._options.payment.card.cvv = $inputCvv.val()
-        this._state.update({ cvv: /^\d{3,4}$/.test(this._options.payment.card.cvv) })
+        this._formState.update({ cvv: /^\d{3,4}$/.test(this._options.payment.card.cvv) })
       })
       .mask("9990")
       .val(this._options.payment.card.cvv)
@@ -174,9 +170,9 @@ class CardOnlineForm {
       }
     }
 
-    $selectMonth.on(Event.CHANGE, () => {
+    $selectMonth.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationMonth = Number($selectMonth.val())
-      this._state.update({ expiryMonth: !!this._options.payment.card.expirationMonth })
+      this._formState.update({ expiryMonth: !!this._options.payment.card.expirationMonth })
     })
   }
 
@@ -194,9 +190,9 @@ class CardOnlineForm {
       }
     }
 
-    $selectYear.on(Event.CHANGE, () => {
+    $selectYear.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationYear = Number($selectYear.val())
-      this._state.update({ expiryYear: !!this._options.payment.card.expirationYear })
+      this._formState.update({ expiryYear: !!this._options.payment.card.expirationYear })
     })
   }
 
@@ -207,6 +203,17 @@ class CardOnlineForm {
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(disabled)
     this._inputAmountPartial.render()
+  }
+
+  _loadFormState() {
+    this._formState = new FormState(this._$form)
+    this._formState.update({
+      cardNumber: !!this._options.payment.card.number,
+      holderName: !!this._options.payment.card.holderName,
+      expiryMonth: !!this._options.payment.card.expirationMonth,
+      expiryYear: !!this._options.payment.card.expirationYear,
+      cvv: !!this._options.payment.card.cvv
+    })
   }
 
   _loadPayMethods() {
@@ -221,15 +228,15 @@ class CardOnlineForm {
   render() {
     this._$container.html(VIEW)
 
-    this._loadAmount();
     this._bindButtons()
+    this._bindForm()
     this._bindInputCardNumber()
     this._bindInputCvv()
     this._bindInputHolderName()
     this._bindSelectMonth()
     this._bindSelectYear()
-
     this._loadAmount()
+    this._loadFormState()
     this._loadPayMethods()
   }
 }

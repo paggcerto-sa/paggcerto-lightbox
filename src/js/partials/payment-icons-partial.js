@@ -15,7 +15,7 @@ const VIEW = `
     <span class="${ClassName.ICON} banese"></span>
     <span class="${ClassName.ICON} bank-slip"></span>
   </div>
-`;
+`
 
 class PaymentIconsPartial {
   constructor($container) {

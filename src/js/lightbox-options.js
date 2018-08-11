@@ -1,4 +1,4 @@
-import Currency from "./util/currency";
+import Currency from './util/currency'
 
 class LightboxOptions {
   constructor(options) {
