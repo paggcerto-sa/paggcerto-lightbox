@@ -12,6 +12,7 @@ class Payment {
     return {
       sellingKey: this._getSellingKey(),
       amount: this._options.payment.amount,
+      geolocation: this._options.payment.geolocation,
       cards: [
         {
           holderName: this._options.payment.card.holderName,
