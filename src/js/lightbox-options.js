@@ -62,7 +62,6 @@ class LightboxOptions {
 
   _setDefaultValues() {
     this._options.payment = this._options.payment || {}
-    this._options.payment.processing = false
     this._options.payment.bankSlip = null
     this._options.payment.card = null
     this._options.payment.amountText = new Currency(this._options.payment.amount).asString()
@@ -80,10 +79,22 @@ class LightboxOptions {
     this._options.payment.amountEditable = this._isNullOrUndefined(this._options.payment.amount)
   }
 
+  _setCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this._options.payment.geolocation = {
+          latitude: position.coords.latitude.toFixed(7),
+          longitude: position.coords.longitude.toFixed(7)
+        }
+      })
+    }
+  }
+
   asObject() {
     this._validate()
     this._setDefaultValues()
     this._setHelperValues()
+    this._setCurrentLocation()
 
     return this._options
   }
