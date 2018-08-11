@@ -6,7 +6,7 @@ const VIEW = `
   <div class="form-circle form-circle-primary">
     <input type="text" maxlength="12">
   </div>
-`;
+`
 
 class InputAmountPartial {
   constructor($container, options) {

@@ -1,7 +1,11 @@
-class StateValidation {
-  constructor($submitButton) {
-    this._$submitButton = $submitButton
+import { EventName } from 'src/js/constants'
+
+class FormState {
+  constructor($form) {
+    this._$form = $form.on(EventName.SUBMIT, (e) => e.preventDefault())
+    this._$submitButton = $form.find(':submit')
     this._current = {}
+    this.invalid = false
   }
 
   isValid(field) {
@@ -13,13 +17,15 @@ class StateValidation {
 
     for (let field in this._current) {
       if (!this._current[field]) {
+        this.invalid = true
         this._$submitButton.attr('disabled', true)
         return
       }
     }
 
     this._$submitButton.removeAttr('disabled')
+    this.invalid = false
   }
 }
 
-export default StateValidation
+export default FormState

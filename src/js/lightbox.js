@@ -1,5 +1,5 @@
 import $ from 'node_modules/jquery'
-import { ID, ClassName, Delay, Event } from './constants'
+import { ID, ClassName, Delay, EventName } from './constants'
 import PayMethodForm from 'src/js/forms/pay-method-form'
 
 const VIEW = `
@@ -29,7 +29,7 @@ class Lightbox {
     const $closeButton = $lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
     const payMethodForm = new PayMethodForm($lightboxContent, this._options)
 
-    $closeButton.on(Event.CLICK, () => {
+    $closeButton.on(EventName.CLICK, () => {
       $body.removeClass(`${ClassName.SHOW}`)
       setTimeout(() => $lightbox.remove(), 100)
     })

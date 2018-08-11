@@ -1,4 +1,4 @@
-import { NAMESPACE, ClassName, Event } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
 import PayMethodForm from './pay-method-form'
 
@@ -39,7 +39,7 @@ const VIEW = `
       </div>
     </div>
   </div>
-`;
+`
 
 class CardReprovedForm {
   constructor($container, options) {
@@ -51,12 +51,12 @@ class CardReprovedForm {
     const $btnTryAnotherCard = this._$container.find(`#${Selector.BTN_TRY_ANOTHER_CARD}`)
     const $_btnTryAnotherMethod = this._$container.find(`#${Selector.BTN_TRY_ANOTHER_METHOD}`)
 
-    $btnTryAnotherCard.on(Event.CLICK, () => {
+    $btnTryAnotherCard.on(EventName.CLICK, () => {
       const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
       cardOnlineForm.render()
     })
 
-    $_btnTryAnotherMethod.on(Event.CLICK, () => {
+    $_btnTryAnotherMethod.on(EventName.CLICK, () => {
       const payMethodForm = new PayMethodForm(this._$container, this._options)
       payMethodForm.render()
     })

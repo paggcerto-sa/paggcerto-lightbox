@@ -1,7 +1,6 @@
 import $ from 'node_modules/jquery'
 import Installment from 'src/js/util/installment'
-import { Event } from 'src/js/constants'
-import { start } from 'repl';
+import { EventName } from 'src/js/constants'
 
 const ClassName = {
   INSTALLMENT_NUMBER: 'installment-number',
@@ -10,9 +9,9 @@ const ClassName = {
 
 const VIEW = `
   <div class="installment-options"></div>
-`;
+`
 
-const OPTION_VIEW = `
+const VIEW_INSTALLMENTS = `
   <label>
     <input type="radio" name="installments">
     <span class="installment-option">
@@ -20,7 +19,7 @@ const OPTION_VIEW = `
       <span class="${ClassName.INSTALLMENT_VALUE}"></span>
     </span>
   </label>
-`;
+`
 
 class InstallmentOptionsPartial {
   constructor($container, options) {
@@ -31,17 +30,19 @@ class InstallmentOptionsPartial {
   render() {
     this._$installmentOptions = $(VIEW)
     this._$container.replaceWith(this._$installmentOptions)
+    this._options.payment.installments = this._options.payment.installments || 1
 
     const maximumInstallment = this._options.payment.card.bin.maximumInstallment
     const amount = this._options.payment.amount
     const installments = new Installment(maximumInstallment, amount).asArray()
+
     let $firstInstallment = null
 
     installments.forEach((installment, index) => {
-      const $installment = $(OPTION_VIEW)
+      const $installment = $(VIEW_INSTALLMENTS)
       $firstInstallment = $firstInstallment || $installment
 
-      $installment.on(Event.CHANGE, () => {
+      $installment.on(EventName.CHANGE, () => {
         this._options.payment.installments = installment.number
       })
 

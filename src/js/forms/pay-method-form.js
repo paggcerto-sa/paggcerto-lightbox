@@ -1,4 +1,4 @@
-import { NAMESPACE, ClassName, Event, Payment } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName, Payment } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
@@ -42,7 +42,7 @@ const VIEW = `
   <div class="${ClassName.FOOTER} text-center">
     <span id="${Selector.PAY_METHODS}"></span>
   </div>
-`;
+`
 
 class PayMethodForm {
   constructor($container, options) {
@@ -124,9 +124,9 @@ class PayMethodForm {
     if (this._options.payment.onlyCreditEnabled) this._payWithCreditCard()
     if (this._options.payment.onlyDebitEnabled) this._payWithDebitCard()
 
-    this._$bankSlipButton.on(Event.CLICK, () => this._payWithBankSlip())
-    this._$creditButton.on(Event.CLICK, () => this._payWithCreditCard())
-    this._$debitButton.on(Event.CLICK, () => this._payWithDebitCard())
+    this._$bankSlipButton.on(EventName.CLICK, () => this._payWithBankSlip())
+    this._$creditButton.on(EventName.CLICK, () => this._payWithCreditCard())
+    this._$debitButton.on(EventName.CLICK, () => this._payWithDebitCard())
 
     this._loadAmount()
     this._loadPayMethods()
