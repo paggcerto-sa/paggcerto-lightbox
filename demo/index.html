@@ -212,12 +212,15 @@
       try {
         eval('paggcerto.lightbox(' + $('textarea').val() + ')');
       } catch (e) {
-        alert('Syntax error. Please review your code.');
+        alert('Code error. See console for details.');
+        throw e;
       }
     });
 
     $('#btnResetCode').on('click', function reset() {
-      $textarea.val(defaultCode);
+      if (confirm('Seu código será apagado. Deseja continuar?')) {
+        $textarea.val(defaultCode);
+      }
     });
   </script>
 </body>

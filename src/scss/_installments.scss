@@ -70,9 +70,9 @@
 
       .installment-number
       {
-        border: .0625rem solid map-get($colors, "blue");
+        border: .0625rem solid map-get($theme-colors, "primary");
         border-radius: 50%;
-        color: map-get($colors, "blue");
+        color: map-get($theme-colors, "primary");
         padding-top: .125rem;
         text-align: center;
         width: 2.5rem;

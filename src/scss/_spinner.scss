@@ -1,0 +1,38 @@
+@keyframes spinner
+{
+  0%
+  {
+    transform: rotate(0deg);
+  }
+  100%
+  {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner
+{
+  display: inline-block;
+  position: relative;
+  text-align: center;
+
+  .spinner-bar
+  {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    border: .0625rem solid transparent;
+    border-top-color: map-get($theme-colors, "primary");
+    border-left-color: map-get($theme-colors, "primary");
+    border-right-color: map-get($theme-colors, "primary");
+    animation: spinner 1s linear infinite;
+    border-radius: 50%;
+  }
+
+  .icon-logo-sm
+  {
+    position: absolute;
+    top: 1.375rem;
+    left: 1.375rem;
+  }
+}

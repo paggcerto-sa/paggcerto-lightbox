@@ -1,8 +1,4 @@
-.icon-alert,
-.icon-arrow,
-.icon-btn,
-.icon-logo,
-.icon-payment
+@mixin icon
 {
   background-image: $lightbox-icons;
   background-repeat: no-repeat;
@@ -11,6 +7,7 @@
 
 .icon-arrow
 {
+  @include icon;
   background-size: 744px 175px;
   height: 32px;
 
@@ -29,6 +26,7 @@
 
 .icon-btn
 {
+  @include icon;
   background-size: 744px 175px;
   height: 52px;
 
@@ -51,7 +49,9 @@
   }
 }
 
-.icon-logo {
+.icon-logo
+{
+  @include icon;
   background-size: 475px 112px;
   background-position: 0 -91px;
   margin: .3125rem;
@@ -61,8 +61,34 @@
   width: 108px;
 }
 
-.icon-payment
+.icon-logo-sm
 {
+  @include icon;
+  background-position: -162px -111px;
+  background-size: 600px 141px;
+  height: 36px;
+  width: 36px;
+}
+
+.icon-mark
+{
+  @include icon;
+  background-size: 1600px 376px;
+
+  &.check
+  {
+    background-position: -1158px -115px;
+  }
+
+  &.exclamation
+  {
+    background-position: -1300px -115px;
+  }
+}
+
+.icon-pay-method
+{
+  @include icon;
   background-size: 475px 112px;
   height: 32px;
   margin: 0 2px;

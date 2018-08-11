@@ -33,32 +33,47 @@ $blue:    #2687E9 !default;
 $indigo:  #6610f2 !default;
 $purple:  #6f42c1 !default;
 $pink:    #e83e8c !default;
-$red:     #dc3545 !default;
+$red:     #fe7764 !default;
 $orange:  #fd7e14 !default;
 $yellow:  #ffc107 !default;
 $green:   #28a745 !default;
 $teal:    #20c997 !default;
 $cyan:    #17a2b8 !default;
 
-$colors: () !default;
-$colors: map-merge((
-  "blue":       $blue,
-  "indigo":     $indigo,
-  "purple":     $purple,
-  "pink":       $pink,
-  "red":        $red,
-  "orange":     $orange,
-  "yellow":     $yellow,
-  "green":      $green,
-  "teal":       $teal,
-  "cyan":       $cyan,
-  "white":      $white,
-  "gray":       $gray-600,
-  "gray-dark":  $gray-800
-), $colors);
+$theme-colors: () !default;
+$theme-colors: map-merge(
+  (
+    "primary":    $blue,
+    "secondary":  $gray-600,
+    "success":    $green,
+    "info":       $cyan,
+    "warning":    $yellow,
+    "danger":     $red,
+    "light":      $gray-100,
+    "dark":       $gray-800
+  ),
+  $theme-colors
+);
+
+// Spacing
+
+$spacer: 1rem !default;
+$spacers: () !default;
+$spacers: map-merge(
+  (
+    0: 0,
+    1: ($spacer * .25),
+    2: ($spacer * .5),
+    3: $spacer,
+    4: ($spacer * 1.5),
+    5: ($spacer * 3),
+    6: ($spacer * 4.5)
+  ),
+  $spacers
+);
 
 //
-// Lightbox variables
+// Lightbox
 //
 
 $lightbox-icons: url("../demo/lightbox-icons.svg") !default;

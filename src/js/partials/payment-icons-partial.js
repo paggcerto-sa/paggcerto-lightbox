@@ -1,7 +1,7 @@
 import $ from 'node_modules/jquery'
 
 const ClassName = {
-  ICON: 'icon-payment'
+  ICON: 'icon-pay-method'
 }
 
 const VIEW = `

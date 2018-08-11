@@ -1,10 +1,9 @@
-import $ from 'node_modules/jquery'
+import PaymentsApi from './payments-api'
 import Textual from 'src/js/util/textual'
-import { ApiUrl } from './settings'
 
 class Bins {
   constructor(token) {
-    this._token = token
+    this._paymentsApi = new PaymentsApi(token)
   }
 
   _isValid(cardNumber) {
@@ -32,17 +31,7 @@ class Bins {
 
   async _list() {
     if (!!this._binList) return
-
-    const result = await $.ajax({
-      url: ApiUrl.PAYMENTS_BINS,
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + this._token,
-        'Content-Type': 'application/json'
-      }
-    })
-
-    this._binList = result
+    this._binList = await this._paymentsApi.bins()
   }
 
   async identify(cardNumber) {
