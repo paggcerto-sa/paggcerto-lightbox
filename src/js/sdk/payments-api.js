@@ -1,9 +1,10 @@
 import $ from 'node_modules/jquery'
-import { Sandbox } from './environments'
+import Environment from './environment'
 
 class PaymentsApi {
-  constructor(token) {
-    this._token = token
+  constructor(options) {
+    this._token = options.token
+    this._environment = new Environment(options)
   }
 
   _headers() {
@@ -15,7 +16,7 @@ class PaymentsApi {
 
   async bins() {
     return await $.ajax({
-      url: Sandbox.BINS,
+      url: this._environment.Url.BINS,
       method: 'GET',
       headers: this._headers()
     })
@@ -23,7 +24,7 @@ class PaymentsApi {
 
   async payWithCards(payment) {
     return await $.ajax({
-      url: Sandbox.PAY_WITH_CARDS,
+      url: this._environment.Url.PAY_WITH_CARDS,
       method: 'POST',
       headers: this._headers(),
       data: JSON.stringify(payment)
@@ -32,7 +33,7 @@ class PaymentsApi {
 
   async sendCardReceipt(nsu, contact) {
     return await $.ajax({
-      url: Sandbox.SEND_CARD_RECEIPT.replace(':nsu', nsu),
+      url: this._environment.Url.SEND_CARD_RECEIPT.replace(':nsu', nsu),
       method: 'POST',
       headers: this._headers(),
       data: JSON.stringify(contact)

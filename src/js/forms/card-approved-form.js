@@ -126,7 +126,7 @@ class CardApprovedForm {
   }
 
   async _send() {
-    const paymentsApi = new PaymentsApi(this._options.token)
+    const paymentsApi = new PaymentsApi(this._options)
     const nsu = this._options.processedPayment.cardTransactions[0].nsu
     const contact = { email: this._email, mobile: this._mobile }
     const $btnSubmitGroup = this._$container.find(`#${Selector.BTN_SUBMIT_GROUP}`)

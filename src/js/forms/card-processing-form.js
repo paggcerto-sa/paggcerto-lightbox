@@ -56,7 +56,7 @@ class CardProcessingForm {
   }
 
   async _process() {
-    const paymentsApi = new PaymentsApi(this._options.token)
+    const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toCreditCard()
 
     this._options.processedPayment = await paymentsApi.payWithCards(payment)

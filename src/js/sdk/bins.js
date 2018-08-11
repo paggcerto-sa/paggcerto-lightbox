@@ -2,8 +2,8 @@ import PaymentsApi from './payments-api'
 import Textual from 'src/js/util/textual'
 
 class Bins {
-  constructor(token) {
-    this._paymentsApi = new PaymentsApi(token)
+  constructor(options) {
+    this._paymentsApi = new PaymentsApi(options)
   }
 
   _isValid(cardNumber) {
