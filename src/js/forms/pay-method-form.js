@@ -99,12 +99,15 @@ class PayMethodForm {
     // TODO
   }
 
-  _renderFooter() {
+  _loadAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
+    inputAmountPartial.disabled(!this._options.payment.amountEditable)
     inputAmountPartial.onChange(() => this._checkMethodButtons())
     inputAmountPartial.render()
+  }
 
+  _loadPayMethods() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
     const paymentIconsPartial = new PaymentIconsPartial($payMethods)
     paymentIconsPartial.render()
@@ -125,7 +128,8 @@ class PayMethodForm {
     this._$creditButton.on(Event.CLICK, () => this._payWithCreditCard())
     this._$debitButton.on(Event.CLICK, () => this._payWithDebitCard())
 
-    this._renderFooter()
+    this._loadAmount()
+    this._loadPayMethods()
   }
 }
 

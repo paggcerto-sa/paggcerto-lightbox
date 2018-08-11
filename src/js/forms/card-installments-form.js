@@ -70,12 +70,14 @@ class CardInstallmentsForm {
     this._installmentOptionsPartial.render()
   }
 
-  _renderFooter() {
+  _loadAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(true)
     this._inputAmountPartial.render()
+  }
 
+  _loadPayMethods() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
     this._paymentIconsPartial = new PaymentIconsPartial($payMethods)
     this._paymentIconsPartial.render()
@@ -87,8 +89,8 @@ class CardInstallmentsForm {
 
     this._bindButtons();
     this._bindInstallments();
-
-    this._renderFooter()
+    this._loadAmount()
+    this._loadPayMethods()
   }
 }
 

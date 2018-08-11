@@ -200,21 +200,28 @@ class CardOnlineForm {
     })
   }
 
-  _renderFooter() {
+  _loadAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
-    this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
-    this._inputAmountPartial.disabled(!this._options.payment.onlyCreditEnabled)
-    this._inputAmountPartial.render()
+    const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyCreditEnabled)
 
+    this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
+    this._inputAmountPartial.disabled(disabled)
+    this._inputAmountPartial.render()
+  }
+
+  _loadPayMethods() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
+    const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
+
     this._paymentIconsPartial = new PaymentIconsPartial($payMethods)
     this._paymentIconsPartial.render()
-    this._paymentIconsPartial.activeIcon(this._options.payment.card.bin && this._options.payment.card.bin.cardBrand)
+    this._paymentIconsPartial.activeIcon(cardBrand)
   }
 
   render() {
     this._$container.html(VIEW)
 
+    this._loadAmount();
     this._bindButtons()
     this._bindInputCardNumber()
     this._bindInputCvv()
@@ -222,7 +229,8 @@ class CardOnlineForm {
     this._bindSelectMonth()
     this._bindSelectYear()
 
-    this._renderFooter()
+    this._loadAmount()
+    this._loadPayMethods()
   }
 }
 

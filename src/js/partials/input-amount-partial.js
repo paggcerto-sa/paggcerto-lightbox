@@ -37,7 +37,7 @@ class InputAmountPartial {
         this._options.payment.amountText = this._$input.val()
         this._callbackChange()
       })
-      .val(this._options.payment.amountText || 'R$ 0,00')
+      .val(this._options.payment.amountText)
       .trigger('keyup.maskMoney')
   }
 
