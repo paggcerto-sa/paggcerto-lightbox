@@ -119,7 +119,7 @@ class CardOnlineForm {
       .on('keyup', async () => {
         this._options.payment.card.number = $inputCardNumber.val()
 
-        const bins = new Bins(this._options.token)
+        const bins = new Bins(this._options)
         this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
         this._formState.update({ cardNumber: !!this._options.payment.card.bin })
 

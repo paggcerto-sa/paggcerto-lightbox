@@ -23,7 +23,7 @@ const VIEW = `
       <div class="col py-6">
         <div class="ml-auto w-75">
           <h5 class="text-secondary text-right mb-5">
-            O pagamento não foi concluído. O que deseja fazer?
+            O pagamento não pôde ser concluído. O que deseja fazer?
           </h5>
           <div class="form-group">
             <button id="${Selector.BTN_TRY_ANOTHER_CARD}" type="button" class="btn btn-outline-primary w-100">
