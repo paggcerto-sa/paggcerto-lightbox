@@ -1,4 +1,5 @@
 import Currency from './util/currency'
+import Environment from './sdk/environment'
 
 class LightboxOptions {
   constructor(options) {
@@ -33,8 +34,11 @@ class LightboxOptions {
     return typeof value === 'function'
   }
 
-  _checkDataTypes() {
+  _validate() {
     if (!this._isObject(this._options)) throw new Error('Invalid options: Expected Object.')
+    if (!this._isString(this._options.environment)) throw new Error('Invalid options.environment: Expected String.')
+    if (this._options.environment !== Environment.Sandbox && this._options.environment !== Environment.Production)
+      throw new Error('Invalid options.environment: Expected "sandbox" or "production".')
     if (!this._isString(this._options.token)) throw new Error('Invalid options.token: Expected String.')
     if (!this._isObject(this._options.payment)) throw new Error('Invalid options.payment: Expected Object.')
     if (!this._isNullOrUndefined(this._options.payment.amount))
@@ -47,7 +51,7 @@ class LightboxOptions {
     this._options.payment.payers.forEach((payer, index) => {
       if (!this._isObject(payer)) throw new Error(`Invalid options.payment.payers[${index}]: Expected Object.`)
       if (!this._isNullOrUndefined(payer.sellingKey))
-        if (!this._isString(payer.sellingKey)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
+        if (!this._isString(payer.sellingKey)) throw new Error(`Invalid options.payment.payers[${index}].sellingKey: Expected String.`)
       if (!this._isString(payer.fullName)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
       if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
     })
@@ -77,7 +81,7 @@ class LightboxOptions {
   }
 
   asObject() {
-    this._checkDataTypes()
+    this._validate()
     this._setDefaultValues()
     this._setHelperValues()
 

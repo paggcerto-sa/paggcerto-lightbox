@@ -3,9 +3,14 @@ class Payment {
     this._options = options
   }
 
+  _getSellingKey() {
+    if (this._options.payment.payers.length === 0) return null
+    return this._options.payment.payers[0].sellingKey
+  }
+
   toCreditCard() {
     return {
-      sellingKey: null,
+      sellingKey: this._getSellingKey(),
       amount: this._options.payment.amount,
       cards: [
         {
