@@ -1,6 +1,6 @@
 import $ from 'node_modules/jquery'
-import Installment from 'src/js/util/installment'
-import { EventName } from 'src/js/constants'
+import Installments from 'src/js/util/installments'
+import { EventName, Payment } from 'src/js/constants'
 
 const ClassName = {
   INSTALLMENT_NUMBER: 'installment-number',
@@ -32,9 +32,10 @@ class InstallmentOptionsPartial {
     this._$container.replaceWith(this._$installmentOptions)
     this._options.payment.installments = this._options.payment.installments || 1
 
-    const maximumInstallment = this._options.payment.card.bin.maximumInstallment
     const amount = this._options.payment.amount
-    const installments = new Installment(maximumInstallment, amount).asArray()
+    const minimummAmount = Payment.MINIMUM_CREDIT_AMOUNT
+    const maximumNumber = this._options.payment.card.bin.maximumInstallment
+    const installments = new Installments(amount, minimummAmount, maximumNumber).asArray()
 
     let $firstInstallment = null
 
