@@ -1,7 +1,7 @@
-import { NAMESPACE, ClassName, EventName, Payment } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
+import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
+import { NAMESPACE, ClassName, EventName, Payment } from 'src/js/constants'
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
@@ -99,7 +99,7 @@ class PayMethodForm {
     // TODO
   }
 
-  _loadAmount() {
+  _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     inputAmountPartial.disabled(!this._options.payment.amountEditable)
@@ -107,10 +107,10 @@ class PayMethodForm {
     inputAmountPartial.render()
   }
 
-  _loadPayMethods() {
+  _renderPayMethodIcons() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
-    const paymentIconsPartial = new PaymentIconsPartial($payMethods)
-    paymentIconsPartial.render()
+    const payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
+    payMethodIconsPartial.render()
   }
 
   render() {
@@ -128,8 +128,8 @@ class PayMethodForm {
     this._$creditButton.on(EventName.CLICK, () => this._payWithCreditCard())
     this._$debitButton.on(EventName.CLICK, () => this._payWithDebitCard())
 
-    this._loadAmount()
-    this._loadPayMethods()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
   }
 }
 

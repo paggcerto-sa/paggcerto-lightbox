@@ -1,12 +1,11 @@
 import 'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
-import Bins from 'src/js/sdk/bins'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
+import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
 import CardInstallmentsForm from './card-installments-form'
 import PayMethodForm from './pay-method-form'
 import FormState from 'src/js/jquery/form-state'
 import Textual from 'src/js/util/textual'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -119,12 +118,12 @@ class CardOnlineForm {
       .on('keyup', async () => {
         this._options.payment.card.number = $inputCardNumber.val()
 
-        const bins = new Bins(this._options)
+        const bins = this._options.payment.bins
         this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
         this._formState.update({ cardNumber: !!this._options.payment.card.bin })
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
-        this._paymentIconsPartial.activeIcon(cardBrand)
+        this._payMethodIconsPartial.activeIcon(cardBrand)
       })
       .mask("9999999999999000000")
       .val(this._options.payment.card.number)
@@ -208,16 +207,7 @@ class CardOnlineForm {
     return selectedYear > currentYear || selectedMonth >= previousMonth
   }
 
-  _loadAmount() {
-    const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
-    const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyCreditEnabled)
-
-    this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
-    this._inputAmountPartial.disabled(disabled)
-    this._inputAmountPartial.render()
-  }
-
-  _loadFormState() {
+  _setFormState() {
     this._formState = new FormState(this._$form)
     this._formState.update({
       cardNumber: !!this._options.payment.card.number,
@@ -227,13 +217,22 @@ class CardOnlineForm {
     })
   }
 
-  _loadPayMethods() {
+  _renderInputAmount() {
+    const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
+    const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyCreditEnabled)
+
+    this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
+    this._inputAmountPartial.disabled(disabled)
+    this._inputAmountPartial.render()
+  }
+
+  _renderPayMethodIcons() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
     const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
 
-    this._paymentIconsPartial = new PaymentIconsPartial($payMethods)
-    this._paymentIconsPartial.render()
-    this._paymentIconsPartial.activeIcon(cardBrand)
+    this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
+    this._payMethodIconsPartial.render()
+    this._payMethodIconsPartial.activeIcon(cardBrand)
   }
 
   render() {
@@ -246,9 +245,9 @@ class CardOnlineForm {
     this._bindInputHolderName()
     this._bindSelectMonth()
     this._bindSelectYear()
-    this._loadAmount()
-    this._loadFormState()
-    this._loadPayMethods()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._setFormState()
   }
 }
 

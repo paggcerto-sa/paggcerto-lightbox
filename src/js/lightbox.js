@@ -1,6 +1,7 @@
 import $ from 'node_modules/jquery'
+import Bins from './sdk/bins'
+import InitPaymentForm from './forms/init-payment-form'
 import { ID, ClassName, Delay, EventName } from './constants'
-import PayMethodForm from 'src/js/forms/pay-method-form'
 
 const VIEW = `
   <div id="${ID}">
@@ -20,24 +21,41 @@ class Lightbox {
     this._options = options
   }
 
-  show() {
-    if (this._options.payment.allMethodsDisabled) return
+  async _tryLoadAcceptedBins() {
+    this._options.payment.bins = new Bins(this._options)
+    await this._options.payment.bins.list()
+  }
 
-    const $body = $('body').append(VIEW)
-    const $lightbox = $body.find(`#${ID}`)
-    const $lightboxContent = $lightbox.find(`.${ClassName.CONTENT}`)
-    const $closeButton = $lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
-    const payMethodForm = new PayMethodForm($lightboxContent, this._options)
+  _animate() {
+    // Used for transition run properly after append VIEW to DOM
+    setTimeout(() => { this._$body.addClass(`${ClassName.SHOW}`) }, Delay.LIGHTBOX_SHOW_ANIMATION)
+  }
+
+  _bindButtons() {
+    const $closeButton = this._$lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
 
     $closeButton.on(EventName.CLICK, () => {
-      $body.removeClass(`${ClassName.SHOW}`)
-      setTimeout(() => $lightbox.remove(), 100)
+      this._$body.removeClass(`${ClassName.SHOW}`)
+      setTimeout(() => this._$lightbox.remove(), 100)
     })
+  }
 
-    payMethodForm.render()
+  async _renderInitPayMmentForm() {
+    const initPaymentForm = new InitPaymentForm(this._$container, this._options)
+    await initPaymentForm.render()
+  }
 
-    // Used for transition run properly after append VIEW to DOM
-    setTimeout(() => { $body.addClass(`${ClassName.SHOW}`) }, Delay.LIGHTBOX_SHOW_ANIMATION)
+  async initialize() {
+    if (this._options.payment.allMethodsDisabled) return
+
+    this._$body = $('body').append(VIEW)
+    this._$lightbox = this._$body.find(`#${ID}`)
+    this._$container = this._$lightbox.find(`.${ClassName.CONTENT}`)
+
+    this._animate()
+    this._bindButtons()
+
+    await this._renderInitPayMmentForm()
   }
 }
 

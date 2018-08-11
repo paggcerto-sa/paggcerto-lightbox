@@ -1,5 +1,5 @@
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import CardProcessingForm from './card-processing-form'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`
@@ -21,7 +21,7 @@ const VIEW = `
       <div class="col py-6">
         <div class="ml-auto w-75">
           <h5 class="text-secondary text-right mb-5">
-            Por favor entre em contato com a equipe responsável ou tente novamente.
+            Por favor contate a equipe responsável ou tente novamente.
           </h5>
           <div class="form-group">
             <button id="${Selector.BTN_TRY_AGAIN}" type="button" class="btn btn-outline-primary w-100">

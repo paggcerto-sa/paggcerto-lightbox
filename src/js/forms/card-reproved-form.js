@@ -1,6 +1,6 @@
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
 import PayMethodForm from './pay-method-form'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
   BTN_TRY_ANOTHER_CARD: `${NAMESPACE}_btnTryAnotherCard`,
