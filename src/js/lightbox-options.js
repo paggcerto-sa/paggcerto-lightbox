@@ -1,3 +1,5 @@
+import Currency from "./util/currency";
+
 class LightboxOptions {
   constructor(options) {
     this._options = options
@@ -59,6 +61,7 @@ class LightboxOptions {
     this._options.payment.processing = false
     this._options.payment.bankSlip = null
     this._options.payment.card = null
+    this._options.payment.amountText = new Currency(this._options.payment.amount).asString()
   }
 
   _setHelperValues() {
@@ -70,6 +73,7 @@ class LightboxOptions {
     this._options.payment.onlyCreditEnabled = creditEnabled && !(debitEnabled || bankSlipEnabled)
     this._options.payment.onlyDebitEnabled = debitEnabled && !(creditEnabled || bankSlipEnabled)
     this._options.payment.allMethodsDisabled = !(bankSlipEnabled || creditEnabled || debitEnabled)
+    this._options.payment.amountEditable = this._isNullOrUndefined(this._options.payment.amount)
   }
 
   asObject() {
