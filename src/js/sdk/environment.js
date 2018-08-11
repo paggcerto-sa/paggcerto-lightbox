@@ -12,9 +12,12 @@ const ProductionUrl = {
 
 class Environment {
   constructor(options) {
-    if (options.environment === 'sandbox') this.Url = SandboxUrl
-    if (options.environment === 'production') this.Url = ProductionUrl
+    if (options.environment === Environment.Sandbox) this.Url = SandboxUrl
+    if (options.environment === Environment.Production) this.Url = ProductionUrl
   }
 }
+
+Environment.Sandbox = 'sandbox'
+Environment.Production = 'production'
 
 export default Environment

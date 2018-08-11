@@ -62,14 +62,14 @@ class CardReprovedForm {
     })
   }
 
-  _resetOptions() {
+  _resetCard() {
     this._options.payment.card = null
   }
 
   render() {
     this._$container.html(VIEW)
     this._bindButtons()
-    this._resetOptions()
+    this._resetCard()
   }
 }
 

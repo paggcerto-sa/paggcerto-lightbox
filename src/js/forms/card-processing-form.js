@@ -1,4 +1,5 @@
 import { NAMESPACE, ClassName } from 'src/js/constants'
+import CardErrorForm from 'src/js/forms/card-error-form'
 import CardReprovedForm from 'src/js/forms/card-reproved-form'
 import CardApprovedForm from 'src/js/forms/card-approved-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
@@ -59,14 +60,19 @@ class CardProcessingForm {
     const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toCreditCard()
 
-    this._options.processedPayment = await paymentsApi.payWithCards(payment)
+    try {
+      this._options.processedPayment = await paymentsApi.payWithCards(payment)
 
-    if (this._options.processedPayment.status === 'paid') {
-      const cardApprovedForm = new CardApprovedForm(this._$container, this._options)
-      cardApprovedForm.render()
-    } else {
-      const cardReprovedForm = new CardReprovedForm(this._$container, this._options)
-      cardReprovedForm.render()
+      if (this._options.processedPayment.status === 'paid') {
+        const cardApprovedForm = new CardApprovedForm(this._$container, this._options)
+        cardApprovedForm.render()
+      } else {
+        const cardReprovedForm = new CardReprovedForm(this._$container, this._options)
+        cardReprovedForm.render()
+      }
+    } catch (e) {
+      const cardErrorForm = new CardErrorForm(this._$container, this._options)
+      cardErrorForm.render()
     }
   }
 
