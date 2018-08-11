@@ -41,7 +41,7 @@ const VIEW = `
   </div>
 `;
 
-class CardFailedForm {
+class CardReprovedForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
@@ -73,4 +73,4 @@ class CardFailedForm {
   }
 }
 
-export default CardFailedForm
+export default CardReprovedForm

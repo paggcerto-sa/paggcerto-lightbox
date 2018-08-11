@@ -105,7 +105,7 @@ class CardOnlineForm {
       cardInstallmentsForm.render()
     })
 
-    if (this._options.payment.onlyCredit) {
+    if (this._options.payment.onlyCreditEnabled) {
       $btnGoBack.attr('disabled', true)
       return
     }
@@ -203,7 +203,7 @@ class CardOnlineForm {
   _renderFooter() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
-    this._inputAmountPartial.disabled(!this._options.payment.onlyCredit)
+    this._inputAmountPartial.disabled(!this._options.payment.onlyCreditEnabled)
     this._inputAmountPartial.render()
 
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
