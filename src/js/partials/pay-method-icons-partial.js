@@ -17,7 +17,7 @@ const VIEW = `
   </div>
 `
 
-class PaymentIconsPartial {
+class PayMethodIconsPartial {
   constructor($container) {
     this._$container = $container
   }
@@ -43,4 +43,4 @@ class PaymentIconsPartial {
   }
 }
 
-export default PaymentIconsPartial
+export default PayMethodIconsPartial

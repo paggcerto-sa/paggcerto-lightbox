@@ -1,7 +1,7 @@
 import 'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import FormState from 'src/js/jquery/form-state'
 import PaymentsApi from 'src/js/sdk/payments-api'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
   BTN_SUBMIT_GROUP: `${NAMESPACE}_btnSubmitGroup`,
@@ -103,7 +103,7 @@ class CardApprovedForm {
       .mask('(99) 99999-9999')
   }
 
-  _loadFormState() {
+  _setFormState() {
     this._formState = new FormState(this._$form)
     this._formState.update({ contact: false })
     this._isValidEmail = false
@@ -151,7 +151,7 @@ class CardApprovedForm {
     this._bindInputEmail()
     this._bindInputMobile()
     this._bindForm()
-    this._loadFormState()
+    this._setFormState()
   }
 }
 

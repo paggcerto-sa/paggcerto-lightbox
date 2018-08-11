@@ -1,11 +1,11 @@
-import { NAMESPACE, ClassName } from 'src/js/constants'
 import CardErrorForm from 'src/js/forms/card-error-form'
 import CardReprovedForm from 'src/js/forms/card-reproved-form'
 import CardApprovedForm from 'src/js/forms/card-approved-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
+import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
 import PaymentsApi from 'src/js/sdk/payments-api'
 import Payment from 'src/js/sdk/payment'
+import { NAMESPACE, ClassName } from 'src/js/constants'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -44,16 +44,18 @@ class CardProcessingForm {
     this._options = options
   }
 
-  _renderFooter() {
+  _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(true)
     this._inputAmountPartial.render()
+  }
 
+  _renderPayMethodIcons() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
-    this._paymentIconsPartial = new PaymentIconsPartial($payMethods)
-    this._paymentIconsPartial.render()
-    this._paymentIconsPartial.activeIcon(this._options.payment.card.bin.cardBrand)
+    this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
+    this._payMethodIconsPartial.render()
+    this._payMethodIconsPartial.activeIcon(this._options.payment.card.bin.cardBrand)
   }
 
   async _process() {
@@ -78,7 +80,9 @@ class CardProcessingForm {
 
   async render() {
     this._$container.html(VIEW)
-    this._renderFooter()
+
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
 
     await this._process()
   }

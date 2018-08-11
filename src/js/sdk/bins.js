@@ -29,15 +29,13 @@ class Bins {
     return sum % 10 === 0
   }
 
-  async _list() {
+  async list() {
     if (!!this._binList) return
     this._binList = await this._paymentsApi.bins()
   }
 
   async identify(cardNumber) {
     if (!this._isValid(cardNumber)) return
-
-    await this._list()
 
     for (let i = 0; i < this._binList.bins.length; i++) {
       const bin = this._binList.bins[i]

@@ -1,10 +1,10 @@
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 import CardOnlineForm from './card-online-form'
 import CardProcessingForm from './card-processing-form'
 import FormState from 'src/js/jquery/form-state'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import InstallmentOptionsPartial from 'src/js/partials/installment-options-partial'
-import PaymentIconsPartial from 'src/js/partials/payment-icons-partial'
+import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
+import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -76,22 +76,22 @@ class CardInstallmentsForm {
     this._installmentOptionsPartial.render()
   }
 
-  _loadAmount() {
+  _setFormState() {
+    this._formState = new FormState(this._$form)
+  }
+
+  _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(true)
     this._inputAmountPartial.render()
   }
 
-  _loadFormState() {
-    this._formState = new FormState(this._$form)
-  }
-
-  _loadPayMethods() {
+  _renderPayMethodIcons() {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
-    this._paymentIconsPartial = new PaymentIconsPartial($payMethods)
-    this._paymentIconsPartial.render()
-    this._paymentIconsPartial.activeIcon(this._options.payment.card.bin.cardBrand)
+    this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
+    this._payMethodIconsPartial.render()
+    this._payMethodIconsPartial.activeIcon(this._options.payment.card.bin.cardBrand)
   }
 
   render() {
@@ -100,9 +100,9 @@ class CardInstallmentsForm {
     this._bindButtons()
     this._bindForm()
     this._bindInstallments()
-    this._loadAmount()
-    this._loadFormState()
-    this._loadPayMethods()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._setFormState()
   }
 }
 
