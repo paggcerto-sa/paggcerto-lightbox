@@ -172,16 +172,16 @@ class CardOnlineForm {
 
     $selectMonth.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationMonth = Number($selectMonth.val())
-      this._formState.update({ expiryMonth: !!this._options.payment.card.expirationMonth })
+      this._formState.update({ expirationDate: this._isValidExpirationDate() })
     })
   }
 
   _bindSelectYear() {
     const $selectYear = this._$container.find(`#${Selector.SELECT_YEAR}`)
-    const firstYear = new Date().getFullYear() - 1
+    const firstYear = new Date().getFullYear()
     const lastYear = firstYear + 20
 
-    for (let year = firstYear; year < lastYear; year++) {
+    for (let year = firstYear; year <= lastYear; year++) {
       const $option = $('<option/>').attr('value', year).text(String(year).slice(-2))
       $selectYear.append($option)
 
@@ -192,8 +192,20 @@ class CardOnlineForm {
 
     $selectYear.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationYear = Number($selectYear.val())
-      this._formState.update({ expiryYear: !!this._options.payment.card.expirationYear })
+      this._formState.update({ expirationDate: this._isValidExpirationDate() })
     })
+  }
+
+  _isValidExpirationDate() {
+    const selectedMonth = this._options.payment.card.expirationMonth
+    const selectedYear = this._options.payment.card.expirationYear
+
+    if (!selectedMonth || !selectedYear) return false
+
+    const previousMonth = new Date().getMonth() // The plugin month starts with 1
+    const currentYear = new Date().getFullYear()
+
+    return selectedYear > currentYear || selectedMonth >= previousMonth
   }
 
   _loadAmount() {
@@ -210,8 +222,7 @@ class CardOnlineForm {
     this._formState.update({
       cardNumber: !!this._options.payment.card.number,
       holderName: !!this._options.payment.card.holderName,
-      expiryMonth: !!this._options.payment.card.expirationMonth,
-      expiryYear: !!this._options.payment.card.expirationYear,
+      expirationDate: this._isValidExpirationDate(),
       cvv: !!this._options.payment.card.cvv
     })
   }
