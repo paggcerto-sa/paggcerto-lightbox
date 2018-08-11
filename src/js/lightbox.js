@@ -21,7 +21,7 @@ class Lightbox {
   }
 
   show() {
-    if (this._options.payment.noMethodAccepted) return
+    if (this._options.payment.allMethodsDisabled) return
 
     const $body = $('body').append(VIEW)
     const $lightbox = $body.find(`#${ID}`)

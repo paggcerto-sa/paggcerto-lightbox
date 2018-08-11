@@ -50,7 +50,7 @@ const VIEW = `
   </div>
 `;
 
-class CardSuccessForm {
+class CardApprovedForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
@@ -61,4 +61,4 @@ class CardSuccessForm {
   }
 }
 
-export default CardSuccessForm
+export default CardApprovedForm

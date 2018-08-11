@@ -11,6 +11,14 @@ class LightboxOptions {
     return typeof value === 'boolean'
   }
 
+  _isNullOrUndefined(value) {
+    return value === undefined || value === null
+  }
+
+  _isNumber(value) {
+    return typeof value === 'number'
+  }
+
   _isObject(value) {
     return typeof value === 'object'
   }
@@ -23,17 +31,21 @@ class LightboxOptions {
     return typeof value === 'function'
   }
 
-  _validate() {
+  _checkDataTypes() {
     if (!this._isObject(this._options)) throw new Error('Invalid options: Expected Object.')
     if (!this._isString(this._options.token)) throw new Error('Invalid options.token: Expected String.')
     if (!this._isObject(this._options.payment)) throw new Error('Invalid options.payment: Expected Object.')
-    if (!this._isBoolean(this._options.payment.acceptBankSlip)) throw new Error('Invalid options.payment.acceptBankSlip: Expected Boolean.')
-    if (!this._isBoolean(this._options.payment.acceptCredit)) throw new Error('Invalid options.payment.acceptCredit: Expected Boolean.')
-    if (!this._isBoolean(this._options.payment.acceptDebit)) throw new Error('Invalid options.payment.acceptDebit: Expected Boolean.')
+    if (!this._isNullOrUndefined(this._options.payment.amount))
+      if (!this._isNumber(this._options.payment.amount)) throw new Error('Invalid options.payment.amount: Expected Number.')
+    if (!this._isBoolean(this._options.payment.bankSlipEnabled)) throw new Error('Invalid options.payment.bankSlipEnabled: Expected Boolean.')
+    if (!this._isBoolean(this._options.payment.creditEnabled)) throw new Error('Invalid options.payment.creditEnabled: Expected Boolean.')
+    if (!this._isBoolean(this._options.payment.debitEnabled)) throw new Error('Invalid options.payment.debitEnabled: Expected Boolean.')
     if (!this._isArray(this._options.payment.payers)) throw new Error('Invalid options.payment.payers: Expected Array.')
 
     this._options.payment.payers.forEach((payer, index) => {
       if (!this._isObject(payer)) throw new Error(`Invalid options.payment.payers[${index}]: Expected Object.`)
+      if (!this._isNullOrUndefined(payer.sellingKey))
+        if (!this._isString(payer.sellingKey)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
       if (!this._isString(payer.fullName)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
       if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
     })
@@ -50,18 +62,18 @@ class LightboxOptions {
   }
 
   _setHelperValues() {
-    const acceptBankSlip = this._options.payment.acceptBankSlip
-    const acceptCredit = this._options.payment.acceptCredit
-    const acceptDebit = this._options.payment.acceptDebit
+    const bankSlipEnabled = this._options.payment.bankSlipEnabled
+    const creditEnabled = this._options.payment.creditEnabled
+    const debitEnabled = this._options.payment.debitEnabled
 
-    this._options.payment.onlyBankSlip = acceptBankSlip && !(acceptCredit || acceptDebit)
-    this._options.payment.onlyCredit = acceptCredit && !(acceptDebit || acceptBankSlip)
-    this._options.payment.onlyDebit = acceptDebit && !(acceptCredit || acceptBankSlip)
-    this._options.payment.noMethodAccepted = !(acceptBankSlip || acceptCredit || acceptDebit)
+    this._options.payment.onlyBankSlipEnabled = bankSlipEnabled && !(creditEnabled || debitEnabled)
+    this._options.payment.onlyCreditEnabled = creditEnabled && !(debitEnabled || bankSlipEnabled)
+    this._options.payment.onlyDebitEnabled = debitEnabled && !(creditEnabled || bankSlipEnabled)
+    this._options.payment.allMethodsDisabled = !(bankSlipEnabled || creditEnabled || debitEnabled)
   }
 
   asObject() {
-    this._validate()
+    this._checkDataTypes()
     this._setDefaultValues()
     this._setHelperValues()
 

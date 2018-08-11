@@ -51,7 +51,7 @@ class PayMethodForm {
   }
 
   _checkBankSlipButton() {
-    if (!this._options.payment.acceptBankSlip) {
+    if (!this._options.payment.bankSlipEnabled) {
       this._$bankSlipButton.remove()
     } else if (this._options.payment.amount >= Payment.MINIMUM_BANK_SLIP_AMOUNT) {
       this._$bankSlipButton.removeAttr('disabled')
@@ -61,7 +61,7 @@ class PayMethodForm {
   }
 
   _checkCreditButton() {
-    if (!this._options.payment.acceptCredit) {
+    if (!this._options.payment.creditEnabled) {
       this._$creditButton.remove()
     } else if (this._options.payment.amount >= Payment.MINIMUM_CREDIT_AMOUNT) {
       this._$creditButton.removeAttr('disabled')
@@ -71,7 +71,7 @@ class PayMethodForm {
   }
 
   _checkDebitButton() {
-    if (!this._options.payment.acceptDebit) {
+    if (!this._options.payment.debitEnabled) {
       this._$debitButton.remove()
     } else if (this._options.payment.amount >= Payment.MINIMUM_DEBIT_AMOUNT) {
       this._$debitButton.removeAttr('disabled')
@@ -117,9 +117,9 @@ class PayMethodForm {
     this._$creditButton = this._$container.find(`#${Selector.BTN_CREDIT}`)
     this._$debitButton = this._$container.find(`#${Selector.BTN_DEBIT}`)
 
-    if (this._options.payment.onlyBankSlip) this._payWithBankSlip()
-    if (this._options.payment.onlyCredit) this._payWithCreditCard()
-    if (this._options.payment.onlyDebit) this._payWithDebitCard()
+    if (this._options.payment.onlyBankSlipEnabled) this._payWithBankSlip()
+    if (this._options.payment.onlyCreditEnabled) this._payWithCreditCard()
+    if (this._options.payment.onlyDebitEnabled) this._payWithDebitCard()
 
     this._$bankSlipButton.on(Event.CLICK, () => this._payWithBankSlip())
     this._$creditButton.on(Event.CLICK, () => this._payWithCreditCard())
