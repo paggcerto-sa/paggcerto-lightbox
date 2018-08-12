@@ -86,7 +86,6 @@ class CardApprovedForm {
 
     this._$inputEmail.on(EventName.KEY_UP, () => {
       this._email = this._$inputEmail.val()
-      this._isValidEmail = EmailRegex.test(this._email)
       this._updateFormState()
     })
   }
@@ -97,7 +96,6 @@ class CardApprovedForm {
     this._$inputMobile
       .on(EventName.KEY_UP, () => {
         this._mobile = this._$inputMobile.val()
-        this._isValidMobile = MobileRegex.test(this._mobile)
         this._updateFormState()
       })
       .mask('(99) 99999-9999')
@@ -108,11 +106,18 @@ class CardApprovedForm {
     this._formState.update({ contact: false })
     this._isValidEmail = false
     this._isValidMobile = false
+    this._email = ''
+    this._mobile = ''
   }
 
   _updateFormState() {
+    const hasEmailOrMobile = !!this._email || !!this._mobile
+
+    this._isValidEmail = EmailRegex.test(this._email)
+    this._isValidMobile = MobileRegex.test(this._mobile)
+
     this._formState.update({
-      contact: this._isValidEmail && this._isValidMobile
+      contact: hasEmailOrMobile && this._isValidEmail && this._isValidMobile
     })
   }
 
