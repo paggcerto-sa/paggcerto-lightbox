@@ -207,16 +207,6 @@ class CardOnlineForm {
     return selectedYear > currentYear || selectedMonth >= previousMonth
   }
 
-  _setFormState() {
-    this._formState = new FormState(this._$form)
-    this._formState.update({
-      cardNumber: !!this._options.payment.card.number,
-      holderName: !!this._options.payment.card.holderName,
-      expirationDate: this._isValidExpirationDate(),
-      cvv: !!this._options.payment.card.cvv
-    })
-  }
-
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyCreditEnabled)
@@ -233,6 +223,16 @@ class CardOnlineForm {
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     this._payMethodIconsPartial.render()
     this._payMethodIconsPartial.activeIcon(cardBrand)
+  }
+
+  _setFormState() {
+    this._formState = new FormState(this._$form)
+    this._formState.update({
+      cardNumber: !!this._options.payment.card.number,
+      holderName: !!this._options.payment.card.holderName,
+      expirationDate: this._isValidExpirationDate(),
+      cvv: !!this._options.payment.card.cvv
+    })
   }
 
   render() {

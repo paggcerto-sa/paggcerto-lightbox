@@ -4,7 +4,7 @@ import PaymentsApi from 'src/js/sdk/payments-api'
 import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
-  BTN_SUBMIT_GROUP: `${NAMESPACE}_btnSubmitGroup`,
+  GROUP_SUBMIT: `${NAMESPACE}_groupSubmit`,
   INPUT_EMAIL: `${NAMESPACE}_receipt-email`,
   INPUT_MOBILE: `${NAMESPACE}_receipt-mobile`
 }
@@ -17,7 +17,7 @@ const VIEW = `
           <div class="form-circle form-circle-primary mx-auto">
             <span class="icon-mark check"></span>
           </div>
-          <h5 class="text-primary">
+          <h5 class="mb-4">
             Transação aprovada!
           </h5>
         </div>
@@ -43,7 +43,7 @@ const VIEW = `
               <input id="${Selector.INPUT_MOBILE}" type="text" class="form-control" placeholder="Número do celular">
             </div>
           </div>
-          <div id="${Selector.BTN_SUBMIT_GROUP}" class="form-group d-flex">
+          <div id="${Selector.GROUP_SUBMIT}" class="form-group d-flex">
             <button type="submit" class="btn btn-primary ml-auto px-5">
               Enviar
             </button>
@@ -79,6 +79,15 @@ class CardApprovedForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+  }
+
+  _bindForm() {
+    this._$form = this._$container.find('form')
+
+    this._$form.on(EventName.SUBMIT, async () => {
+      if (this._formState.invalid) return
+      await this._send()
+    })
   }
 
   _bindInputEmail() {
@@ -121,26 +130,17 @@ class CardApprovedForm {
     })
   }
 
-  _bindForm() {
-    this._$form = this._$container.find('form')
-
-    this._$form.on(EventName.SUBMIT, async () => {
-      if (this._formState.invalid) return
-      await this._send()
-    })
-  }
-
   async _send() {
     const paymentsApi = new PaymentsApi(this._options)
     const nsu = this._options.processedPayment.cardTransactions[0].nsu
     const contact = { email: this._email, mobile: this._mobile }
-    const $btnSubmitGroup = this._$container.find(`#${Selector.BTN_SUBMIT_GROUP}`)
+    const $groupSubmit = this._$container.find(`#${Selector.GROUP_SUBMIT}`)
     const $sendingText = $(VIEW_SENDING)
 
     this._$inputEmail.attr('disabled', true)
     this._$inputMobile.attr('disabled', true)
 
-    $btnSubmitGroup.replaceWith($sendingText)
+    $groupSubmit.replaceWith($sendingText)
 
     try {
       await paymentsApi.sendCardReceipt(nsu, contact)

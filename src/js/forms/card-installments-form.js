@@ -76,10 +76,6 @@ class CardInstallmentsForm {
     this._installmentOptionsPartial.render()
   }
 
-  _setFormState() {
-    this._formState = new FormState(this._$form)
-  }
-
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
@@ -92,6 +88,10 @@ class CardInstallmentsForm {
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     this._payMethodIconsPartial.render()
     this._payMethodIconsPartial.activeIcon(this._options.payment.card.bin.cardBrand)
+  }
+
+  _setFormState() {
+    this._formState = new FormState(this._$form)
   }
 
   render() {

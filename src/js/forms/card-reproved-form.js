@@ -15,7 +15,7 @@ const VIEW = `
           <div class="form-circle form-circle-danger mx-auto">
             <span class="icon-mark exclamation"></span>
           </div>
-          <h5 class="text-danger">
+          <h5 class="mb-4">
             Transação não autorizada.
           </h5>
         </div>

@@ -165,6 +165,10 @@
     </div>
   </div>
   <div class="container-fluid mt-2">
+    <small>
+      <i class="icon-info"></i>
+      Abra o console para acompanhar a compilação. Pressione F12 ou <code>ctrl + shift + i</code>.
+    </small>
     <textarea class="form-control">{
   "environment": "sandbox",
   "token": "AccessToken",
@@ -176,7 +180,7 @@
     "payers": [{
       "sellingKey": null,
       "fullName": "Maria dos Santos",
-      "taxDocument": "123.123.123.-87"
+      "taxDocument": "123.123.123-87"
     }]
   },
   "success": function (payment) {
@@ -209,12 +213,7 @@
     } catch (e) { }
 
     $('#btnExecuteCode').on('click', function() {
-      try {
-        eval('paggcerto.lightbox(' + $('textarea').val() + ')');
-      } catch (e) {
-        alert('Invalid options. See console for details on how to fix your code.');
-        throw e;
-      }
+      eval('paggcerto.lightbox(' + $('textarea').val() + ')');
     });
 
     $('#btnResetCode').on('click', function reset() {

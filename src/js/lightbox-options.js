@@ -60,6 +60,11 @@ class LightboxOptions {
     if (!this._isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
   }
 
+  _rewriteValues() {
+    const hasPayers = this._options.payment.payers.length > 0
+    this._options.payment.bankSlipEnabled = this._options.payment.bankSlipEnabled && hasPayers
+  }
+
   _setDefaultValues() {
     this._options.payment = this._options.payment || {}
     this._options.payment.bankSlip = null
@@ -92,6 +97,7 @@ class LightboxOptions {
 
   asObject() {
     this._validate()
+    this._rewriteValues();
     this._setDefaultValues()
     this._setHelperValues()
     this._setCurrentLocation()

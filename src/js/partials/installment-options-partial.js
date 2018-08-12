@@ -27,14 +27,32 @@ class InstallmentOptionsPartial {
     this._options = options
   }
 
+  _isCreditCard() {
+    return !!this._options.payment.card
+  }
+
+  _isBankSlip() {
+    return !!this._options.payment.bankSlip
+  }
+
+  _getMinimumAmount() {
+    if (this._isBankSlip()) return Payment.MINIMUM_BANK_SLIP_AMOUNT
+    if (this._isCreditCard()) return Payment.MINIMUM_CREDIT_AMOUNT
+  }
+
+  _getMaximumNumber() {
+    if (this._isBankSlip()) return Payment.MAXIMUM_BANK_SLIP_INSTALLMENTS
+    if (this._isCreditCard()) return this._options.payment.card.bin.maximumInstallment
+  }
+
   render() {
     this._$installmentOptions = $(VIEW)
     this._$container.replaceWith(this._$installmentOptions)
     this._options.payment.installments = this._options.payment.installments || 1
 
     const amount = this._options.payment.amount
-    const minimummAmount = Payment.MINIMUM_CREDIT_AMOUNT
-    const maximumNumber = this._options.payment.card.bin.maximumInstallment
+    const minimummAmount = this._getMinimumAmount()
+    const maximumNumber = this._getMaximumNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber).asArray()
 
     let $firstInstallment = null
