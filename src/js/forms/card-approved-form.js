@@ -32,7 +32,7 @@ const VIEW = `
               <div class="input-group-prepend">
                 <span class="input-group-text">@</span>
               </div>
-              <input id="${Selector.INPUT_EMAIL}" type="text" class="form-control" placeholder="Endereço de e-mail">
+              <input id="${Selector.INPUT_EMAIL}" type="text" class="form-control" placeholder="Endereço de e-mail" maxlength="120">
             </div>
           </div>
           <div class="form-group">
@@ -40,7 +40,7 @@ const VIEW = `
                 <div class="input-group-prepend">
                   <span class="input-group-text">&#9993;</span>
                 </div>
-              <input id="${Selector.INPUT_MOBILE}" type="text" class="form-control" placeholder="Número do celular">
+              <input id="${Selector.INPUT_MOBILE}" type="text" class="form-control" placeholder="Número do celular" maxlength="15">
             </div>
           </div>
           <div id="${Selector.GROUP_SUBMIT}" class="form-group d-flex">
