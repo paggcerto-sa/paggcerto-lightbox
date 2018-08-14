@@ -61,8 +61,12 @@ class LightboxOptions {
   }
 
   _rewriteValues() {
-    const hasPayers = this._options.payment.payers.length > 0
-    this._options.payment.bankSlipEnabled = this._options.payment.bankSlipEnabled && hasPayers
+    const hasAtLeastOnePayer = this._options.payment.payers.length > 0
+    const haveAtMostOnePayer = this._options.payment.payers.length <= 1
+
+    this._options.payment.bankSlipEnabled = this._options.payment.bankSlipEnabled && hasAtLeastOnePayer
+    this._options.payment.creditEnabled = this._options.payment.creditEnabled && haveAtMostOnePayer
+    this._options.payment.debitEnabled = this._options.payment.debitEnabled && haveAtMostOnePayer
   }
 
   _setDefaultValues() {
