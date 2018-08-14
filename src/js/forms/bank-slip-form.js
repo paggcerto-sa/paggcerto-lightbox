@@ -41,7 +41,7 @@ const VIEW = `
               <div class="col">
                 <div class="form-group">
                   <label>Vencimento:</label>
-                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control">
+                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control" maxlength="10">
                 </div>
               </div>
               <div class="col">

@@ -35,11 +35,11 @@ const VIEW = `
           <div>
             <div class="form-group">
               <label>Número do cartão:</label>
-              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000">
+              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
             <div class="form-group">
               <label>Nome do titular do cartão:</label>
-              <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão">
+              <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão" maxlength="50">
             </div>
             <div class="row">
               <div class="col-8">
@@ -58,7 +58,8 @@ const VIEW = `
               <div class="col-4">
                 <div class="form-group">
                   <label>CVV:</label>
-                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="0000">
+                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="0000" maxlength="4">
+                  <small class="text-secondary">3 ou 4 dígitos</small>
                 </div>
               </div>
             </div>
