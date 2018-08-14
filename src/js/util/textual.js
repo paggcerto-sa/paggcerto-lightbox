@@ -20,6 +20,11 @@ class Textual {
     this._str = str || ''
   }
 
+  clearWhiteSpaces() {
+    const formattedStr = this._str.trim().replace(/\s+/g, ' ')
+    return new Textual(formattedStr)
+  }
+
   isNullOrWhiteSpace() {
     return this._str === null || this._str === undefined || !!this._str.match(/^ *$/)
   }
@@ -41,7 +46,11 @@ class Textual {
   }
 
   isProperName() {
-    return /^[a-zA-Z'\s]*$/.test(this.removeAccents().asString())
+    const nonaccent = this.removeAccents().clearWhiteSpaces().asString()
+    const isNonaccent = /^[a-zA-Z'\s]*$/.test(nonaccent)
+    const hasAtLeastTwoWords = nonaccent.split(' ').length >= 2
+
+    return isNonaccent && hasAtLeastTwoWords
   }
 
   asString() {

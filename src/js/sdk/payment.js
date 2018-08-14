@@ -1,4 +1,5 @@
 import moment from 'node_modules/moment'
+import Textual from 'src/js/util/textual'
 
 class Payment {
   constructor(options) {
@@ -25,9 +26,15 @@ class Payment {
 
   _mapPayers() {
     return this._options.payment.payers.map(payer => {
-      payer.name = payer.fullName
+      payer.name = this._trim(payer.fullName)
+      payer.taxDocument = this._trim(payer.taxDocument)
+
       return payer
     })
+  }
+
+  _trim(text) {
+    return new Textual(text).clearWhiteSpaces().asString()
   }
 
   toBankSlip() {
@@ -51,7 +58,7 @@ class Payment {
       geolocation: this._options.payment.geolocation,
       cards: [
         {
-          holderName: this._options.payment.card.holderName,
+          holderName: this._trim(this._options.payment.card.holderName),
           number: this._options.payment.card.number,
           expirationMonth: this._options.payment.card.expirationMonth,
           expirationYear: this._options.payment.card.expirationYear,

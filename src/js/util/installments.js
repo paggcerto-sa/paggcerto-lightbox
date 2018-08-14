@@ -15,7 +15,7 @@ class Installments {
       const amount = currency.asNumber()
       const amountText = currency.asString()
 
-      if (amount < this._minimummAmount) break
+      if (number > 1 && amount < this._minimummAmount) break
 
       installments.push({
         number: number,

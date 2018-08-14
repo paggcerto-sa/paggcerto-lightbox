@@ -2,7 +2,7 @@ import CardOnlineForm from './card-online-form'
 import BankSlipForm from './bank-slip-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
-import { NAMESPACE, ClassName, EventName, Payment } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName, PaymentLimit } from 'src/js/constants'
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
@@ -54,7 +54,7 @@ class PayMethodForm {
   _checkBankSlipButton() {
     if (!this._options.payment.bankSlipEnabled) {
       this._$bankSlipButton.remove()
-    } else if (this._options.payment.amount >= Payment.MINIMUM_BANK_SLIP_AMOUNT) {
+    } else if (this._options.payment.amount >= PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM) {
       this._$bankSlipButton.removeAttr('disabled')
     } else {
       this._$bankSlipButton.attr('disabled', true)
@@ -64,7 +64,7 @@ class PayMethodForm {
   _checkCreditButton() {
     if (!this._options.payment.creditEnabled) {
       this._$creditButton.remove()
-    } else if (this._options.payment.amount >= Payment.MINIMUM_CREDIT_AMOUNT) {
+    } else if (this._options.payment.amount >= PaymentLimit.CREDIT_AMOUNT_MINIMUM_SINGLE_INSTALLMENT) {
       this._$creditButton.removeAttr('disabled')
     } else {
       this._$creditButton.attr('disabled', true)
@@ -74,7 +74,7 @@ class PayMethodForm {
   _checkDebitButton() {
     if (!this._options.payment.debitEnabled) {
       this._$debitButton.remove()
-    } else if (this._options.payment.amount >= Payment.MINIMUM_DEBIT_AMOUNT) {
+    } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM) {
       this._$debitButton.removeAttr('disabled')
     } else {
       this._$debitButton.attr('disabled', true)

@@ -35,7 +35,7 @@ const VIEW = `
           <div>
             <div class="form-group">
               <label>Número do cartão:</label>
-              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19">
+              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="16">
             </div>
             <div class="form-group">
               <label>Nome do titular do cartão:</label>
@@ -47,10 +47,10 @@ const VIEW = `
                   <label>Validade:</label>
                   <div>
                     <select id="${Selector.SELECT_MONTH}" class="form-control d-inline w-45">
-                      <option>MM</option>
+                      <option class="d-hide">MM</option>
                     </select>
                     <select id="${Selector.SELECT_YEAR}" class="form-control d-inline w-45">
-                      <option>AA</option>
+                      <option class="d-hide">AAAA</option>
                     </select>
                   </div>
                 </div>
@@ -58,8 +58,7 @@ const VIEW = `
               <div class="col-4">
                 <div class="form-group">
                   <label>CVV:</label>
-                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="0000" maxlength="4">
-                  <small class="text-secondary">3 ou 4 dígitos</small>
+                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="000" maxlength="3">
                 </div>
               </div>
             </div>
@@ -85,7 +84,10 @@ class CardOnlineForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-    this._options.payment.card = options.payment.card || {}
+  }
+
+  _assignInitialValues() {
+    this._options.payment.card = this._options.payment.card || {}
   }
 
   _bindButtons() {
@@ -97,6 +99,7 @@ class CardOnlineForm {
     }
 
     $btnGoBack.on(EventName.CLICK, () => {
+      this._options.payment.card = null
       const payMethodForm = new PayMethodForm(this._$container, this._options)
       payMethodForm.render()
     })
@@ -113,18 +116,23 @@ class CardOnlineForm {
   }
 
   _bindInputCardNumber() {
+    const $inputCvv = this._$container.find(`#${Selector.INPUT_CVV}`)
     const $inputCardNumber = this._$container.find(`#${Selector.INPUT_CARD_NUMBER}`)
 
     $inputCardNumber
-      .on('keyup', async () => {
+      .on(EventName.KEY_UP, async () => {
         this._options.payment.card.number = $inputCardNumber.val()
 
         const bins = this._options.payment.bins
         this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
-        this._formState.update({ cardNumber: !!this._options.payment.card.bin })
+        this._updateFormState()
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
         this._payMethodIconsPartial.activeIcon(cardBrand)
+
+        const placeholder = cardBrand === 'amex' ? '0000' : '000'
+        $inputCvv.attr('placeholder', placeholder)
+        $inputCvv.attr('maxlength', placeholder.length)
       })
       .mask("9999999999999000000")
       .val(this._options.payment.card.number)
@@ -136,13 +144,13 @@ class CardOnlineForm {
 
     $inputHolderName
       .on(EventName.KEY_UP, () => {
-        this._options.payment.card.holderName = $inputHolderName.val()
+        const holderName = $inputHolderName.val()
+        const formattedHolderName = new Textual(holderName).clearWhiteSpaces().asString()
 
-        const holderName = new Textual(this._options.payment.card.holderName)
-        const isValid = !holderName.isNullOrWhiteSpace() && holderName.isProperName()
-
-        this._formState.update({ holderName: isValid })
+        this._options.payment.card.holderName = formattedHolderName
+        this._updateFormState()
       })
+      .on(EventName.BLUR, () => $inputHolderName.val(this._options.payment.card.holderName))
       .val(this._options.payment.card.holderName)
   }
 
@@ -152,7 +160,7 @@ class CardOnlineForm {
     $inputCvv
       .on(EventName.KEY_UP, () => {
         this._options.payment.card.cvv = $inputCvv.val()
-        this._formState.update({ cvv: /^\d{3,4}$/.test(this._options.payment.card.cvv) })
+        this._updateFormState()
       })
       .mask("9990")
       .val(this._options.payment.card.cvv)
@@ -172,7 +180,7 @@ class CardOnlineForm {
 
     $selectMonth.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationMonth = Number($selectMonth.val())
-      this._formState.update({ expirationDate: this._isValidExpirationDate() })
+      this._updateFormState()
     })
   }
 
@@ -182,7 +190,7 @@ class CardOnlineForm {
     const lastYear = firstYear + 20
 
     for (let year = firstYear; year <= lastYear; year++) {
-      const $option = $('<option/>').attr('value', year).text(String(year).slice(-2))
+      const $option = $('<option/>').attr('value', year).text(year)
       $selectYear.append($option)
 
       if (this._options.payment.card.expirationYear === year) {
@@ -192,7 +200,7 @@ class CardOnlineForm {
 
     $selectYear.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationYear = Number($selectYear.val())
-      this._formState.update({ expirationDate: this._isValidExpirationDate() })
+      this._updateFormState()
     })
   }
 
@@ -206,6 +214,11 @@ class CardOnlineForm {
     const currentYear = new Date().getFullYear()
 
     return selectedYear > currentYear || selectedMonth >= previousMonth
+  }
+
+  _isValidHolderName() {
+    const holderName = new Textual(this._options.payment.card.holderName)
+    return !holderName.isNullOrWhiteSpace() && holderName.isProperName()
   }
 
   _renderInputAmount() {
@@ -226,19 +239,20 @@ class CardOnlineForm {
     this._payMethodIconsPartial.activeIcon(cardBrand)
   }
 
-  _setFormState() {
+  _updateFormState() {
     this._formState = new FormState(this._$form)
     this._formState.update({
-      cardNumber: !!this._options.payment.card.number,
-      holderName: !!this._options.payment.card.holderName,
+      cardNumber: !!this._options.payment.card.bin,
+      holderName: this._isValidHolderName(),
       expirationDate: this._isValidExpirationDate(),
-      cvv: !!this._options.payment.card.cvv
+      cvv: /^\d{3,4}$/.test(this._options.payment.card.cvv)
     })
   }
 
   render() {
     this._$container.html(VIEW)
 
+    this._assignInitialValues()
     this._bindButtons()
     this._bindForm()
     this._bindInputCardNumber()
@@ -248,7 +262,7 @@ class CardOnlineForm {
     this._bindSelectYear()
     this._renderInputAmount()
     this._renderPayMethodIcons()
-    this._setFormState()
+    this._updateFormState()
   }
 }
 
