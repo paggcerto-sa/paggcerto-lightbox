@@ -70,6 +70,11 @@ $spacers: map-merge(
   $spacers
 );
 
+// Fonts
+
+$label-margin-bottom: .25rem !default;
+$small-font-size: 75% !default;
+
 // Forms
 
 $input-group-addon-color:         $white !default;

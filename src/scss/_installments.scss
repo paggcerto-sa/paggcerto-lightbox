@@ -39,7 +39,8 @@
       &:focus + .installment-option,
       &:checked + .installment-option
       {
-        background-color: map-get($grays, "200");
+        color: map-get($theme-colors, "primary");
+        font-weight: bold;
       }
     }
 
@@ -81,6 +82,7 @@
       .installment-value
       {
         margin-left: .625rem;
+        padding-top: .125rem;
       }
     }
   }

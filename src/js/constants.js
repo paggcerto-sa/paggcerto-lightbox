@@ -24,7 +24,17 @@ const EventName = {
   SUBMIT: `submit.${NAMESPACE}`
 }
 
+const MaskMoney = {
+  affixesStay: true,
+  allowZero: true,
+  allowNegative: false,
+  thousands: '.',
+  decimal: ','
+}
+
 const Payment = {
+  BATCH_BANK_SLIP_MAXIMUM: 100,
+  MAXIMUM_BANK_SLIP_INSTALLMENTS: 12,
   MINIMUM_BANK_SLIP_AMOUNT: 10,
   MINIMUM_CREDIT_AMOUNT: 5,
   MINIMUM_DEBIT_AMOUNT: 1
@@ -32,9 +42,10 @@ const Payment = {
 
 export {
   ID,
-  Delay,
-  EventName,
   NAMESPACE,
   ClassName,
+  Delay,
+  EventName,
+  MaskMoney,
   Payment
 }

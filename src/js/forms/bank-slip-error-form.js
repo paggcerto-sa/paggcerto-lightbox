@@ -1,4 +1,4 @@
-import CardProcessingForm from './card-processing-form'
+import BankSlipProcessingForm from './bank-slip-processing-form'
 import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
 
 const Selector = {
@@ -34,7 +34,7 @@ const VIEW = `
   </div>
 `
 
-class CardErrorForm {
+class BankSlipErrorForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
@@ -44,8 +44,8 @@ class CardErrorForm {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
     $btnTryAgain.on(EventName.CLICK, async () => {
-      const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-      await cardProcessingForm.render()
+      const bankSlipProcessingForm = new BankSlipProcessingForm(this._$container, this._options)
+      await bankSlipProcessingForm.render()
     })
   }
 
@@ -55,4 +55,4 @@ class CardErrorForm {
   }
 }
 
-export default CardErrorForm
+export default BankSlipErrorForm

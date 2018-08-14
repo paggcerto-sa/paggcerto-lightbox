@@ -22,6 +22,35 @@ class PaymentsApi {
     })
   }
 
+  async downloadPdf(paymentId) {
+    return await $.ajax({
+      url: this._environment.Url.BANK_SLIP_PDF.replace('{paymentId}', paymentId),
+      method: 'GET',
+      headers: this._headers(),
+      xhrFields: { responseType: 'blob' }
+    })
+  }
+
+  async downloadZip(paymentIds) {
+    const payments = paymentIds.map((id, index) => `payments[${index}]=${id}`).join('&')
+
+    return await $.ajax({
+      url: this._environment.Url.BANK_SLIP_ZIP.replace('{payments}', payments),
+      method: 'GET',
+      headers: this._headers(),
+      xhrFields: { responseType: 'blob' }
+    })
+  }
+
+  async payWithBankSlips(payment) {
+    return await $.ajax({
+      url: this._environment.Url.PAY_WITH_BANK_SLIPS,
+      method: 'POST',
+      headers: this._headers(),
+      data: JSON.stringify(payment)
+    })
+  }
+
   async payWithCards(payment) {
     return await $.ajax({
       url: this._environment.Url.PAY_WITH_CARDS,
@@ -33,7 +62,7 @@ class PaymentsApi {
 
   async sendCardReceipt(nsu, contact) {
     return await $.ajax({
-      url: this._environment.Url.SEND_CARD_RECEIPT.replace(':nsu', nsu),
+      url: this._environment.Url.SEND_CARD_RECEIPT.replace('{nsu}', nsu),
       method: 'POST',
       headers: this._headers(),
       data: JSON.stringify(contact)

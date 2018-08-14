@@ -1,4 +1,5 @@
 import CardOnlineForm from './card-online-form'
+import BankSlipForm from './bank-slip-form'
 import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
 import { NAMESPACE, ClassName, EventName, Payment } from 'src/js/constants'
@@ -87,7 +88,8 @@ class PayMethodForm {
   }
 
   _payWithBankSlip() {
-    // TODO
+    const bankSlipForm = new BankSlipForm(this._$container, this._options)
+    bankSlipForm.render()
   }
 
   _payWithCreditCard() {

@@ -1,6 +1,6 @@
 import $ from 'node_modules/jquery'
 import 'src/js/jquery/mask-money'
-import { Delay } from 'src/js/constants'
+import { Delay, MaskMoney } from 'src/js/constants'
 
 const VIEW = `
   <div class="form-circle form-circle-primary">
@@ -24,14 +24,7 @@ class InputAmountPartial {
 
   _bindInputEvents() {
     this._$input
-      .maskMoney({
-        affixesStay: true,
-        prefix: 'R$ ',
-        allowZero: true,
-        allowNegative: false,
-        thousands: '.',
-        decimal: ','
-      })
+      .maskMoney(Object.assign({ prefix: 'R$ ' }, MaskMoney))
       .on('keyup.maskMoney', () => {
         this._options.payment.amount = this._$input.maskMoney('unmasked').get(0)
         this._options.payment.amountText = this._$input.val()
