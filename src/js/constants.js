@@ -18,10 +18,12 @@ const Delay = {
 }
 
 const EventName = {
+  BLUR: `blur.${NAMESPACE}`,
   CHANGE: `change.${NAMESPACE}`,
   CLICK: `click.${NAMESPACE}`,
   KEY_UP: `keyup.${NAMESPACE}`,
-  SUBMIT: `submit.${NAMESPACE}`
+  SUBMIT: `submit.${NAMESPACE}`,
+  DRAG_DROP: `dragenter.${NAMESPACE} dragover.${NAMESPACE} drop.${NAMESPACE}`
 }
 
 const MaskMoney = {
@@ -32,12 +34,12 @@ const MaskMoney = {
   decimal: ','
 }
 
-const Payment = {
-  BATCH_BANK_SLIP_MAXIMUM: 100,
-  MAXIMUM_BANK_SLIP_INSTALLMENTS: 12,
-  MINIMUM_BANK_SLIP_AMOUNT: 10,
-  MINIMUM_CREDIT_AMOUNT: 5,
-  MINIMUM_DEBIT_AMOUNT: 1
+const PaymentLimit = {
+  BANK_SLIP_INSTALLMENTS_MAXIMUM: 12,
+  BANK_SLIP_AMOUNT_MINIMUM: 10,
+  CREDIT_AMOUNT_MINIMUM_SINGLE_INSTALLMENT: 1,
+  CREDIT_AMOUNT_MINIMUM_MULTIPLE_INSTALLMENT: 5,
+  DEBIT_AMOUNT_MINIMUM: 1
 }
 
 export {
@@ -47,5 +49,5 @@ export {
   Delay,
   EventName,
   MaskMoney,
-  Payment
+  PaymentLimit
 }

@@ -25,7 +25,7 @@ const VIEW = `
       <div class="col py-6">
         <form class="ml-auto w-75" novalidate>
           <h5 class="text-secondary text-right mb-5">
-            Enviar comprovante por e-mail e/ou SMS:
+            Enviar comprovante por <span class="text-nowrap">e-mail</span> e/ou SMS:
           </h5>
           <div class="form-group">
             <div class="input-group">

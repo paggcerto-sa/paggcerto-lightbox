@@ -90,13 +90,13 @@
 {
   @include icon;
   background-size: 475px 112px;
-  height: 32px;
+  height: 36px;
   margin: 0 2px;
 
   &.visa
   {
     background-position: 0 0;
-    width: 60px;
+    width: 55px;
   }
 
   &.mastercard
@@ -119,8 +119,8 @@
 
   &.hipercard
   {
-    background-position: -233px 0;
-    width: 75px;
+    background-position: -243px 0;
+    width: 62px;
   }
 
   &.amex

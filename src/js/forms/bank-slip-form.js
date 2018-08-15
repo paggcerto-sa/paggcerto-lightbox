@@ -7,7 +7,7 @@ import InputAmountPartial from 'src/js/partials/input-amount-partial'
 import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
 import PayMethodForm from './pay-method-form'
 import FormState from 'src/js/jquery/form-state'
-import { NAMESPACE, ClassName, EventName, MaskMoney, Payment } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName, MaskMoney, PaymentLimit } from 'src/js/constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -179,7 +179,7 @@ class BankSlipForm {
   _bindMaximumDiscount() {
     const $maximumDiscount = this._$container.find(`#${Selector.TEXT_MAXIMUM_DISCOUNT}`)
     const amount = this._options.payment.amount
-    const minimumAmount = Payment.MINIMUM_BANK_SLIP_AMOUNT
+    const minimumAmount = PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
     const maximumDiscount = Number((100 - minimumAmount * 100 / amount).toFixed(2))
     const maximumDiscountText = maximumDiscount.toString().replace('.', ',')
 
@@ -328,7 +328,7 @@ class BankSlipForm {
     const amount = this._options.payment.amount
     const amountWithDiscount = Number((amount - amount * discount / 100).toFixed(2))
     const isValidPercentage = discount > 0 && discount < 100
-    const isGreaterThanMinimum = amountWithDiscount >= Payment.MINIMUM_BANK_SLIP_AMOUNT
+    const isGreaterThanMinimum = amountWithDiscount >= PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
 
     return isValidPercentage && isGreaterThanMinimum
   }

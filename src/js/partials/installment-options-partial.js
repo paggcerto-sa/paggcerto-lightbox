@@ -1,6 +1,6 @@
 import $ from 'node_modules/jquery'
 import Installments from 'src/js/util/installments'
-import { EventName, Payment } from 'src/js/constants'
+import { EventName, PaymentLimit } from 'src/js/constants'
 
 const ClassName = {
   INSTALLMENT_NUMBER: 'installment-number',
@@ -35,13 +35,13 @@ class InstallmentOptionsPartial {
     return !!this._options.payment.bankSlip
   }
 
-  _getMinimumAmount() {
-    if (this._isBankSlip()) return Payment.MINIMUM_BANK_SLIP_AMOUNT
-    if (this._isCreditCard()) return Payment.MINIMUM_CREDIT_AMOUNT
+  _getMinimumInstallmentAmount() {
+    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
+    if (this._isCreditCard()) return PaymentLimit.CREDIT_AMOUNT_MINIMUM_MULTIPLE_INSTALLMENT
   }
 
-  _getMaximumNumber() {
-    if (this._isBankSlip()) return Payment.MAXIMUM_BANK_SLIP_INSTALLMENTS
+  _getMaximumInstallmentNumber() {
+    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
     if (this._isCreditCard()) return this._options.payment.card.bin.maximumInstallment
   }
 
@@ -51,8 +51,8 @@ class InstallmentOptionsPartial {
     this._options.payment.installments = this._options.payment.installments || 1
 
     const amount = this._options.payment.amount
-    const minimummAmount = this._getMinimumAmount()
-    const maximumNumber = this._getMaximumNumber()
+    const minimummAmount = this._getMinimumInstallmentAmount()
+    const maximumNumber = this._getMaximumInstallmentNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber).asArray()
 
     let $firstInstallment = null

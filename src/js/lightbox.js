@@ -52,6 +52,8 @@ class Lightbox {
     this._$lightbox = this._$body.find(`#${ID}`)
     this._$container = this._$lightbox.find(`.${ClassName.CONTENT}`)
 
+    this._$lightbox.on(EventName.DRAG_DROP, (e) => e.preventDefault())
+
     this._animate()
     this._bindButtons()
 
