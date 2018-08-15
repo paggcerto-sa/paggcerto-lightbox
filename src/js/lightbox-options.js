@@ -56,8 +56,12 @@ class LightboxOptions {
       if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
     })
 
-    if (!this._isFunction(this._options.success)) throw new Error('Invalid options.success: Expected Function.')
-    if (!this._isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
+    if (!this._isNullOrUndefined(this._options.abort))
+      if (!this._isFunction(this._options.abort)) throw new Error('Invalid options.abort: Expected Function.')
+    if (!this._isNullOrUndefined(this._options.success))
+      if (!this._isFunction(this._options.success)) throw new Error('Invalid options.success: Expected Function.')
+    if (!this._isNullOrUndefined(this._options.fail))
+      if (!this._isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
   }
 
   _rewriteValues() {
