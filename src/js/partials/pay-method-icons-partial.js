@@ -24,12 +24,7 @@ class PayMethodIconsPartial {
 
   activeIcon(payMethod) {
     this._$paymentIcons.children().removeClass('active')
-
-    if (payMethod) {
-      this._$paymentIcons.find(`.${ClassName.ICON}.${payMethod}`).addClass('active')
-    } else {
-      this._activeAllIcons()
-    }
+    this._$paymentIcons.find(`.${ClassName.ICON}.${payMethod}`).addClass('active')
   }
 
   _activeAllIcons() {

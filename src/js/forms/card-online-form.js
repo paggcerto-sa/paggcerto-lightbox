@@ -128,13 +128,18 @@ class CardOnlineForm {
         this._updateFormState()
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
-        this._payMethodIconsPartial.activeIcon(cardBrand)
+        const cvv = cardBrand === 'amex' ? '0000' : '000'
 
-        const placeholder = cardBrand === 'amex' ? '0000' : '000'
-        $inputCvv.attr('placeholder', placeholder)
-        $inputCvv.attr('maxlength', placeholder.length)
+        $inputCvv.attr('placeholder', cvv)
+        $inputCvv.attr('maxlength', cvv.length)
+
+        if (this._options.payment.card.number !== '') {
+          this._payMethodIconsPartial.activeIcon(cardBrand)
+        } else{
+          this._payMethodIconsPartial._activeAllIcons()
+        }
       })
-      .mask("9999999999999000000")
+      .mask("9999999999999000")
       .val(this._options.payment.card.number)
       .focus()
   }
@@ -236,7 +241,7 @@ class CardOnlineForm {
 
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     this._payMethodIconsPartial.render()
-    this._payMethodIconsPartial.activeIcon(cardBrand)
+    this._payMethodIconsPartial._activeAllIcons()
   }
 
   _updateFormState() {
