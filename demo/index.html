@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="author" content="Paggcerto">
-  <meta name="description" content="Paggcerto Lightbox é um plugin JavaScript que permite efetuar pagamentos usando uma janela que se sobrepõe ao site do vendedor.">
+  <meta name="description" content="Paggcerto Lightbox é um plugin JavaScript que permite efetuar pagamentos usando uma janela que se sobrepõe ao aplicativo do vendedor.">
   <link href="favicon.ico" rel="icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" />
@@ -69,105 +69,16 @@
           <i class="icon-social-github"></i>
         </a>
         <br>
-        <a href="#help" data-toggle="modal">
+        <a href="https://github.com/paggcerto-sa/paggcerto-lightbox#como-utilizar-o-lightbox">
           <i class="icon-question"></i>
         </a>
       </li>
     </ul>
   </nav>
-  <div id="help" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">
-            Como configurar o lightbox
-          </h5>
-        </div>
-        <div class="modal-body">
-          <h6>Acesso ao ambiente:</h6>
-          <table class="table table-borderless">
-            <tbody>
-              <tr>
-                <td class="text-nowrap"><code>environment</code></td>
-                <td>Define o ambiente: <code>sandbox</code> (ambiente de teste) ou <code>production</code> (ambiente de produção).</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>token</code></td>
-                <td>Token do usuário gerado após a <a href="https://desenvolvedor.paggcerto.com.br/v2/account/#operation/autenticar-com-credenciais">autenticação</a>.</td>
-              </tr>
-            </tbody>
-          </table>
-          <h6>Valor do pagamento:</h6>
-          <table class="table table-borderless">
-            <tbody>
-              <tr>
-                <td class="text-nowrap"><code>amount</code></td>
-                <td>Habilita (<code>null</code>) ou desabilita o campo de valor para edição.</td>
-              </tr>
-            </tbody>
-          </table>
-          <h6>Método de pagamento:</h6>
-          <table class="table table-borderless">
-            <tbody>
-              <tr>
-                <td class="text-nowrap"><code>credit</code></td>
-                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com cartão de crédito. Mínimo R$ 5,00.</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>debit</code></td>
-                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com cartão de débito. Mínimo R$ 1,00.</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>bankSlip</code></td>
-                <td>Exibe (<code>true</code>) ou oculta (<code>false</code>) a opção de pagamento com boleto.  Mínimo R$ 10,00.</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="callout">
-            <p>Se somente um método de pagamento estiver habilitado (<code>true</code>) o lightbox iniciará diretamente nessa opção.</p>
-            <p>Se nenhum método de pagamento estiver habilitado o lightbox não iniciará.</p>
-          </div>
-          <h6>Pagadores:</h6>
-          <table class="table table-borderless">
-            <tbody>
-              <tr>
-                <td class="text-nowrap"><code>sellingKey</code></td>
-                <td>Código que associa o seu ID ao pagamento processado pela Paggcerto.</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>fullName</code></td>
-                <td>Nome de quem está pagando (pessoa ou empresa).</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>taxDocument</code></td>
-                <td>CPF/CNPJ de quem está pagando.</td>
-              </tr>
-            </tbody>
-          </table>
-          <h6>Eventos:</h6>
-          <table class="table table-borderless">
-            <tbody>
-              <tr>
-                <td class="text-nowrap"><code>success</code></td>
-                <td>Executado quando o pagamento é realizado com sucesso.</td>
-              </tr>
-              <tr>
-                <td class="text-nowrap"><code>fail</code></td>
-                <td>Executado quando ocorre algum erro no pagamento.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Entendi</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="container-fluid mt-2">
     <small>
       <i class="icon-info"></i>
-      Abra o console para acompanhar a compilação. Pressione F12 ou <code>ctrl + shift + i</code>.
+      Abra o console para acompanhar a compilação. Pressione <code>F12</code> ou <code>ctrl + shift + i</code>.
     </small>
     <textarea class="form-control">{
   "environment": "sandbox",
@@ -182,12 +93,6 @@
       "fullName": "Maria dos Santos",
       "taxDocument": "123.123.123-87"
     }]
-  },
-  "success": function (payment) {
-    console.log(payment);
-  },
-  "fail": function (paymentError) {
-    console.log(paymentError);
   }
 }</textarea>
   </div>
