@@ -51,7 +51,7 @@ class PayMethodForm {
     this._options = options
   }
 
-  _checkBankSlipButton() {
+  _toggleBankSlipButton() {
     if (!this._options.payment.bankSlipEnabled) {
       this._$bankSlipButton.remove()
     } else if (this._options.payment.amount >= PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM) {
@@ -61,7 +61,7 @@ class PayMethodForm {
     }
   }
 
-  _checkCreditButton() {
+  _toggleCreditButton() {
     if (!this._options.payment.creditEnabled) {
       this._$creditButton.remove()
     } else if (this._options.payment.amount >= PaymentLimit.CREDIT_AMOUNT_MINIMUM_SINGLE_INSTALLMENT) {
@@ -71,7 +71,7 @@ class PayMethodForm {
     }
   }
 
-  _checkDebitButton() {
+  _toggleDebitButton() {
     if (!this._options.payment.debitEnabled) {
       this._$debitButton.remove()
     } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM) {
@@ -81,10 +81,10 @@ class PayMethodForm {
     }
   }
 
-  _checkMethodButtons() {
-    this._checkBankSlipButton()
-    this._checkCreditButton()
-    this._checkDebitButton()
+  _toggleMethodButtons() {
+    this._toggleBankSlipButton()
+    this._toggleCreditButton()
+    this._toggleDebitButton()
   }
 
   _payWithBankSlip() {
@@ -105,7 +105,7 @@ class PayMethodForm {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     inputAmountPartial.disabled(!this._options.payment.amountEditable)
-    inputAmountPartial.onChange(() => this._checkMethodButtons())
+    inputAmountPartial.onChange(() => this._toggleMethodButtons())
     inputAmountPartial.render()
   }
 
