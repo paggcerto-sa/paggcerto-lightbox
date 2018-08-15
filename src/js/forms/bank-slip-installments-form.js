@@ -133,9 +133,9 @@ class BankSlipInstallmentsForm {
 
     const discountText = discount ? discount.toString().replace('.', ',') : null
     const discountDaysText =
-      discountDays === 0 ? 'até o vencimento.' :
-      discountDays === 1 ? 'até 1 dia antes do vencimento.' :
-      `até ${discountDays} dias antes do vencimento.`;
+      discountDays === 0 ? 'até o vencimento' :
+      discountDays === 1 ? 'até 1 dia antes do vencimento' :
+      `até ${discountDays} dias antes do vencimento`;
 
     const instruction = discountText ? `Desconto de ${discountText}% ${discountDaysText}.` : 'Título sem desconto.'
 

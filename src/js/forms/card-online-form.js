@@ -135,7 +135,7 @@ class CardOnlineForm {
 
         if (this._options.payment.card.number !== '') {
           this._payMethodIconsPartial.activeIcon(cardBrand)
-        } else{
+        } else {
           this._payMethodIconsPartial._activeAllIcons()
         }
       })
