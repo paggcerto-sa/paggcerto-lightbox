@@ -19,7 +19,7 @@ const Selector = {
   SELECT_DISCOUNT_DAYS: `${NAMESPACE}_selectDiscountDays`,
   SELECT_FINES: `${NAMESPACE}_selectFines`,
   SELECT_INTEREST: `${NAMESPACE}_selectInterest`,
-  TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_maximumDiscount`
+  TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`
 }
 
 const VIEW = `
@@ -41,7 +41,7 @@ const VIEW = `
               <div class="col">
                 <div class="form-group">
                   <label>Vencimento:</label>
-                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control" maxlength="10">
+                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control" placeholder="00/00/0000" maxlength="10">
                 </div>
               </div>
               <div class="col">
@@ -111,9 +111,12 @@ class BankSlipForm {
   }
 
   _assignInitialValues() {
-    this._options.payment.bankSlip = this._options.payment.bankSlip || {}
-    this._options.payment.bankSlip.acceptedUntil = 0
-    this._options.payment.bankSlip.discountText = '0,00 %'
+    this._options.payment.bankSlip = this._options.payment.bankSlip || {
+      acceptedUntil: 0,
+      discountText: '0,00 %'
+    }
+
+    this._calculateMaximumDiscount()
   }
 
   _bindButtons() {
@@ -177,13 +180,10 @@ class BankSlipForm {
   }
 
   _bindMaximumDiscount() {
-    const $maximumDiscount = this._$container.find(`#${Selector.TEXT_MAXIMUM_DISCOUNT}`)
-    const amount = this._options.payment.amount
-    const minimumAmount = PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
-    const maximumDiscount = Number((100 - minimumAmount * 100 / amount).toFixed(2))
-    const maximumDiscountText = maximumDiscount.toString().replace('.', ',')
+    const $discountMaximum = this._$container.find(`#${Selector.TEXT_MAXIMUM_DISCOUNT}`)
+    const discountMaximumText = this._options.payment.bankSlip.discountMaximumText
 
-    $maximumDiscount.text(`Máximo ${maximumDiscountText}%`)
+    $discountMaximum.text(`Máximo ${discountMaximumText || '0,00'} %`)
   }
 
   _bindSelectAcceptedUntil() {
@@ -228,7 +228,7 @@ class BankSlipForm {
 
     charges.forEach((charge) => {
       const note = charge === 2 ? ' (máx por lei)' : ''
-      const chargeText = `${charge.toString().replace('.', ',')}%${note}`
+      const chargeText = `${charge.toString().replace('.', ',')} %${note}`
       const $finesOption = $('<option/>').attr('value', charge).text(chargeText)
       const $interestOption = $('<option/>').attr('value', charge).text(chargeText)
 
@@ -295,12 +295,30 @@ class BankSlipForm {
     })
   }
 
+  _calculateMaximumDiscount() {
+    const amount = this._options.payment.amount
+    if (!amount) return
+
+    const minimumAmount = PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
+    const discountMaximum = Number((100 - minimumAmount * 100 / amount).toFixed(2))
+    const discountMaximumText = discountMaximum > 0 ? discountMaximum.toString().replace('.', ',') : null
+
+    this._options.payment.bankSlip.discountMaximum = discountMaximum
+    this._options.payment.bankSlip.discountMaximumText = discountMaximumText
+  }
+
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyBankSlipEnabled)
 
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(disabled)
+    this._inputAmountPartial.onChange(() => {
+      this._calculateMaximumDiscount()
+      this._bindMaximumDiscount()
+      this._updateFormState()
+    })
+
     this._inputAmountPartial.render()
   }
 
@@ -324,13 +342,10 @@ class BankSlipForm {
     const discountDaysNull = typeof this._options.payment.bankSlip.discountDays !== 'number'
     if (discountDaysNull) return true
 
-    const discount = this._options.payment.bankSlip.discount || 0
-    const amount = this._options.payment.amount
-    const amountWithDiscount = Number((amount - amount * discount / 100).toFixed(2))
-    const isValidPercentage = discount > 0 && discount < 100
-    const isGreaterThanMinimum = amountWithDiscount >= PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
+    const discount = this._options.payment.bankSlip.discount
+    const discountMaximum =  this._options.payment.bankSlip.discountMaximum
 
-    return isValidPercentage && isGreaterThanMinimum
+    return discount > 0 && discount <= discountMaximum
   }
 
   _validateDueDate() {

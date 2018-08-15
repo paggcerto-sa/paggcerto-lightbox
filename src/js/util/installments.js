@@ -1,10 +1,11 @@
 import Currency from './currency'
 
 class Installments {
-  constructor(amount, minimummAmount, maximumNumber) {
+  constructor(amount, minimummAmount, maximumNumber, discount) {
     this._amount = amount
     this._minimummAmount = minimummAmount
     this._maximumNumber = maximumNumber
+    this._discount = discount
   }
 
   asArray() {
@@ -12,10 +13,13 @@ class Installments {
 
     for (var number = 1; number <= this._maximumNumber; number++) {
       const currency = new Currency(this._amount / number)
-      const amount = currency.asNumber()
       const amountText = currency.asString()
+      const amount = currency.asNumber()
+      const amountWithDiscount = currency
+        .applyDiscountPercent(this._discount)
+        .asNumber()
 
-      if (number > 1 && amount < this._minimummAmount) break
+      if (number > 1 && amountWithDiscount < this._minimummAmount) break
 
       installments.push({
         number: number,

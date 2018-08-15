@@ -18,8 +18,8 @@ const VIEW = `
           <div class="form-circle form-circle-primary mx-auto">
             <span class="icon-mark check"></span>
           </div>
-          <h5 id="${Selector.SUCCESS_MESSAGE}" class="mb-4"></h5>
-          <div id="${Selector.GROUP_DOWNLOAD}" class="form-group">
+          <h5 id="${Selector.SUCCESS_MESSAGE}" class="text-center mb-4"></h5>
+          <div id="${Selector.GROUP_DOWNLOAD}" class="text-center">
             <button id="${Selector.BTN_DOWNLOAD}" type="button" class="btn btn-outline-primary">
               Baixar PDF
             </button>
@@ -31,19 +31,19 @@ const VIEW = `
 `
 
 const VIEW_DOWNLOADING = `
-  <div class="form-group text-primary">
+  <div class="text-primary">
     <i>Baixando...</i>
   </div>
 `
 
 const VIEW_DOWNLOADING_COMPLETE = `
-  <div class="form-group text-primary">
+  <div class="text-primary">
     Pronto.
   </div>
 `
 
 const VIEW_DOWNLOADING_ERROR = `
-  <div class="form-group text-danger">
+  <div class="text-danger">
     O download falhou.
   </div>
 `
