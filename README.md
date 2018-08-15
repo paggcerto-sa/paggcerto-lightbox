@@ -1,6 +1,12 @@
 # Paggcerto Lightbox
 Plugin JavaScript que permite efetuar pagamentos usando uma janela que se sobrepõe ao aplicativo do vendedor.
 
+## Opções disponíveis para instalação
+
+- Instalar com [NPM](https://www.npmjs.com/): `npm install paggcerto-lightbox`
+- Baixar a última versão no [repositório do GitHub](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/)
+- Clonar repositório: `git clone git@github.com:paggcerto-sa/paggcerto-lightbox.git`
+
 ## Como utilizar o lightbox
 
 O lightbox é iniciado ao invocar o método `paggcerto.lightbox()` passando sua configuração por parâmetro:
