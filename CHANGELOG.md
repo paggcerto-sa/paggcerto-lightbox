@@ -1,4 +1,4 @@
-## v1.0.0-beta.2 (em desenvolvimento)
+## [v1.0.0-beta.2](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.2) (2018-08-16)
 ### Funcionalidades:
 - Período de vencimento no parcelamento com boleto
 ### _Bug fixes_:
