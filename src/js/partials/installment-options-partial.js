@@ -60,7 +60,7 @@ class InstallmentOptionsPartial {
 
     const firstDueDate = this._options.payment.bankSlip.dueDate
     const firstDueDateText = moment(firstDueDate).format('DD/MM/YYYY')
-    const lastDueDate = installments === 1 ? null : moment(firstDueDate).add(installments, 'M')
+    const lastDueDate = installments === 1 ? null : moment(firstDueDate).add(installments - 1, 'M')
     const lastDueDateText = lastDueDate ? moment(lastDueDate).format('DD/MM/YYYY') : null
 
     return lastDueDateText ? `${firstDueDateText} até ${lastDueDateText}` : firstDueDateText
