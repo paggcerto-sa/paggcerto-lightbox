@@ -1,4 +1,4 @@
-import $ from 'node_modules/jquery'
+import $ from 'jquery'
 
 const ClassName = {
   ICON: 'icon-pay-method'

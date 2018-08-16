@@ -1,7 +1,7 @@
-import 'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js'
-import FormState from 'src/js/jquery/form-state'
-import PaymentsApi from 'src/js/sdk/payments-api'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import 'jquery-mask-plugin/dist/jquery.mask.min.js'
+import FormState from '../jquery/form-state'
+import PaymentsApi from '../sdk/payments-api'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   GROUP_SUBMIT: `${NAMESPACE}_groupSubmit`,

@@ -1,4 +1,4 @@
-import { EventName } from 'src/js/constants'
+import { EventName } from '../constants'
 
 class FormState {
   constructor($form) {

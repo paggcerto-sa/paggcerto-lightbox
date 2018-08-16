@@ -1,4 +1,4 @@
-import $ from 'node_modules/jquery'
+import $ from 'jquery'
 import Bins from './sdk/bins'
 import InitPaymentForm from './forms/init-payment-form'
 import { ID, ClassName, Delay, EventName } from './constants'

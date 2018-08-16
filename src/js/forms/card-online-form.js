@@ -1,11 +1,11 @@
-import 'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js'
-import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
+import 'jquery-mask-plugin/dist/jquery.mask.min.js'
+import InputAmountPartial from '../partials/input-amount-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import CardInstallmentsForm from './card-installments-form'
 import PayMethodForm from './pay-method-form'
-import FormState from 'src/js/jquery/form-state'
-import Textual from 'src/js/util/textual'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import FormState from '../jquery/form-state'
+import Textual from '../util/textual'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,

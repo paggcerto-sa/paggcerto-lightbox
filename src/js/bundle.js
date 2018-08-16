@@ -3,7 +3,7 @@
  * Copyright 2018 Paggcerto
  */
 
-import 'node_modules/babel-polyfill'
+import 'babel-polyfill'
 import paggcerto from './index'
 
 window.paggcerto = paggcerto

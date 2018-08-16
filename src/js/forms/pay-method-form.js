@@ -1,8 +1,8 @@
 import CardOnlineForm from './card-online-form'
 import BankSlipForm from './bank-slip-form'
-import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
-import { NAMESPACE, ClassName, EventName, PaymentLimit } from 'src/js/constants'
+import InputAmountPartial from '../partials/input-amount-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,

@@ -1,5 +1,5 @@
 import CardProcessingForm from './card-processing-form'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`

@@ -1,4 +1,4 @@
-import { ClassName } from 'src/js/constants'
+import { ClassName } from '../constants'
 
 const VIEW = `
   <div class="${ClassName.BODY}">
