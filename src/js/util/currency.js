@@ -8,7 +8,7 @@ class Currency {
   }
 
   applyDiscountPercent(discount) {
-    const discountAmount = Number((this._amount * discount / 100).toFixed(2))
+    const discountAmount = Number((this._amount * (discount || 0) / 100).toFixed(2))
     return new Currency(this._amount - discountAmount)
   }
 

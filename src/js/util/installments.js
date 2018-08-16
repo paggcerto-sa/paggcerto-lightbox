@@ -13,7 +13,6 @@ class Installments {
 
     for (var number = 1; number <= this._maximumNumber; number++) {
       const currency = new Currency(this._amount / number)
-      const amountText = currency.asString()
       const amount = currency.asNumber()
       const amountWithDiscount = currency
         .applyDiscountPercent(this._discount)
@@ -23,8 +22,7 @@ class Installments {
 
       installments.push({
         number: number,
-        amount: amount,
-        amountText: amountText
+        amount: amount
       })
     }
 
