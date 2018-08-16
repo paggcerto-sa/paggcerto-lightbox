@@ -47,44 +47,38 @@
     .installment-option
     {
       background-color: transparent;
-      border-radius: .3125rem;
-      display: block;
-      padding: .3125rem 0;
-      width: 100%;
+      display: table;
+      margin: 0 auto .625rem auto;
+      width: 75%;
       transition: background-color .3s ease;
 
       .installment-number,
       .installment-value
       {
-        display: inline-block;
+        display: table-cell;
         vertical-align: middle;
-        height: 2.5rem;
-
-        &::before
-        {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          height: 100%;
-        }
       }
 
       .installment-number
       {
         border: .0625rem solid map-get($theme-colors, "primary");
         border-radius: 50%;
-        color: map-get($theme-colors, "primary");
-        padding-top: .125rem;
         text-align: center;
-        width: 2.5rem;
+        height: 2.75rem;
+        width: 2.75rem;
       }
 
       .installment-value
       {
-        margin-left: .625rem;
-        padding-top: .125rem;
+        padding-left: .625rem;
         text-align: left;
-        width: 7.5rem;
+
+        > small
+        {
+          color: map-get($theme-colors, "secondary");
+          display: block;
+          font-size: 70%;
+        }
       }
     }
   }
