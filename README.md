@@ -40,24 +40,24 @@ paggcerto.lightbox({
 
 ### Acesso ao ambiente
 
-| Propriedade   | Descrição                                                                                 |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| `environment` | Define o ambiente: `sandbox` (ambiente de teste) ou `production` (ambiente de produção).  |
-| `token`       | Token do usuário gerado após a [autenticação](https://desenvolvedor.paggcerto.com.br/v2/account/#operation/autenticar-com-credenciais). |
+| Propriedade   | Tipo                             | Descrição                                                                                 |
+| ------------- | -------------------------------- | ----------------------------------------------------------------------------------------- |
+| `environment` | enum: `sandbox`, `production`    | Define o ambiente: `sandbox` (ambiente de teste) ou `production` (ambiente de produção).  |
+| `token`       | `string`                         | Token do usuário gerado após a [autenticação](https://desenvolvedor.paggcerto.com.br/v2/account/#operation/autenticar-com-credenciais). |
 
 ### Valor do pagamento
 
-| Propriedade | Descrição                                            |
-| ----------- | ---------------------------------------------------- |
-| `amount`    | Quando `null` habilita o campo de valor para edição. |
+| Propriedade | Tipo     | Descrição                                            |
+| ----------- | -------- | ---------------------------------------------------- |
+| `amount`    | `number` | Quando `null` habilita o campo de valor para edição. |
 
 ### Método do pagamento
 
-| Propriedade       | Descrição                                                                                                            |
-| ----------------- | ---------------------------------------------------------------------------------------------- |
-| `bankSlipEnabled` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com boleto.  Mínimo R$ 10,00.          |
-| `creditEnabled`   | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de crédito. Mínimo R$ 1,00. |
-| `debitEnabled`    | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de débito. Mínimo R$ 1,00.  |
+| Propriedade       | Tipo   | Descrição                                                                                                            |
+| ----------------- | ------ | ---------------------------------------------------------------------------------------------- |
+| `bankSlipEnabled` | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com boleto.  Mínimo R$ 10,00.          |
+| `creditEnabled`   | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de crédito. Mínimo R$ 1,00. |
+| `debitEnabled`    | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de débito. Mínimo R$ 1,00.  |
 
 Comportamento do lightbox quanto aos métodos de pagamento:
 - Se nenhum método de pagamento estiver habilitado o lightbox não iniciará.
@@ -73,19 +73,19 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 
 ### Pagadores
 
-| Propriedade   | Descrição                                                                      |
-| ------------- | ------------------------------------------------------------------------------ |
-| `sellingKey`  | Código que associa o seu ID ao pagamento processado pela Paggcerto (opcional). |
-| `fullName`    | Nome de quem está pagando (pessoa ou empresa).                                 |
-| `taxDocument` | CPF/CNPJ de quem está pagando.                                                 |
+| Propriedade   | Tipo     | Descrição                                                                      |
+| ------------- | -------- | ------------------------------------------------------------------------------ |
+| `sellingKey`  | `string` | Código que associa o seu ID ao pagamento processado pela Paggcerto (opcional). |
+| `fullName`    | `string` | Nome de quem está pagando (pessoa ou empresa).                                 |
+| `taxDocument` | `string` | CPF/CNPJ de quem está pagando.                                                 |
 
 ### Eventos (opcionais)
 
-| Propriedade | Descrição                                                                        |
-| ----------- | -------------------------------------------------------------------------------- |
-| `abort`     | Executado quando o lightbox é encerrado (fechado) antes de concluir o pagamento. |
-| `success`   | Executado quando o pagamento é finalizado com sucesso.                           |
-| `fail`      | Executado quando ocorre algum erro no processamento do pagamento.                |
+| Propriedade | Tipo       | Descrição                                                                        |
+| ----------- | ---------- | -------------------------------------------------------------------------------- |
+| `abort`     | `function` | Executado quando o lightbox é encerrado (fechado) antes de concluir o pagamento. |
+| `success`   | `function` | Executado quando o pagamento é finalizado com sucesso.                           |
+| `fail`      | `function` | Executado quando ocorre algum erro no processamento do pagamento.                |
 
 ## Como executar localmente
 
