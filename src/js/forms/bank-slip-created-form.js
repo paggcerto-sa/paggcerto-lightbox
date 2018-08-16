@@ -1,6 +1,6 @@
-import Buffer from 'src/js/util/buffer'
-import PaymentsApi from 'src/js/sdk/payments-api'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import Buffer from '../util/buffer'
+import PaymentsApi from '../sdk/payments-api'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   GROUP_DOWNLOAD: `${NAMESPACE}_groupDownload`,

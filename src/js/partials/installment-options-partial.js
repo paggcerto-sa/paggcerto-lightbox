@@ -1,6 +1,6 @@
-import $ from 'node_modules/jquery'
-import Installments from 'src/js/util/installments'
-import { EventName, PaymentLimit } from 'src/js/constants'
+import $ from 'jquery'
+import Installments from '../util/installments'
+import { EventName, PaymentLimit } from '../constants'
 
 const ClassName = {
   INSTALLMENT_NUMBER: 'installment-number',

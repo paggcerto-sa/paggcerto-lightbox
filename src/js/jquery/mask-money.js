@@ -5,7 +5,7 @@
  * This plugin does not support UMD, for this reason the source code was copied manually.
  */
 
-import $ from 'node_modules/jquery'
+import $ from 'jquery'
 
 if (!$.browser) {
   $.browser = {};

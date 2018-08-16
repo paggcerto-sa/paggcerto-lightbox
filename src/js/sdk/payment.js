@@ -1,5 +1,5 @@
-import moment from 'node_modules/moment'
-import Textual from 'src/js/util/textual'
+import moment from 'moment'
+import Textual from '../util/textual'
 
 class Payment {
   constructor(options) {

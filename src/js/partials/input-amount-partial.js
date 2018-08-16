@@ -1,6 +1,6 @@
-import $ from 'node_modules/jquery'
-import 'src/js/jquery/mask-money'
-import { Delay, MaskMoney } from 'src/js/constants'
+import $ from 'jquery'
+import '../jquery/mask-money'
+import { Delay, MaskMoney } from '../constants'
 
 const VIEW = `
   <div class="form-circle form-circle-primary">

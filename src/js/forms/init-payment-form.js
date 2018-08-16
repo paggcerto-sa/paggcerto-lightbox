@@ -1,8 +1,8 @@
-import Bins from 'src/js/sdk/bins'
+import Bins from '../sdk/bins'
 import PayMethodForm from './pay-method-form'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import UnauthorizedForm from './unauthorized-form'
-import { NAMESPACE, ClassName } from 'src/js/constants'
+import { NAMESPACE, ClassName } from '../constants'
 
 const Selector = {
   PAY_METHODS: `${NAMESPACE}_payMethods`

@@ -1,11 +1,11 @@
-import CardErrorForm from 'src/js/forms/card-error-form'
-import CardReprovedForm from 'src/js/forms/card-reproved-form'
-import CardApprovedForm from 'src/js/forms/card-approved-form'
-import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
-import PaymentsApi from 'src/js/sdk/payments-api'
-import Payment from 'src/js/sdk/payment'
-import { NAMESPACE, ClassName } from 'src/js/constants'
+import CardErrorForm from '../forms/card-error-form'
+import CardReprovedForm from '../forms/card-reproved-form'
+import CardApprovedForm from '../forms/card-approved-form'
+import InputAmountPartial from '../partials/input-amount-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import PaymentsApi from '../sdk/payments-api'
+import Payment from '../sdk/payment'
+import { NAMESPACE, ClassName } from '../constants'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,

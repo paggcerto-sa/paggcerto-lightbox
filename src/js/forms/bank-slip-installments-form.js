@@ -1,10 +1,10 @@
 import BankSlipForm from './bank-slip-form'
 import BankSlipProcessingForm from './bank-slip-processing-form'
-import FormState from 'src/js/jquery/form-state'
-import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import InstallmentOptionsPartial from 'src/js/partials/installment-options-partial'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import FormState from '../jquery/form-state'
+import InputAmountPartial from '../partials/input-amount-partial'
+import InstallmentOptionsPartial from '../partials/installment-options-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,

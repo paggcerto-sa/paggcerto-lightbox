@@ -1,5 +1,5 @@
 import BankSlipProcessingForm from './bank-slip-processing-form'
-import { NAMESPACE, ClassName, EventName } from 'src/js/constants'
+import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`

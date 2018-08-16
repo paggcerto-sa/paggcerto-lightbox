@@ -1,5 +1,5 @@
 import PaymentsApi from './payments-api'
-import Textual from 'src/js/util/textual'
+import Textual from '../util/textual'
 
 class Bins {
   constructor(options) {

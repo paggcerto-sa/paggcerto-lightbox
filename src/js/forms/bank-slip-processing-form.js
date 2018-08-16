@@ -1,10 +1,10 @@
-import BankSlipErrorForm from 'src/js/forms/bank-slip-error-form'
-import BankSlipCreatedForm from 'src/js/forms/bank-slip-created-form'
-import InputAmountPartial from 'src/js/partials/input-amount-partial'
-import PayMethodIconsPartial from 'src/js/partials/pay-method-icons-partial'
-import PaymentsApi from 'src/js/sdk/payments-api'
-import Payment from 'src/js/sdk/payment'
-import { NAMESPACE, ClassName } from 'src/js/constants'
+import BankSlipErrorForm from '../forms/bank-slip-error-form'
+import BankSlipCreatedForm from '../forms/bank-slip-created-form'
+import InputAmountPartial from '../partials/input-amount-partial'
+import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import PaymentsApi from '../sdk/payments-api'
+import Payment from '../sdk/payment'
+import { NAMESPACE, ClassName } from '../constants'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
