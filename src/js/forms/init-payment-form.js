@@ -2,7 +2,9 @@ import Bins from '../sdk/bins'
 import PayMethodForm from './pay-method-form'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import UnauthorizedForm from './unauthorized-form'
+import Pinpad from '../sdk/pinpad'
 import { NAMESPACE, ClassName } from '../constants'
+import { timeoutAsync } from '../util/async';
 
 const Selector = {
   PAY_METHODS: `${NAMESPACE}_payMethods`
@@ -31,6 +33,7 @@ class InitPaymentForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._options.pinpad = null
   }
 
   async _tryLoadAcceptedBins() {
@@ -60,6 +63,12 @@ class InitPaymentForm {
 
     try {
       await this._tryLoadAcceptedBins()
+
+      const pinpad = new Pinpad()
+      if (await pinpad.connect()) {
+        this._options.pinpad = pinpad
+      }
+
       this._renderPayMethodForm()
     } catch (e) {
       this._renderUnauthorizedForm()
