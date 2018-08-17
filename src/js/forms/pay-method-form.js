@@ -1,5 +1,6 @@
 import CardOnlineForm from './card-online-form'
 import BankSlipForm from './bank-slip-form'
+import PinpadForm from './pinpad-form'
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
@@ -92,7 +93,7 @@ class PayMethodForm {
   }
 
   _toggleDebitButton() {
-    if (!this._options.payment.debitEnabled) {
+    if (!this._options.payment.debitEnabled || this._options.pinpad === null) {
       this._$debitButton.remove()
     } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM) {
       this._$debitButton.removeAttr('disabled')
@@ -113,12 +114,16 @@ class PayMethodForm {
   }
 
   _payWithCreditCard() {
-    const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
-    cardOnlineForm.render()
+    if (this._options.pinpad === null) {
+      const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
+      cardOnlineForm.render()
+    } else {
+      new PinpadForm(this._$container, this._options, true).render()
+    }
   }
 
   _payWithDebitCard() {
-    // TODO
+    new PinpadForm(this._$container, this._options, false).render()
   }
 
   _renderInputAmount() {

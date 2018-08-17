@@ -19,7 +19,7 @@ class Payment {
     return dueDates
   }
 
-  _getSellingKey() {
+  getSellingKey() {
     if (this._options.payment.payers.length === 0) return null
     return this._options.payment.payers[0].sellingKey
   }
@@ -54,7 +54,7 @@ class Payment {
 
   toCreditCard() {
     return {
-      sellingKey: this._getSellingKey(),
+      sellingKey: this.getSellingKey(),
       amount: this._options.payment.amount,
       geolocation: this._options.payment.geolocation,
       cards: [
