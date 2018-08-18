@@ -90,6 +90,8 @@ export class Pinpad {
 
       const json = JSON.parse(response.data)
 
+      console.log(json)
+
       switch(json.type) {
 
         case 'CONNECTION_STABLISHED':

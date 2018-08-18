@@ -1,5 +1,6 @@
 import CardProcessingForm from './card-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
+import InitPaymentForm from './init-payment-form';
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`
@@ -49,8 +50,14 @@ class CardErrorForm {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
     $btnTryAgain.on(EventName.CLICK, async () => {
-      const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-      await cardProcessingForm.render()
+      if (this._options.pinpad === null) {
+        const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
+        await cardProcessingForm.render()
+      } else {
+        this._options.pinpad.close()
+        this._options.pinpad = null
+        await new InitPaymentForm(this._$container, this._options).render()
+      }
     })
   }
 }

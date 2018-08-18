@@ -59,7 +59,10 @@ export class PinpadForm {
     const device = devices[0].port
     const cardInformation = await pinpad.readCard(this._options.payment.amount, device, this._credit)
 
-    if (cardInformation === null) return
+    if (cardInformation === null) {
+      await new CardErrorForm(this._$container, this._options).render()
+      return
+    }
 
     const bins = this._options.payment.bins
 
