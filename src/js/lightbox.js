@@ -35,6 +35,12 @@ class Lightbox {
     const $closeButton = this._$lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
 
     $closeButton.on(EventName.CLICK, () => {
+
+      if (this._options.pinpad !== null) {
+        this._options.pinpad.close()
+        this._options.pinpad = null
+      }
+
       this._$body.removeClass(`${ClassName.SHOW}`)
       setTimeout(() => this._$lightbox.remove(), 100)
     })

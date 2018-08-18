@@ -4,6 +4,7 @@ import FormState from '../jquery/form-state'
 import InputAmountPartial from '../partials/input-amount-partial'
 import InstallmentOptionsPartial from '../partials/installment-options-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import PinpadProcessingForm from './pinpad-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
 
 const Selector = {
@@ -61,12 +62,19 @@ class CardInstallmentsForm {
   }
 
   _bindForm() {
+
     this._$form = this._$container.find('form')
 
     this._$form.on(EventName.SUBMIT, async () => {
+
       if (this._formState.invalid) return
-      const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-      await cardProcessingForm.render()
+
+      if (this._options.pinpad === null) {
+        const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
+        await cardProcessingForm.render()
+      } else {
+        new PinpadProcessingForm(this._$container, this._options).render()
+      }
     })
   }
 
