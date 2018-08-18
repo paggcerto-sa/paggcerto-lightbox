@@ -1,5 +1,5 @@
 import SerialWebsocket from './serial-websocket'
-import { timeoutAsync, waitOrTimeout } from '../util/async'
+import { waitOrTimeout } from '../util/async'
 
 const URL_SANDBOX = 'gAAAAABbd01KmSckvwQPGzXvUphnl3kurGhq3l_sfxRIK5NGeQQNmrEUqCWQYy83NM9-C1tc1Sa4XxC151LMenbl0rYWq-NoajGkZoU7gTGJkSH5stsX7pYtlu0T6XOafoHvjaFfMJJ0fPZFlLRrxg1OtUcKv2S2mrDLoolN_oBrIFeP1Yd3ooYGrVW-QjoXtTrf28l_Txf0Xv1uO-2ebi3p_0Ohy0ynTb9xQZYV0Gsufb1u7t9N16l-tv-5Y-_3J3ss_4rPZnkfbLz2esIb6pG-l5zl6Z25FskNBGe_J2keh5chvWfI3T6DPXoeDZTqLztTQNS5KQBzjPav4-qdW-5sj3mA7m01aSMpnQ6YZu0Cc29gwbTYkDHxS2M_rv0gS6JYw6NGXfkq'
 const TIMEOUT = 30000
@@ -56,7 +56,6 @@ export class Pinpad {
     for (var i = 0; i < 10; i++) {
       this.websocket = new SerialWebsocket('ws://127.0.0.1:7777')
       this.connected = await this.websocket.connect()
-      await timeoutAsync(200)
     }
 
     return this.connected
@@ -136,7 +135,9 @@ export class Pinpad {
 
   close() {
     if (this.websocket === null) return
+
     this.websocket.close()
+    this.websocket = null
   }
 }
 

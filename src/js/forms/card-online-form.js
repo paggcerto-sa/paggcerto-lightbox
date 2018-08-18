@@ -124,7 +124,14 @@ class CardOnlineForm {
         this._options.payment.card.number = $inputCardNumber.val()
 
         const bins = this._options.payment.bins
-        this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
+
+        if (bins.isValid(this._options.payment.card.number)) {
+          this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
+        }
+        else {
+          this._options.payment.card.bin = null
+        }
+
         this._updateFormState()
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand

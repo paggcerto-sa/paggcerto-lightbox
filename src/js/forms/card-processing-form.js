@@ -59,6 +59,11 @@ class CardProcessingForm {
   }
 
   async _process() {
+
+    if (this._options.pinpad !== null) {
+      return
+    }
+
     const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toCreditCard()
 

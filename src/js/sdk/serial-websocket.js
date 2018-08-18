@@ -61,7 +61,6 @@ export class SerialWebSocket {
     if (!this.connected) return false
 
     this.websocket.send(msg)
-    console.log('sending', msg)
 
     return true
   }
@@ -80,10 +79,13 @@ export class SerialWebSocket {
   }
 
   close() {
+    if (this.websocket === null) return
+
     this.connected = false
+
     this._cleanup()
 
-    if (this.websocket != null) {
+    if (this.websocket !== null) {
       this.websocket.close()
     }
 

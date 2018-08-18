@@ -77,6 +77,7 @@ class InstallmentOptionsPartial {
     const maximumNumber = this._getMaximumInstallmentNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber, discountPercent).asArray()
 
+
     let $firstInstallment = null
 
     installments.forEach((installment) => {
