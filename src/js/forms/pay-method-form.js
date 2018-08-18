@@ -93,9 +93,9 @@ class PayMethodForm {
   }
 
   _toggleDebitButton() {
-    if (!this._options.payment.debitEnabled || this._options.pinpad === null) {
+    if (!this._options.payment.debitEnabled) {
       this._$debitButton.remove()
-    } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM) {
+    } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM && this._options.pinpad !== null) {
       this._$debitButton.removeAttr('disabled')
     } else {
       this._$debitButton.attr('disabled', true)

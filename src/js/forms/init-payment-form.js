@@ -62,11 +62,20 @@ class InitPaymentForm {
     this._renderPayMethodIcons()
 
     try {
-      await this._tryLoadAcceptedBins()
 
+      await this._tryLoadAcceptedBins()
       const pinpad = new Pinpad()
+
       if (await pinpad.connect()) {
-        this._options.pinpad = pinpad
+        const devices = await pinpad.listDevices()
+
+        if (devices !== null && devices.length > 0) {
+          this._options.pinpad = pinpad
+        }
+        else
+        {
+          pinpad.close()
+        }
       }
 
       this._renderPayMethodForm()
