@@ -71,9 +71,7 @@ class InitPaymentForm {
 
         if (devices !== null && devices.length > 0) {
           this._options.pinpad = pinpad
-        }
-        else
-        {
+        } else {
           pinpad.close()
         }
       }

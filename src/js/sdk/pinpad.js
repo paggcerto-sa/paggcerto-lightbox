@@ -53,12 +53,16 @@ export class Pinpad {
 
     window.location.assign(`paggcertoconnector:${URL_SANDBOX}`)
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < this.attempts; i++) {
       this.websocket = new SerialWebsocket('ws://127.0.0.1:7777')
       this.connected = await this.websocket.connect()
+
+      if (this.connected) return true
     }
 
-    return this.connected
+    this.websocket = null
+
+    return false
   }
 
   async listDevices() {
