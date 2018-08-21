@@ -6,6 +6,7 @@ import PayMethodForm from './pay-method-form'
 import FormState from '../jquery/form-state'
 import Textual from '../util/textual'
 import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
+import InitPaymentForm from './init-payment-form';
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -117,7 +118,7 @@ class CardOnlineForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.card = null
-      const payMethodForm = new PayMethodForm(this._$container, this._options)
+      const payMethodForm = new InitPaymentForm(this._$container, this._options)
       payMethodForm.render()
     })
   }

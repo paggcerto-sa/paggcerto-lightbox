@@ -17,3 +17,20 @@ export async function waitOrTimeout(promise, timeout) {
 
   return null
 }
+
+export class ResolvablePromise {
+  constructor() {
+    this.promise = new Promise((resolve, reject) => {
+      this._resolve = resolve
+      this._reject = reject
+    })
+  }
+
+  resolve(args) {
+    this._resolve(args)
+  }
+
+  reject(args) {
+    this._reject(args)
+  }
+}

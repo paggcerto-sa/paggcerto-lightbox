@@ -1,6 +1,7 @@
 import CardProcessingForm from './card-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
 import InitPaymentForm from './init-payment-form';
+import { ResolvablePromise } from '../util/async';
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`
@@ -39,26 +40,44 @@ class CardErrorForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-    this._bindButtons()
+    this._router = null
+    this._exitPromise = new ResolvablePromise()
   }
 
   _bindButtons() {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
-    $btnTryAgain.on(EventName.CLICK, async () => {
+    $btnTryAgain.on(EventName.CLICK, () => {
       if (this._options.pinpad === null) {
-        const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-        await cardProcessingForm.render()
+        this._router.render(CardProcessingForm, this._$container, this._options)
       } else {
-        this._options.pinpad.close()
-        this._options.pinpad = null
-        await new InitPaymentForm(this._$container, this._options).render()
+        this._router.render(InitPaymentForm, this._$container, this._options)
       }
+
+      this._exit()
     })
+  }
+
+  async render(router) {
+
+    console.log('Rendering CardErrorForm')
+
+    this._router = router
+
+    this._$container.html(VIEW)
+    this._bindButtons()
+
+    await this._waitExitSignal()
+
+    console.log('Rendered CardErrorForm')
+  }
+
+  async _waitExitSignal() {
+    await this._exitPromise.promise
+  }
+
+  _exit() {
+    this._exitPromise.resolve()
   }
 }
 

@@ -1,5 +1,6 @@
 import { NAMESPACE, ClassName } from '../constants'
 import CardApprovedForm from './card-approved-form'
+import CardErrorForm from './card-error-form'
 import CardReprovedForm from './card-reproved-form'
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
@@ -46,6 +47,7 @@ class PinpadProcessingForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
   _renderInputAmount() {
@@ -75,7 +77,10 @@ class PinpadProcessingForm {
   }
 
   _processStatus(type, msg) {
-    if (type === 'DEVICE_MSG' && msg == 'RETIRE O CARTAO') {
+
+    console.log(type, msg)
+
+    if (type === 'DEVICE_MSG' && msg === 'RETIRE O CARTAO') {
       this._setTitle(PROCESSING_MSG)
       this._toggleSpinner()
     }
@@ -84,42 +89,48 @@ class PinpadProcessingForm {
   async _process() {
 
     if (this._options.pinpad === null) {
-      await new CardErrorForm(this._$container, this._options).render()
-      return
+      return this._goTo(CardErrorForm)
     }
 
     const sellingkey = this._options.sellingkey
     const installments = this._options.payment.installments
     const token = this._options.token
-    const pinpad = this._options.pinpad
 
-    const transactionResponse = await pinpad.pay(
+    let transactionResponse = await this._options.pinpad.pay(
       sellingkey,
       installments,
       token,
       (type, msg) => this._processStatus(type, msg)
     )
 
-    if (transactionResponse === null) {
-      await new CardErrorForm(this._$container, this._options).render()
+    if (transactionResponse === null || !transactionResponse.success) {
+      return this._goTo(CardErrorForm)
     }
 
+    transactionResponse = transactionResponse.data
     this._options.processedPayment = transactionResponse.body
 
     if (this._options.processedPayment.status === 'paid') {
-      new CardApprovedForm(this._$container, this._options).render()
+       this._goTo(CardApprovedForm)
     } else {
-      new CardReprovedForm(this._$container, this._options).render()
+       this._goTo(CardReprovedForm)
     }
   }
 
-  async render() {
+  async render(router) {
+
+    this._router = router
+
     this._$container.html(VIEW)
 
     this._renderInputAmount()
     this._renderPayMethodIcons()
 
     await this._process()
+  }
+
+  _goTo(form) {
+    this._router(form, this._$container, this._options)
   }
 }
 

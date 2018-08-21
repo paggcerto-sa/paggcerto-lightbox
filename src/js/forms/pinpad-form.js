@@ -1,8 +1,13 @@
 import { NAMESPACE, ClassName } from '../constants'
+import { ResolvablePromise } from '../util/async'
 import CardErrorForm from './card-error-form';
 import CardInstallmentForm from './card-installments-form'
+import CardOnlineForm from './card-online-form';
+import ErrorForm from './error-form'
+import InitPaymentForm from './init-payment-form';
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import PinpadProcessingForm from './pinpad-processing-form';
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
@@ -37,47 +42,115 @@ const VIEW = `
 
 export class PinpadForm {
 
-  constructor($container, options, credit) {
+  constructor($container, options) {
     this._$container = $container
     this._options = options
-    this._credit = credit
+    this._router = null
+    this._exitPromise = new ResolvablePromise()
+    this._cardInformation = null
   }
 
-  async render() {
+  async render(router) {
+
+    console.log('Rendering PinpadForm')
+
+    this._router = router
 
     this._$container.html(VIEW)
     this._renderInputAmount()
     this._renderPayMethodIcons()
 
-    const pinpad = this._options.pinpad
-    const devices = await pinpad.listDevices()
+    await this._process()
+  }
 
-    if (devices === null || devices.length === 0) {
-      return
-    }
+  async _process() {
+
+    const devices = await this._options.pinpad.listDevices()
+
+    if (devices === null || devices.length === 0) return this._renderProcessingFail()
 
     const device = devices[0].port
-    const cardInformation = await pinpad.readCard(this._options.payment.amount, device, this._credit)
+    const response = await this._options.pinpad.readCard(this._options.payment.amount, device, this._options.payment.credit)
 
-    if (cardInformation === null) {
-      await new CardErrorForm(this._$container, this._options).render()
-      return
+    if (!response.success) return this._handleResponseError(response)
+
+    this._cardInformation = response.data
+    console.log('response:', response)
+
+    await this._createPaymentCard()
+
+    if (!this._isCardSupported()) return this._renderCardNotSupported()
+
+    if (!this._options.payment.credit) return this._processDebit()
+
+    if (this._shouldRedirectToOnline()) return this._redirectToTyped()
+
+    if (this._shouldForceChip()) return this._renderForceChipUse()
+
+    this._goTo(CardInstallmentForm)
+
+    await this._waitExitSignal()
+  }
+
+  _processDebit() {
+
+    if(!this._isDebitAllowed()) return this._renderOperationNotSupported()
+
+    this._options.payment.installments = 1
+    this._goTo(PinpadProcessingForm)
+  }
+
+  _shouldRedirectToOnline() {
+    return !this._options.payment.card.bin.emvSupported ||
+      this._options.payment.card.bin.cardBrand === 'banesecard'
+  }
+
+  _shouldForceChip() {
+    return this._cardInformation.hasChip && !this._cardInformation.chipWasUsed
+  }
+
+  _handleResponseError(response) {
+    switch(response.data.type) {
+      case 'UNSUPPORTED_OPERATION': return this._renderOperationNotSupported()
+      case 'OPERATION_CANCELED': return this._renderOperationCanceled()
     }
 
-    const bins = this._options.payment.bins
+    return this._renderProcessingFail()
+  }
 
+  async _createPaymentCard() {
     this._options.payment.card = {
-      number: cardInformation.cardNumber,
-      bin: await bins.identify(cardInformation.cardNumber)
+      number: this._cardInformation.cardNumber,
+      bin: await this._options.payment.bins.identify(this._cardInformation.cardNumber),
+      holderName: this._cardInformation.holderName,
+      expirationMonth: new Date(this._cardInformation.expirationDate).getMonth() + 1,
+      expirationYear: new Date(this._cardInformation.expirationDate).getFullYear()
     }
 
-    if (!this._options.payment.card.bin.emvSupported) {
-      await new CardErrorForm(this._$container, this._options).render()
-      return
-    }
+    console.log(this._options.payment.card)
+  }
 
-    const cardInstallmentForm = new CardInstallmentForm(this._$container, this._options)
-    await cardInstallmentForm.render()
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+    this._exit()
+  }
+
+  _exit() {
+    this._exitPromise.resolve()
+    console.log('Exiting PinpadForm')
+  }
+
+  async _waitExitSignal() {
+    await this._exitPromise.promise
+  }
+
+  _isCardSupported() {
+    return this._options.payment.card.bin !== null
+  }
+
+  _isDebitAllowed() {
+    const bin = this._options.payment.card.bin
+    return !(bin.cardBrand !== 'banesecard' && (!bin.emvSupported || !bin.debit))
   }
 
   _renderInputAmount() {
@@ -91,6 +164,57 @@ export class PinpadForm {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
     const payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     payMethodIconsPartial.render()
+  }
+
+  _renderOperationCanceled() {
+    return this._renderGenericErrorMessage('Operação Cancelada.', 'Operação Cancelada pelo usuário.')
+  }
+
+  _renderForceChipUse() {
+    return this._renderGenericErrorMessage('Metodo Inválido.', 'Utilize o CHIP.')
+  }
+
+  _renderOperationNotSupported() {
+    return this._renderGenericErrorMessage('Operação Inválida.', 'Modalidade não suportada pelo cartão.')
+  }
+
+  _renderCardNotSupported() {
+    return this._renderGenericErrorMessage('Cartão Inválido.', 'Este cartão não é suportado.')
+  }
+
+  _renderProcessingFail() {
+    return this._renderGenericErrorMessage('Falha no processamento.', 'Não foi possível efetuar o processamento.')
+  }
+
+  _renderGenericErrorMessage(primaryMessage, secondaryMessage) {
+    new ErrorForm(this._$container).render({
+      primaryMessage,
+      secondaryMessage,
+      buttons : [
+        {
+          label: 'Voltar a tela inicial',
+          onClick: () => {
+            this._cleanup()
+            this._goTo(InitPaymentForm)
+          }
+        }
+      ]
+    })
+
+    return this._waitExitSignal()
+  }
+
+  _redirectToTyped() {
+    this._cleanup()
+    this._options.payment.redirected = true
+    this._goTo(CardOnlineForm)
+  }
+
+  _cleanup() {
+    if (this._options !== null) {
+      this._options.pinpad.close()
+      this._options.pinpad = null
+    }
   }
 }
 

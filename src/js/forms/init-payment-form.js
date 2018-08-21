@@ -2,9 +2,8 @@ import Bins from '../sdk/bins'
 import PayMethodForm from './pay-method-form'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import UnauthorizedForm from './unauthorized-form'
-import Pinpad from '../sdk/pinpad'
+import PinpadService from '../sdk/pinpad-service'
 import { NAMESPACE, ClassName } from '../constants'
-import { timeoutAsync } from '../util/async';
 
 const Selector = {
   PAY_METHODS: `${NAMESPACE}_payMethods`
@@ -34,16 +33,12 @@ class InitPaymentForm {
     this._$container = $container
     this._options = options
     this._options.pinpad = null
+    this._router = null
   }
 
   async _tryLoadAcceptedBins() {
     this._options.payment.bins = new Bins(this._options)
     await this._options.payment.bins.list()
-  }
-
-  _renderPayMethodForm() {
-    const payMethodForm = new PayMethodForm(this._$container, this._options)
-    payMethodForm.render()
   }
 
   _renderPayMethodIcons() {
@@ -52,25 +47,41 @@ class InitPaymentForm {
     this._payMethodIconsPartial.render()
   }
 
-  _renderUnauthorizedForm() {
-    const unauthorizedForm = new UnauthorizedForm(this._$container)
-    unauthorizedForm.render()
+  _renderPayMethodForm() {
+    this._router.render(PayMethodForm, this._$container, this._options)
   }
 
-  async render() {
+  _renderUnauthorizedForm() {
+    this._router.render(UnauthorizedForm, this._$container)
+  }
+
+  async render(lightboxRouter) {
+
+    console.log('Rendering InitPaymentForm')
+
+    this._router = lightboxRouter
+
     this._$container.html(VIEW)
     this._renderPayMethodIcons()
 
     try {
 
       await this._tryLoadAcceptedBins()
-      const pinpad = new Pinpad()
+
+      const pinpad = new PinpadService()
 
       if (await pinpad.connect()) {
+
         const devices = await pinpad.listDevices()
 
         if (devices !== null && devices.length > 0) {
+
+          if (this._options.pinpad !== null) {
+            this._options.pinpad.close()
+          }
+
           this._options.pinpad = pinpad
+
         } else {
           pinpad.close()
         }
@@ -80,6 +91,8 @@ class InitPaymentForm {
     } catch (e) {
       this._renderUnauthorizedForm()
     }
+
+    console.log('Rendereed: Initial Payment')
   }
 }
 

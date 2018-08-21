@@ -1,7 +1,7 @@
-import SerialWebsocket from './serial-websocket'
 import { waitOrTimeout } from '../util/async'
+import SerialWebsocket from './serial-websocket'
 
-const URL_SANDBOX = 'gAAAAABbd01KmSckvwQPGzXvUphnl3kurGhq3l_sfxRIK5NGeQQNmrEUqCWQYy83NM9-C1tc1Sa4XxC151LMenbl0rYWq-NoajGkZoU7gTGJkSH5stsX7pYtlu0T6XOafoHvjaFfMJJ0fPZFlLRrxg1OtUcKv2S2mrDLoolN_oBrIFeP1Yd3ooYGrVW-QjoXtTrf28l_Txf0Xv1uO-2ebi3p_0Ohy0ynTb9xQZYV0Gsufb1u7t9N16l-tv-5Y-_3J3ss_4rPZnkfbLz2esIb6pG-l5zl6Z25FskNBGe_J2keh5chvWfI3T6DPXoeDZTqLztTQNS5KQBzjPav4-qdW-5sj3mA7m01aSMpnQ6YZu0Cc29gwbTYkDHxS2M_rv0gS6JYw6NGXfkq'
+const URL_SANDBOX = 'gAAAAABbfGgddqsnR1JSV-ME7O67gWMcro1wm6y24np4z9JsH6JdlbmF0B6BDbkmv40QiHhWibrTeNGqpK3bePZPIWg5rkrKFYln2IbULtTggKeC8wGNNYW6RBzKTZ96aNpzAu2iHwikZ1opvBwmB9MV_Uc3f-AwA2WfB6J0oqWdzcEk13U3jju3KIh6zeS7m_FAm8OmlLKqUBKmwuTdaPw-ScJLpJ47LxVHLVEAiUEDL59Jhy4LpJ4ffRuj3ufsMFlFdGR9kMFPBItdXugDhSCDpGUog8TJX23X0kPiD0I5006Y77Ip5Tll_Q0i3tjhLfByMI5WLTXOAkzb2GOvmpYU7vi59ojAbr3IZNSr-GpLWb8L1V1Ah-D4kP87HBqXvvJ9lahBYaxN'
 const TIMEOUT = 30000
 
 class ReadCardRequest {
@@ -40,7 +40,7 @@ class ListDevicesRequest {
   }
 }
 
-export class Pinpad {
+export class PinpadService {
 
   constructor(attempts) {
     this.connected = false
@@ -54,6 +54,7 @@ export class Pinpad {
     window.location.assign(`paggcertoconnector:${URL_SANDBOX}`)
 
     for (var i = 0; i < this.attempts; i++) {
+
       this.websocket = new SerialWebsocket('ws://127.0.0.1:7777')
       this.connected = await this.websocket.connect()
 
@@ -73,7 +74,19 @@ export class Pinpad {
 
     const json = JSON.parse(response.data)
 
-    if (json.type === 'DEVICE_LIST') return json.data
+    if (json.type === 'DEVICE_LIST') {
+
+      const devices = []
+
+      for (let device of json.data) {
+
+        if (!this._isXPos(device)) continue
+
+        devices.push(device)
+      }
+
+      return json.data
+    }
 
     return null
   }
@@ -100,11 +113,12 @@ export class Pinpad {
 
         case 'CONNECTION_STABLISHED':
         case 'INSERT_CARD':
+        case 'DEVICE_MSG':
           break
 
-        case 'CARD_INFORMATION': return json.data
+        case 'CARD_INFORMATION': return { success: true, data: json.data }
 
-        default: return null
+        default: return { success: false, data: json }
       }
     }
   }
@@ -127,10 +141,12 @@ export class Pinpad {
 
       const json = JSON.parse(response.data)
 
+      console.log(json)
+
       switch(json.type) {
 
-        case 'TRANSACTION_RESPONSE': return json.data
-        case 'FAIL': return null
+        case 'TRANSACTION_RESPONSE': return { success: true, data: json.data }
+        case 'FAIL': return { success: false, data: null }
 
         default:
           statusCallback(json.type, json.data)
@@ -145,6 +161,13 @@ export class Pinpad {
     this.websocket.close()
     this.websocket = null
   }
+
+  _isXPos(device) {
+    console.log(device)
+    return device !== null &&
+      device.manufacturer !== null &&
+      device.manufacturer.toUpperCase().match(/PAX|GERTEC/) !== null;
+  }
 }
 
-export default Pinpad
+export default PinpadService

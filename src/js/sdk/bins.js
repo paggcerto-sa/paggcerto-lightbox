@@ -43,6 +43,8 @@ class Bins {
         return bin
       }
     }
+
+    return null
   }
 }
 

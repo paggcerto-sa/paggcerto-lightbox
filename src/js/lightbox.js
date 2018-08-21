@@ -2,6 +2,7 @@ import $ from 'jquery'
 import Bins from './sdk/bins'
 import InitPaymentForm from './forms/init-payment-form'
 import { ID, ClassName, Delay, EventName } from './constants'
+import LightboxRouter from './util/lightbox-router'
 
 const VIEW = `
   <div id="${ID}">
@@ -63,7 +64,8 @@ class Lightbox {
     this._animate()
     this._bindButtons()
 
-    await this._renderInitPayMmentForm()
+    const router = new LightboxRouter()
+    router.render(InitPaymentForm, this._$container, this._options)
   }
 }
 
