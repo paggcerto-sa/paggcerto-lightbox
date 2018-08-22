@@ -61,6 +61,8 @@ export class PinpadForm {
     this._renderPayMethodIcons()
 
     await this._process()
+
+    console.log('Rendered PinpadForm')
   }
 
   async _process() {
@@ -88,13 +90,12 @@ export class PinpadForm {
     if (this._shouldForceChip()) return this._renderForceChipUse()
 
     this._goTo(CardInstallmentForm)
-
-    await this._waitExitSignal()
   }
 
   _processDebit() {
 
     if(!this._isDebitAllowed()) return this._renderOperationNotSupported()
+    if (this._shouldForceChip()) return this._renderForceChipUse()
 
     this._options.payment.installments = 1
     this._goTo(PinpadProcessingForm)
@@ -132,7 +133,6 @@ export class PinpadForm {
 
   _goTo(form) {
     this._router.render(form, this._$container, this._options)
-    this._exit()
   }
 
   _exit() {
@@ -150,7 +150,11 @@ export class PinpadForm {
 
   _isDebitAllowed() {
     const bin = this._options.payment.card.bin
-    return !(bin.cardBrand !== 'banesecard' && (!bin.emvSupported || !bin.debit))
+    return bin.debit && (this._isBaneseCard() || bin.emvSupported)
+  }
+
+  _isBaneseCard() {
+    return this._options.payment.card.bin.cardBrand === 'banesecard'
   }
 
   _renderInputAmount() {
@@ -187,7 +191,7 @@ export class PinpadForm {
   }
 
   _renderGenericErrorMessage(primaryMessage, secondaryMessage) {
-    new ErrorForm(this._$container).render({
+    const config = {
       primaryMessage,
       secondaryMessage,
       buttons : [
@@ -199,9 +203,9 @@ export class PinpadForm {
           }
         }
       ]
-    })
+    }
 
-    return this._waitExitSignal()
+    this._router.render(ErrorForm, this._$container, config)
   }
 
   _redirectToTyped() {

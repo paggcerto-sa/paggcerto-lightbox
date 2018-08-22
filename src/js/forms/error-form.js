@@ -40,31 +40,30 @@ const VIEW = `
 
 export class ErrorForm {
 
-  constructor($container) {
+  constructor($container, config) {
     this._$container = $container
+    this._config = config || null
   }
 
-  render(config) {
+  render() {
 
     this._$container.html(VIEW)
 
-    config = config || null
+    if (this._config === null) return
 
-    if (config === null) return
-
-    if ('buttons' in config && config.buttons.length > 0) {
+    if ('buttons' in this._config && this._config.buttons.length > 0) {
 
       this._$container
         .find(`#${Selector.FORM_BUTTONS}`)
         .removeClass('d-none')
 
-      for (let button of config.buttons) {
+      for (let button of this._config.buttons) {
         this._createButton(button)
       }
     }
 
-    this._$container.find(`#${Selector.PRIMARY_MESSAGE}`).text(config.primaryMessage)
-    this._$container.find(`#${Selector.SECONDARY_MESSAGE}`).text(config.secondaryMessage)
+    this._$container.find(`#${Selector.PRIMARY_MESSAGE}`).text(this._config.primaryMessage)
+    this._$container.find(`#${Selector.SECONDARY_MESSAGE}`).text(this._config.secondaryMessage)
   }
 
   _createButton(button) {

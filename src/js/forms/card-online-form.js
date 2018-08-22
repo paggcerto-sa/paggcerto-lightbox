@@ -86,22 +86,7 @@ class CardOnlineForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._assignInitialValues()
-    this._bindButtons()
-    this._bindForm()
-    this._bindInputCardNumber()
-    this._bindInputCvv()
-    this._bindInputHolderName()
-    this._bindSelectMonth()
-    this._bindSelectYear()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._updateFormState()
+    this._router = null
   }
 
   _assignInitialValues() {
@@ -118,8 +103,7 @@ class CardOnlineForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.card = null
-      const payMethodForm = new InitPaymentForm(this._$container, this._options)
-      payMethodForm.render()
+      new this._goTo(InitPaymentForm)
     })
   }
 
@@ -128,8 +112,7 @@ class CardOnlineForm {
 
     $form.on(EventName.SUBMIT, (e) => {
       if (this._formState.invalid) return
-      const cardInstallmentsForm = new CardInstallmentsForm(this._$container, this._options)
-      cardInstallmentsForm.render()
+      this._goTo(CardInstallmentsForm)
     })
   }
 
@@ -161,7 +144,7 @@ class CardOnlineForm {
         if (this._options.payment.card.number !== '') {
           this._payMethodIconsPartial.activeIcon(cardBrand)
         } else {
-          this._payMethodIconsPartial._activeAllIcons()
+          this._payMethodIconsPartial.activeAllIcons()
         }
       })
       .mask("9999999999999000")
@@ -270,7 +253,12 @@ class CardOnlineForm {
 
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     this._payMethodIconsPartial.render()
-    this._payMethodIconsPartial._activeAllIcons()
+
+    if (cardBrand === null) {
+      this._payMethodIconsPartial.activeAllIcons()
+    } else {
+      this._payMethodIconsPartial.activeIcon(cardBrand)
+    }
   }
 
   _updateFormState() {
@@ -298,6 +286,31 @@ class CardOnlineForm {
       }
     })
   }
+<<<<<<< HEAD
+=======
+
+  render(router) {
+    this._router = router
+
+    this._$container.html(VIEW)
+
+    this._assignInitialValues()
+    this._bindButtons()
+    this._bindForm()
+    this._bindInputCardNumber()
+    this._bindInputCvv()
+    this._bindInputHolderName()
+    this._bindSelectMonth()
+    this._bindSelectYear()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._updateFormState()
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+  }
+>>>>>>> Router is fully functional
 }
 
 export default CardOnlineForm

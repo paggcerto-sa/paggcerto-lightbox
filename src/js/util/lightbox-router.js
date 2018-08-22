@@ -1,33 +1,68 @@
+import { ResolvablePromise } from "./async";
 
 export default class LightboxRouter {
 
   constructor() {
-    this.routes = []
+    this._routes = []
+    this._wakeUpPromise = null
   }
 
-  async _renderRoute(form, $container, options) {
-    await new form($container, options).render(this._encapsulate())
+  async _renderRoute(route) {
+    await new route.form(...route.args).render(this._encapsulate())
   }
 
-  _goTo(form, $container, options) {
-    this.routes.push({ form, $container, options })
+  async _renderCurrentRoute() {
+    await this._renderRoute(this._getCurrentRoute())
+  }
+
+  exit() {
+    this._routes = []
+    this._signalToWakeUp()
+  }
+
+  _goTo(form, args) {
+    console.log('Scheduling:', form !== null, args)
+    this._routes.push({ form, args })
+    this._signalToWakeUp()
   }
 
   _encapsulate() {
     return {
-      render: (form, $container, options) => {
-        return this._goTo(form, $container, options)
+      render: (form, ...args) => {
+        return this._goTo(form, args)
       }
     }
   }
 
-  async render(form, $container, options) {
+  _renewWakeUp() {
+    this._wakeUpPromise = new ResolvablePromise()
+  }
 
-    this._goTo(form, $container, options)
+  async _waitWakeUpSignal() {
+    await this._wakeUpPromise.promise
+  }
 
-    while(this.routes.length > 0) {
-      const route = this.routes.splice(0, 1)[0]
-      await this._renderRoute(route.form, route.$container, route.options)
+  _signalToWakeUp() {
+    if (this._wakeUpPromise === null) return
+
+    this._wakeUpPromise.resolve()
+  }
+
+  _getCurrentRoute() {
+    if (this._routes === null || this._routes.length === 0) {
+      return null
+    }
+
+    return this._routes[this._routes.length - 1]
+  }
+
+  async render(form, ...args) {
+    this._goTo(form, args)
+
+    while(this._getCurrentRoute() !== null) {
+      this._renewWakeUp()
+      await this._renderCurrentRoute()
+      await this._waitWakeUpSignal()
     }
   }
 }

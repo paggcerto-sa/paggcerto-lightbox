@@ -42,15 +42,7 @@ class CardProcessingForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-
-    await this._process()
+    this._router = null
   }
 
   _renderInputAmount() {
@@ -80,16 +72,29 @@ class CardProcessingForm {
       this._options.processedPayment = await paymentsApi.payWithCards(payment)
 
       if (this._options.processedPayment.status === 'paid') {
-        const cardApprovedForm = new CardApprovedForm(this._$container, this._options)
-        cardApprovedForm.render()
+        this._goTo(CardApprovedForm)
       } else {
-        const cardReprovedForm = new CardReprovedForm(this._$container, this._options)
-        cardReprovedForm.render()
+        this._goTo(CardReprovedForm)
       }
     } catch (e) {
-      const cardErrorForm = new CardErrorForm(this._$container, this._options)
-      cardErrorForm.render()
+      this._goTo(CardErrorForm)
     }
+  }
+
+  async render(router) {
+
+    this._router = router
+
+    this._$container.html(VIEW)
+
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+
+    await this._process()
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
   }
 }
 

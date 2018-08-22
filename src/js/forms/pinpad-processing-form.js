@@ -118,8 +118,10 @@ class PinpadProcessingForm {
   }
 
   async render(router) {
+    console.log('Rendering PinpadProcessingForm')
 
     this._router = router
+    console.log('router', router)
 
     this._$container.html(VIEW)
 
@@ -127,10 +129,12 @@ class PinpadProcessingForm {
     this._renderPayMethodIcons()
 
     await this._process()
+
+    console.log('Rendered PinpadProcessingForm')
   }
 
   _goTo(form) {
-    this._router(form, this._$container, this._options)
+    this._router.render(form, this._$container, this._options)
   }
 }
 

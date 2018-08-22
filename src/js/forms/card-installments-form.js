@@ -6,6 +6,7 @@ import InstallmentOptionsPartial from '../partials/installment-options-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PinpadProcessingForm from './pinpad-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
+import { ResolvablePromise } from '../util/async';
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -50,41 +51,28 @@ class CardInstallmentsForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._bindButtons()
-    this._bindForm()
-    this._bindInstallments()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._setFormState()
+    this._router = null
+    this._exitPromise = new ResolvablePromise()
   }
 
   _bindButtons() {
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
 
-    $btnGoBack.on(EventName.CLICK, () => {
-      const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
-      cardOnlineForm.render()
-    })
+    $btnGoBack.on(EventName.CLICK, () => this._goTo(CardOnlineForm))
   }
 
   _bindForm() {
 
     this._$form = this._$container.find('form')
 
-    this._$form.on(EventName.SUBMIT, async () => {
+    this._$form.on(EventName.SUBMIT, () => {
 
       if (this._formState.invalid) return
 
       if (this._options.pinpad === null) {
-        const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-        await cardProcessingForm.render()
+        this._goTo(CardProcessingForm)
       } else {
-        new PinpadProcessingForm(this._$container, this._options).render()
+        this._goTo(PinpadProcessingForm)
       }
     })
   }
@@ -111,6 +99,39 @@ class CardInstallmentsForm {
 
   _setFormState() {
     this._formState = new FormState(this._$form)
+  }
+
+  async render(router) {
+
+    console.log("Rendering CardInstallments")
+
+    this._router = router
+
+    this._$container.html(VIEW)
+
+    this._bindButtons()
+    this._bindForm()
+    this._bindInstallments()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._setFormState()
+
+    await this._waitExitSignal()
+
+    console.log("Rendered CardInstallments")
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+    this._exit()
+  }
+
+  _exit() {
+    this._exitPromise.resolve()
+  }
+
+  async _waitExitSignal() {
+    await this._exitPromise.promise
   }
 }
 

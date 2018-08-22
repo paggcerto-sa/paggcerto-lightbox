@@ -92,7 +92,7 @@ class InitPaymentForm {
       this._renderUnauthorizedForm()
     }
 
-    console.log('Rendereed: Initial Payment')
+    console.log('Rendered: Initial Payment')
   }
 }
 
