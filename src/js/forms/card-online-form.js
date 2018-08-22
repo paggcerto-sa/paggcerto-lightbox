@@ -103,7 +103,7 @@ class CardOnlineForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.card = null
-      new this._goTo(InitPaymentForm)
+      this._goTo(InitPaymentForm)
     })
   }
 
@@ -286,8 +286,6 @@ class CardOnlineForm {
       }
     })
   }
-<<<<<<< HEAD
-=======
 
   render(router) {
     this._router = router
@@ -310,7 +308,10 @@ class CardOnlineForm {
   _goTo(form) {
     this._router.render(form, this._$container, this._options)
   }
->>>>>>> Router is fully functional
+
+  _goBack(times) {
+    this._router.goBack(times)
+  }
 }
 
 export default CardOnlineForm

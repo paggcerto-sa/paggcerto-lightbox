@@ -51,7 +51,6 @@ class PayMethodForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-    this._exitPromise = new ResolvablePromise()
     this._router = null
   }
 
@@ -93,7 +92,6 @@ class PayMethodForm {
 
   _goTo(form) {
     this._router.render(form, this._$container, this._options)
-    this._exit()
   }
 
   _payWithBankSlip() {
@@ -105,7 +103,7 @@ class PayMethodForm {
     this._options.payment.credit = true
 
     if (this._options.pinpad === null) {
-      this._goTo(cardOnlineForm)
+      this._goTo(CardOnlineForm)
     } else {
       this._goTo(PinpadForm)
     }
@@ -133,6 +131,7 @@ class PayMethodForm {
   async render(router) {
 
     console.log('Rendering PayMethodForm')
+    console.log(this._options)
 
     this._router = router
 
@@ -153,17 +152,7 @@ class PayMethodForm {
     this._renderInputAmount()
     this._renderPayMethodIcons()
 
-    await this._waitExitSignal()
-
     console.log('Rendered: PayMethodForm')
-  }
-
-  async _waitExitSignal() {
-    return this._exitPromise.promise
-  }
-
-  _exit() {
-    this._exitPromise.resolve()
   }
 }
 

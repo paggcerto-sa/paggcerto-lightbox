@@ -136,6 +136,35 @@ class PinpadProcessingForm {
   _goTo(form) {
     this._router.render(form, this._$container, this._options)
   }
+
+  _handleError(errorMessage) {
+    switch(errorMessage.type) {
+      case 'OPERATION_CANCELED':
+        this._renderGenericErrorMessage("Operacão Cancelada.", "A Operação foi cancelada pelo usuário.")
+        break
+      default:
+        this._goTo(CardErrorForm)
+        break
+    }
+  }
+
+  _renderGenericErrorMessage(primaryMessage, secondaryMessage) {
+    const config = {
+      primaryMessage,
+      secondaryMessage,
+      buttons : [
+        {
+          label: 'Voltar a tela inicial',
+          onClick: () => {
+            this._cleanup()
+            this._goTo(InitPaymentForm)
+          }
+        }
+      ]
+    }
+
+    this._router.render(ErrorForm, this._$container, config)
+  }
 }
 
 export default PinpadProcessingForm

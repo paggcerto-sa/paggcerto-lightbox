@@ -26,11 +26,33 @@ export default class LightboxRouter {
     this._signalToWakeUp()
   }
 
+  _goBack(times) {
+
+    times = times || 1
+
+    if (this._routes.length <= times) {
+      console.error('Attempt to goback more than allowed:', this._routes.length, times)
+    }
+
+    this._routes.splice(-times)
+
+    this._signalToWakeUp()
+  }
+
+  _goBackToRoot() {
+    if (this._routes.length === 1) return
+
+    this._routes.splice(1)
+    this._signalToWakeUp()
+  }
+
   _encapsulate() {
     return {
       render: (form, ...args) => {
         return this._goTo(form, args)
-      }
+      },
+      goBack: (times) => this._goBack(times),
+      goBackToRoot: () => this._goBackToRoot()
     }
   }
 

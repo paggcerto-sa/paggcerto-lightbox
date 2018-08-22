@@ -1,6 +1,4 @@
 import { NAMESPACE, ClassName } from '../constants'
-import { ResolvablePromise } from '../util/async'
-import CardErrorForm from './card-error-form';
 import CardInstallmentForm from './card-installments-form'
 import CardOnlineForm from './card-online-form';
 import ErrorForm from './error-form'
@@ -46,7 +44,6 @@ export class PinpadForm {
     this._$container = $container
     this._options = options
     this._router = null
-    this._exitPromise = new ResolvablePromise()
     this._cardInformation = null
   }
 
@@ -103,7 +100,9 @@ export class PinpadForm {
 
   _shouldRedirectToOnline() {
     return !this._options.payment.card.bin.emvSupported ||
-      this._options.payment.card.bin.cardBrand === 'banesecard'
+      this._isBaneseCard() ||
+      this._isAmexCard() ||
+      this._isHiperCard()
   }
 
   _shouldForceChip() {
@@ -135,15 +134,6 @@ export class PinpadForm {
     this._router.render(form, this._$container, this._options)
   }
 
-  _exit() {
-    this._exitPromise.resolve()
-    console.log('Exiting PinpadForm')
-  }
-
-  async _waitExitSignal() {
-    await this._exitPromise.promise
-  }
-
   _isCardSupported() {
     return this._options.payment.card.bin !== null
   }
@@ -155,6 +145,14 @@ export class PinpadForm {
 
   _isBaneseCard() {
     return this._options.payment.card.bin.cardBrand === 'banesecard'
+  }
+
+  _isHiperCard() {
+    return this._options.payment.card.bin.cardBrand === 'hipercard'
+  }
+
+  _isAmexCard() {
+    return this._options.payment.card.bin.cardBrand === 'amex'
   }
 
   _renderInputAmount() {

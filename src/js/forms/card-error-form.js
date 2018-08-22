@@ -1,7 +1,6 @@
 import CardProcessingForm from './card-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
 import InitPaymentForm from './init-payment-form';
-import { ResolvablePromise } from '../util/async';
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`
@@ -41,7 +40,6 @@ class CardErrorForm {
     this._$container = $container
     this._options = options
     this._router = null
-    this._exitPromise = new ResolvablePromise()
   }
 
   _bindButtons() {
@@ -53,8 +51,6 @@ class CardErrorForm {
       } else {
         this._router.render(InitPaymentForm, this._$container, this._options)
       }
-
-      this._exit()
     })
   }
 
@@ -67,17 +63,7 @@ class CardErrorForm {
     this._$container.html(VIEW)
     this._bindButtons()
 
-    await this._waitExitSignal()
-
     console.log('Rendered CardErrorForm')
-  }
-
-  async _waitExitSignal() {
-    await this._exitPromise.promise
-  }
-
-  _exit() {
-    this._exitPromise.resolve()
   }
 }
 

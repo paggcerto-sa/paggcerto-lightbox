@@ -146,7 +146,10 @@ export class PinpadService {
       switch(json.type) {
 
         case 'TRANSACTION_RESPONSE': return { success: true, data: json.data }
-        case 'FAIL': return { success: false, data: null }
+
+        case 'OPERATION_CANCELED':
+        case 'FAIL':
+          return { success: false, data: json }
 
         default:
           statusCallback(json.type, json.data)

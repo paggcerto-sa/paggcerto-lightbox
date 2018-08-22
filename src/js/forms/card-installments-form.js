@@ -52,13 +52,12 @@ class CardInstallmentsForm {
     this._$container = $container
     this._options = options
     this._router = null
-    this._exitPromise = new ResolvablePromise()
   }
 
   _bindButtons() {
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
 
-    $btnGoBack.on(EventName.CLICK, () => this._goTo(CardOnlineForm))
+    $btnGoBack.on(EventName.CLICK, () => this._goBack())
   }
 
   _bindForm() {
@@ -116,22 +115,20 @@ class CardInstallmentsForm {
     this._renderPayMethodIcons()
     this._setFormState()
 
-    await this._waitExitSignal()
-
     console.log("Rendered CardInstallments")
   }
 
   _goTo(form) {
     this._router.render(form, this._$container, this._options)
-    this._exit()
   }
 
-  _exit() {
-    this._exitPromise.resolve()
-  }
-
-  async _waitExitSignal() {
-    await this._exitPromise.promise
+  _goBack() {
+    if (this._options.pinpad === null) {
+      this._router.goBack(1)
+    }
+    else {
+      this._router.goBack(2)
+    }
   }
 }
 

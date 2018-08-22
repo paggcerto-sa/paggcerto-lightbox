@@ -33,7 +33,7 @@ class PayMethodIconsPartial {
     this._$paymentIcons.find(`.${ClassName.ICON}.${payMethod}`).addClass('active')
   }
 
-  _activeAllIcons() {
+  activeAllIcons() {
     this._$paymentIcons.children().addClass('active')
   }
 }
