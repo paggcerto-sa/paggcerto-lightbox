@@ -4,7 +4,7 @@ const SandboxUrl = {
   BINS: 'http://payments.sandbox.paggcerto.com.br/api/v2/bins',
   PAY_WITH_CARDS: 'http://payments.sandbox.paggcerto.com.br/api/v2/pay/cards',
   PAY_WITH_BANK_SLIPS: 'http://payments.sandbox.paggcerto.com.br/api/v2/pay/bank-slips',
-  SEND_CARD_RECEIPT: 'http://payments.sandbox.paggcerto.com.br/api/v2/card-transactions/{nsu}/send-receipt'
+  SEND_CARD_RECEIPT: 'http://payments.sandbox.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}'
 }
 
 const ProductionUrl = {
@@ -13,7 +13,7 @@ const ProductionUrl = {
   BINS: 'https://payments.paggcerto.com.br/api/v2/bins',
   PAY_WITH_CARDS: 'https://payments.paggcerto.com.br/api/v2/pay/cards',
   PAY_WITH_BANK_SLIPS: 'https://payments.paggcerto.com.br/api/v2/pay/bank=slips',
-  SEND_CARD_RECEIPT: 'https://payments.paggcerto.com.br/api/v2/card-transactions/{nsu}/send-receipt'
+  SEND_CARD_RECEIPT: 'https://payments.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}'
 }
 
 class Environment {

@@ -54,6 +54,13 @@ class BankSlipCreatedForm {
     this._options = options
   }
 
+  async render() {
+    this._$container.html(VIEW)
+
+    this._bindButtons()
+    this._bindSuccessMessage()
+  }
+
   _bindButtons() {
     this._$successMessage = this._$container.find(`#${Selector.BTN_DOWNLOAD}`)
     this._$successMessage.on(EventName.CLICK, async () => await this._download())
@@ -97,13 +104,6 @@ class BankSlipCreatedForm {
     } catch (e) {
       $downloadingText.replaceWith($(VIEW_DOWNLOADING_ERROR))
     }
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-
-    this._bindButtons()
-    this._bindSuccessMessage()
   }
 }
 

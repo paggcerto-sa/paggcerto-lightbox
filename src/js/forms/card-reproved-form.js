@@ -47,6 +47,12 @@ class CardReprovedForm {
     this._options = options
   }
 
+  render() {
+    this._$container.html(VIEW)
+    this._bindButtons()
+    this._resetCard()
+  }
+
   _bindButtons() {
     const $btnTryAnotherCard = this._$container.find(`#${Selector.BTN_TRY_ANOTHER_CARD}`)
     const $_btnTryAnotherMethod = this._$container.find(`#${Selector.BTN_TRY_ANOTHER_METHOD}`)
@@ -64,12 +70,6 @@ class CardReprovedForm {
 
   _resetCard() {
     this._options.payment.card = null
-  }
-
-  render() {
-    this._$container.html(VIEW)
-    this._bindButtons()
-    this._resetCard()
   }
 }
 

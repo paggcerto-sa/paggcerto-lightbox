@@ -44,6 +44,15 @@ class CardProcessingForm {
     this._options = options
   }
 
+  async render() {
+    this._$container.html(VIEW)
+
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+
+    await this._process()
+  }
+
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
@@ -76,15 +85,6 @@ class CardProcessingForm {
       const cardErrorForm = new CardErrorForm(this._$container, this._options)
       cardErrorForm.render()
     }
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-
-    await this._process()
   }
 }
 
