@@ -22,6 +22,12 @@ class PayMethodIconsPartial {
     this._$container = $container
   }
 
+  render() {
+    this._$paymentIcons = $(VIEW)
+    this._$container.replaceWith(this._$paymentIcons)
+    this._activeAllIcons()
+  }
+
   activeIcon(payMethod) {
     this._$paymentIcons.children().removeClass('active')
     this._$paymentIcons.find(`.${ClassName.ICON}.${payMethod}`).addClass('active')
@@ -29,12 +35,6 @@ class PayMethodIconsPartial {
 
   _activeAllIcons() {
     this._$paymentIcons.children().addClass('active')
-  }
-
-  render() {
-    this._$paymentIcons = $(VIEW)
-    this._$container.replaceWith(this._$paymentIcons)
-    this._activeAllIcons()
   }
 }
 

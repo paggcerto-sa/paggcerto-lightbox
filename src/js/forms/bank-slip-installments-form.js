@@ -64,6 +64,21 @@ class BankSlipInstallmentsForm {
     this._options = options
   }
 
+  render() {
+    this._$container.html(VIEW)
+
+    this._assignInitialValues()
+    this._bindButtons()
+    this._bindForm()
+    this._bindInstallments()
+    this._bindTextAcceptedUntil()
+    this._bindTextCharges()
+    this._bindTextDiscount()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._updateFormState()
+  }
+
   _assignInitialValues() {
     this._options.payment.installments = 1
   }
@@ -158,21 +173,6 @@ class BankSlipInstallmentsForm {
 
   _updateFormState() {
     this._formState = new FormState(this._$form)
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._assignInitialValues()
-    this._bindButtons()
-    this._bindForm()
-    this._bindInstallments()
-    this._bindTextAcceptedUntil()
-    this._bindTextCharges()
-    this._bindTextDiscount()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._updateFormState()
   }
 }
 

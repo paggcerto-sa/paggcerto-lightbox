@@ -37,35 +37,6 @@ class InstallmentOptionsPartial {
     this._options = options
   }
 
-  _isCreditCard() {
-    return !!this._options.payment.card
-  }
-
-  _isBankSlip() {
-    return !!this._options.payment.bankSlip
-  }
-
-  _getMinimumInstallmentAmount() {
-    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
-    if (this._isCreditCard()) return PaymentLimit.CREDIT_AMOUNT_MINIMUM_MULTIPLE_INSTALLMENT
-  }
-
-  _getMaximumInstallmentNumber() {
-    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
-    if (this._isCreditCard()) return this._options.payment.card.bin.maximumInstallment
-  }
-
-  _getDueDatePeriodText(installments) {
-    if (!this._options.payment.bankSlip) return ''
-
-    const firstDueDate = this._options.payment.bankSlip.dueDate
-    const firstDueDateText = moment(firstDueDate).format('DD/MM/YYYY')
-    const lastDueDate = installments === 1 ? null : moment(firstDueDate).add(installments - 1, 'M')
-    const lastDueDateText = lastDueDate ? moment(lastDueDate).format('DD/MM/YYYY') : null
-
-    return lastDueDateText ? `${firstDueDateText} até ${lastDueDateText}` : firstDueDateText
-  }
-
   render() {
     this._$installmentOptions = $(VIEW)
     this._$container.replaceWith(this._$installmentOptions)
@@ -96,6 +67,35 @@ class InstallmentOptionsPartial {
     })
 
     $firstInstallment.focus()
+  }
+
+  _isCreditCard() {
+    return !!this._options.payment.card
+  }
+
+  _isBankSlip() {
+    return !!this._options.payment.bankSlip
+  }
+
+  _getMinimumInstallmentAmount() {
+    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
+    if (this._isCreditCard()) return PaymentLimit.CREDIT_AMOUNT_MINIMUM_MULTIPLE_INSTALLMENT
+  }
+
+  _getMaximumInstallmentNumber() {
+    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
+    if (this._isCreditCard()) return this._options.payment.card.bin.maximumInstallment
+  }
+
+  _getDueDatePeriodText(installments) {
+    if (!this._options.payment.bankSlip) return ''
+
+    const firstDueDate = this._options.payment.bankSlip.dueDate
+    const firstDueDateText = moment(firstDueDate).format('DD/MM/YYYY')
+    const lastDueDate = installments === 1 ? null : moment(firstDueDate).add(installments - 1, 'M')
+    const lastDueDateText = lastDueDate ? moment(lastDueDate).format('DD/MM/YYYY') : null
+
+    return lastDueDateText ? `${firstDueDateText} até ${lastDueDateText}` : firstDueDateText
   }
 }
 

@@ -1,18 +1,18 @@
 // Color system
 
-$white:    #fff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
-$gray-700: #495057 !default;
-$gray-800: #343a40 !default;
-$gray-900: #212529 !default;
-$black:    #000 !default;
+$white:    #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black:    #000;
 
-$grays: () !default;
+$grays: ();
 $grays: map-merge((
   "white": $white,
   "100": $gray-100,
@@ -27,18 +27,18 @@ $grays: map-merge((
   "black": $black
 ), $grays);
 
-$blue:    #2687E9 !default;
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #e83e8c !default;
-$red:     #fe7764 !default;
-$orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
-$green:   #28a745 !default;
-$teal:    #20c997 !default;
-$cyan:    #17a2b8 !default;
+$blue:    #2687E9;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #fe7764;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
 
-$theme-colors: () !default;
+$theme-colors: ();
 $theme-colors: map-merge(
   (
     "primary":    $blue,
@@ -55,8 +55,8 @@ $theme-colors: map-merge(
 
 // Spacing
 
-$spacer: 1rem !default;
-$spacers: () !default;
+$spacer: 1rem;
+$spacers: ();
 $spacers: map-merge(
   (
     0: 0,
@@ -72,24 +72,30 @@ $spacers: map-merge(
 
 // Fonts
 
-$label-margin-bottom: .25rem !default;
-$small-font-size: 75% !default;
+$label-margin-bottom: .25rem;
+$small-font-size: 75%;
+
+// Alerts
+
+$alert-margin-bottom: 0;
+$alert-margin-top: 1rem;
+$alert-link-font-weight: 400;
 
 // Forms
 
-$input-group-addon-color:         $white !default;
-$input-group-addon-bg:            $blue !default;
-$input-group-addon-border-color:  $blue !default;
+$input-group-addon-color: $white;
+$input-group-addon-bg: $blue;
+$input-group-addon-border-color: $blue;
 
 // Lightbox
 
-$lightbox-icons: url("http://lightbox.paggcerto.com.br/dist/lightbox-icons.svg") !default;
-$lightbox-font-family: Arial, sans-serif !default;
-$lightbox-font-size: 1rem !default;
-$lightbox-bg: $white !default;
-$lightbox-bg-backdrop: transparentize($black, .5) !default;
-$lightbox-border-radius: .625rem !default;
-$lightbox-inner-border: .0625rem solid map-get($grays, "400") !default;
-$lightbox-width: 50rem !default;
-$lightbox-zindex: 2050 !default;
-$lightbox-zindex-backdrop: 2040 !default;
+$lightbox-icons: url("http://lightbox.paggcerto.com.br/dist/lightbox-icons.svg");
+$lightbox-font-family: Arial, sans-serif;
+$lightbox-font-size: 1rem;
+$lightbox-bg: $white;
+$lightbox-bg-backdrop: transparentize($black, .5);
+$lightbox-border-radius: .625rem;
+$lightbox-inner-border: .0625rem solid map-get($grays, "400");
+$lightbox-width: 50rem;
+$lightbox-zindex: 2050;
+$lightbox-zindex-backdrop: 2040;

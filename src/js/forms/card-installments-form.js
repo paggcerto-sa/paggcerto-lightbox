@@ -51,6 +51,17 @@ class CardInstallmentsForm {
     this._options = options
   }
 
+  render() {
+    this._$container.html(VIEW)
+
+    this._bindButtons()
+    this._bindForm()
+    this._bindInstallments()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._setFormState()
+  }
+
   _bindButtons() {
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
 
@@ -92,17 +103,6 @@ class CardInstallmentsForm {
 
   _setFormState() {
     this._formState = new FormState(this._$form)
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._bindButtons()
-    this._bindForm()
-    this._bindInstallments()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._setFormState()
   }
 }
 

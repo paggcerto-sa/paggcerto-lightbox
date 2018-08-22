@@ -38,6 +38,18 @@ class InitPaymentForm {
     await this._options.payment.bins.list()
   }
 
+  async render() {
+    this._$container.html(VIEW)
+    this._renderPayMethodIcons()
+
+    try {
+      await this._tryLoadAcceptedBins()
+      this._renderPayMethodForm()
+    } catch (e) {
+      this._renderUnauthorizedForm()
+    }
+  }
+
   _renderPayMethodForm() {
     const payMethodForm = new PayMethodForm(this._$container, this._options)
     payMethodForm.render()
@@ -52,18 +64,6 @@ class InitPaymentForm {
   _renderUnauthorizedForm() {
     const unauthorizedForm = new UnauthorizedForm(this._$container)
     unauthorizedForm.render()
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-    this._renderPayMethodIcons()
-
-    try {
-      await this._tryLoadAcceptedBins()
-      this._renderPayMethodForm()
-    } catch (e) {
-      this._renderUnauthorizedForm()
-    }
   }
 }
 

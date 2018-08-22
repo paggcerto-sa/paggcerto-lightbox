@@ -31,13 +31,6 @@ class InputAmountPartial {
         this._callbackChange()
       })
       .val(this._options.payment.amountText)
-      .trigger('keyup.maskMoney')
-  }
-
-  _callbackChange() {
-    if (typeof this._events.onChange === 'function') {
-      this._events.onChange()
-    }
   }
 
   disabled(disabled) {
@@ -58,6 +51,12 @@ class InputAmountPartial {
 
     // Focus is not triggered before modal's transition is complete
     setTimeout(() => this._$input.focus(), Delay.INPUT_AMOUNT_FOCUS)
+  }
+
+  _callbackChange() {
+    if (typeof this._events.onChange === 'function') {
+      this._events.onChange()
+    }
   }
 }
 

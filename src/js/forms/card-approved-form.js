@@ -81,6 +81,21 @@ class CardApprovedForm {
     this._options = options
   }
 
+  async render() {
+    this._$container.html(VIEW)
+
+    this._assignInitialValues();
+    this._bindInputEmail()
+    this._bindInputMobile()
+    this._bindForm()
+    this._updateFormState()
+  }
+
+  _assignInitialValues() {
+    this._email = ''
+    this._mobile = ''
+  }
+
   _bindForm() {
     this._$form = this._$container.find('form')
 
@@ -110,23 +125,18 @@ class CardApprovedForm {
       .mask('(99) 99999-9999')
   }
 
-  _setFormState() {
-    this._formState = new FormState(this._$form)
-    this._formState.update({ contact: false })
-    this._isValidEmail = false
-    this._isValidMobile = false
-    this._email = ''
-    this._mobile = ''
-  }
-
   _updateFormState() {
     const hasEmailOrMobile = !!this._email || !!this._mobile
 
     this._isValidEmail = EmailRegex.test(this._email)
     this._isValidMobile = MobileRegex.test(this._mobile)
 
+    this._formState = this._formState || new FormState(this._$container)
     this._formState.update({
-      contact: hasEmailOrMobile && this._isValidEmail && this._isValidMobile
+      contact: {
+        valid: hasEmailOrMobile && this._isValidEmail && this._isValidMobile,
+        message: 'Titular do cartão é obrigatório e permite somente letras.'
+      }
     })
   }
 
@@ -148,15 +158,6 @@ class CardApprovedForm {
     } catch (e) {
       $sendingText.replaceWith($(VIEW_SENDING_ERROR))
     }
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-
-    this._bindInputEmail()
-    this._bindInputMobile()
-    this._bindForm()
-    this._setFormState()
   }
 }
 

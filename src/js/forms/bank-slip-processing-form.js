@@ -43,6 +43,15 @@ class BankSlipProcessingForm {
     this._options = options
   }
 
+  async render() {
+    this._$container.html(VIEW)
+
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+
+    await this._process()
+  }
+
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
@@ -70,15 +79,6 @@ class BankSlipProcessingForm {
       const bankSlipErrorForm = new BankSlipErrorForm(this._$container, this._options)
       bankSlipErrorForm.render()
     }
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-
-    await this._process()
   }
 }
 

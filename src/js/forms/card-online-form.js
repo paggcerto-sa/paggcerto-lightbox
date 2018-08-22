@@ -5,7 +5,7 @@ import CardInstallmentsForm from './card-installments-form'
 import PayMethodForm from './pay-method-form'
 import FormState from '../jquery/form-state'
 import Textual from '../util/textual'
-import { NAMESPACE, ClassName, EventName } from '../constants'
+import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -22,6 +22,7 @@ const VIEW = `
   <form novalidate>
     <div class="${ClassName.HEADER}">
       Insira os dados do cartão:
+      <div class="alert alert-danger d-none"></div>
     </div>
     <div class="${ClassName.BODY}">
       <div class="row">
@@ -86,6 +87,22 @@ class CardOnlineForm {
     this._options = options
   }
 
+  render() {
+    this._$container.html(VIEW)
+
+    this._assignInitialValues()
+    this._bindButtons()
+    this._bindForm()
+    this._bindInputCardNumber()
+    this._bindInputCvv()
+    this._bindInputHolderName()
+    this._bindSelectMonth()
+    this._bindSelectYear()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._updateFormState()
+  }
+
   _assignInitialValues() {
     this._options.payment.card = this._options.payment.card || {}
   }
@@ -106,9 +123,9 @@ class CardOnlineForm {
   }
 
   _bindForm() {
-    this._$form = this._$container.find('form')
+    const $form = this._$container.find('form')
 
-    this._$form.on(EventName.SUBMIT, () => {
+    $form.on(EventName.SUBMIT, (e) => {
       if (this._formState.invalid) return
       const cardInstallmentsForm = new CardInstallmentsForm(this._$container, this._options)
       cardInstallmentsForm.render()
@@ -125,6 +142,7 @@ class CardOnlineForm {
 
         const bins = this._options.payment.bins
         this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
+        this._formState.touch({ cardNumber: true })
         this._updateFormState()
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
@@ -153,6 +171,7 @@ class CardOnlineForm {
         const formattedHolderName = new Textual(holderName).clearWhiteSpaces().asString()
 
         this._options.payment.card.holderName = formattedHolderName
+        this._formState.touch({ holderName: true })
         this._updateFormState()
       })
       .on(EventName.BLUR, () => $inputHolderName.val(this._options.payment.card.holderName))
@@ -165,6 +184,7 @@ class CardOnlineForm {
     $inputCvv
       .on(EventName.KEY_UP, () => {
         this._options.payment.card.cvv = $inputCvv.val()
+        this._formState.touch({ cvv: true })
         this._updateFormState()
       })
       .mask("9990")
@@ -185,6 +205,7 @@ class CardOnlineForm {
 
     $selectMonth.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationMonth = Number($selectMonth.val())
+      this._formState.touch({ expirationDate: true })
       this._updateFormState()
     })
   }
@@ -205,6 +226,7 @@ class CardOnlineForm {
 
     $selectYear.on(EventName.CHANGE, () => {
       this._options.payment.card.expirationYear = Number($selectYear.val())
+      this._formState.touch({ expirationDate: true })
       this._updateFormState()
     })
   }
@@ -245,29 +267,29 @@ class CardOnlineForm {
   }
 
   _updateFormState() {
-    this._formState = new FormState(this._$form)
+    this._formState = this._formState || new FormState(this._$container)
     this._formState.update({
-      cardNumber: !!this._options.payment.card.bin,
-      holderName: this._isValidHolderName(),
-      expirationDate: this._isValidExpirationDate(),
-      cvv: /^\d{3,4}$/.test(this._options.payment.card.cvv)
+      amount: {
+        valid: this._options.payment.amount >= PaymentLimit.CREDIT_AMOUNT_MINIMUM_SINGLE_INSTALLMENT,
+        message: `O valor do pagamento deve ser maior ou igual a R$ ${PaymentLimit.CREDIT_AMOUNT_MINIMUM_SINGLE_INSTALLMENT}.`
+      },
+      cardNumber: {
+        valid: !!this._options.payment.card.bin,
+        message: 'O número do cartão não foi identificado.'
+      },
+      holderName: {
+        valid: this._isValidHolderName(),
+        message: 'Titular do cartão é obrigatório e permite somente letras.'
+      },
+      expirationDate: {
+        valid: this._isValidExpirationDate(),
+        message: 'A validade do cartão é obrigatória e deve ser até o mês anterior.'
+      },
+      cvv: {
+        valid: /^\d{3,4}$/.test(this._options.payment.card.cvv),
+        message: 'CVV é obrigatório e permite somente números.'
+      }
     })
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._assignInitialValues()
-    this._bindButtons()
-    this._bindForm()
-    this._bindInputCardNumber()
-    this._bindInputCvv()
-    this._bindInputHolderName()
-    this._bindSelectMonth()
-    this._bindSelectYear()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._updateFormState()
   }
 }
 

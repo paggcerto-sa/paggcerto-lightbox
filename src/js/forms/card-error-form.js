@@ -40,6 +40,11 @@ class CardErrorForm {
     this._options = options
   }
 
+  render() {
+    this._$container.html(VIEW)
+    this._bindButtons()
+  }
+
   _bindButtons() {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
@@ -47,11 +52,6 @@ class CardErrorForm {
       const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
       await cardProcessingForm.render()
     })
-  }
-
-  render() {
-    this._$container.html(VIEW)
-    this._bindButtons()
   }
 }
 
