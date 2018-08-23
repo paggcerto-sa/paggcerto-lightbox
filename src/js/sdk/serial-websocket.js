@@ -68,7 +68,6 @@ export class SerialWebSocket {
   read() {
     if (this.msgs.length > 0) {
       const tmp = this.msgs.splice(0, 1)
-      console.log('readmsg', tmp)
       const msg = tmp[0]
       return Promise.resolve(msg)
     }

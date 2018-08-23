@@ -129,12 +129,7 @@ class PayMethodForm {
   }
 
   async render(router) {
-
-    console.log('Rendering PayMethodForm')
-    console.log(this._options)
-
     this._router = router
-
     this._$container.html(VIEW)
 
     this._$bankSlipButton = this._$container.find(`#${Selector.BTN_BANK_SLIP}`)
@@ -151,8 +146,7 @@ class PayMethodForm {
 
     this._renderInputAmount()
     this._renderPayMethodIcons()
-
-    console.log('Rendered: PayMethodForm')
+    this._toggleMethodButtons()
   }
 }
 

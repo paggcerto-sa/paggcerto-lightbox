@@ -42,6 +42,12 @@ class CardErrorForm {
     this._router = null
   }
 
+  async render(router) {
+    this._router = router
+    this._$container.html(VIEW)
+    this._bindButtons()
+  }
+
   _bindButtons() {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
@@ -52,18 +58,6 @@ class CardErrorForm {
         this._router.render(InitPaymentForm, this._$container, this._options)
       }
     })
-  }
-
-  async render(router) {
-
-    console.log('Rendering CardErrorForm')
-
-    this._router = router
-
-    this._$container.html(VIEW)
-    this._bindButtons()
-
-    console.log('Rendered CardErrorForm')
   }
 }
 

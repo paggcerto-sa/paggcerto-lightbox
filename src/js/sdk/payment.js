@@ -54,11 +54,10 @@ class Payment {
 
   toCreditCard() {
     let securityCode = this._options.payment.card.cvv
+
     if (this._options.payment.card.bin.cardBrand === 'banesecard' && this._options.payment.redirected) {
       securityCode = '999'
     }
-
-    console.log(this._options)
 
     return {
       sellingKey: this.getSellingKey(),

@@ -101,21 +101,14 @@ class CardInstallmentsForm {
   }
 
   async render(router) {
-
-    console.log("Rendering CardInstallments")
-
     this._router = router
-
     this._$container.html(VIEW)
-
     this._bindButtons()
     this._bindForm()
     this._bindInstallments()
     this._renderInputAmount()
     this._renderPayMethodIcons()
     this._setFormState()
-
-    console.log("Rendered CardInstallments")
   }
 
   _goTo(form) {

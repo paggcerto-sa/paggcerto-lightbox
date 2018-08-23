@@ -77,16 +77,10 @@ class CardReprovedForm {
   }
 
   render(router) {
-    console.log('Rendering CardReprovedForm')
-
     this._router = router
-
-
     this._$container.html(VIEW)
     this._bindButtons()
     this._resetCard()
-
-    console.log('Rendered CardReprovedForm')
   }
 
   _goTo(form) {

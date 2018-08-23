@@ -100,17 +100,13 @@ export class PinpadService {
     }
 
     for (;;) {
-
       const response = await waitOrTimeout(this.websocket.read(), TIMEOUT)
 
       if (response === null) return null
 
       const json = JSON.parse(response.data)
 
-      console.log(json)
-
       switch(json.type) {
-
         case 'CONNECTION_STABLISHED':
         case 'INSERT_CARD':
         case 'DEVICE_MSG':
@@ -141,8 +137,6 @@ export class PinpadService {
 
       const json = JSON.parse(response.data)
 
-      console.log(json)
-
       switch(json.type) {
 
         case 'TRANSACTION_RESPONSE': return { success: true, data: json.data }
@@ -166,7 +160,6 @@ export class PinpadService {
   }
 
   _isXPos(device) {
-    console.log(device)
     return device !== null &&
       device.manufacturer !== null &&
       device.manufacturer.toUpperCase().match(/PAX|GERTEC/) !== null;

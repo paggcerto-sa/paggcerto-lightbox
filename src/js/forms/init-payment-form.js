@@ -55,12 +55,8 @@ class InitPaymentForm {
     this._router.render(UnauthorizedForm, this._$container)
   }
 
-  async render(lightboxRouter) {
-
-    console.log('Rendering InitPaymentForm')
-
-    this._router = lightboxRouter
-
+  async render(router) {
+    this._router = router
     this._$container.html(VIEW)
     this._renderPayMethodIcons()
 
@@ -91,8 +87,6 @@ class InitPaymentForm {
     } catch (e) {
       this._renderUnauthorizedForm()
     }
-
-    console.log('Rendered: Initial Payment')
   }
 }
 

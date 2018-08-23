@@ -77,9 +77,6 @@ class PinpadProcessingForm {
   }
 
   _processStatus(type, msg) {
-
-    console.log(type, msg)
-
     if (type === 'DEVICE_MSG' && msg === 'RETIRE O CARTAO') {
       this._setTitle(PROCESSING_MSG)
       this._toggleSpinner()
@@ -118,10 +115,7 @@ class PinpadProcessingForm {
   }
 
   async render(router) {
-    console.log('Rendering PinpadProcessingForm')
-
     this._router = router
-    console.log('router', router)
 
     this._$container.html(VIEW)
 
@@ -129,8 +123,6 @@ class PinpadProcessingForm {
     this._renderPayMethodIcons()
 
     await this._process()
-
-    console.log('Rendered PinpadProcessingForm')
   }
 
   _goTo(form) {

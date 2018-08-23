@@ -21,7 +21,6 @@ export default class LightboxRouter {
   }
 
   _goTo(form, args) {
-    console.log('Scheduling:', form !== null, args)
     this._routes.push({ form, args })
     this._signalToWakeUp()
   }

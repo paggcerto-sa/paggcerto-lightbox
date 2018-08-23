@@ -289,9 +289,7 @@ class CardOnlineForm {
 
   render(router) {
     this._router = router
-
     this._$container.html(VIEW)
-
     this._assignInitialValues()
     this._bindButtons()
     this._bindForm()

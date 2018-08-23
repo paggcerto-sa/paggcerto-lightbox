@@ -82,11 +82,8 @@ class CardProcessingForm {
   }
 
   async render(router) {
-
     this._router = router
-
     this._$container.html(VIEW)
-
     this._renderInputAmount()
     this._renderPayMethodIcons()
 

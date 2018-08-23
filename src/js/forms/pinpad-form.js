@@ -48,9 +48,6 @@ export class PinpadForm {
   }
 
   async render(router) {
-
-    console.log('Rendering PinpadForm')
-
     this._router = router
 
     this._$container.html(VIEW)
@@ -58,12 +55,9 @@ export class PinpadForm {
     this._renderPayMethodIcons()
 
     await this._process()
-
-    console.log('Rendered PinpadForm')
   }
 
   async _process() {
-
     const devices = await this._options.pinpad.listDevices()
 
     if (devices === null || devices.length === 0) return this._renderProcessingFail()
@@ -74,7 +68,6 @@ export class PinpadForm {
     if (!response.success) return this._handleResponseError(response)
 
     this._cardInformation = response.data
-    console.log('response:', response)
 
     await this._createPaymentCard()
 
@@ -126,8 +119,6 @@ export class PinpadForm {
       expirationMonth: new Date(this._cardInformation.expirationDate).getMonth() + 1,
       expirationYear: new Date(this._cardInformation.expirationDate).getFullYear()
     }
-
-    console.log(this._options.payment.card)
   }
 
   _goTo(form) {
