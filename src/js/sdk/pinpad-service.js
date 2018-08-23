@@ -1,10 +1,11 @@
 import { waitOrTimeout } from '../util/async'
+import Environment from './environment';
 import SerialWebsocket from './serial-websocket'
 
-const URL_SANDBOX = 'gAAAAABbfGgddqsnR1JSV-ME7O67gWMcro1wm6y24np4z9JsH6JdlbmF0B6BDbkmv40QiHhWibrTeNGqpK3bePZPIWg5rkrKFYln2IbULtTggKeC8wGNNYW6RBzKTZ96aNpzAu2iHwikZ1opvBwmB9MV_Uc3f-AwA2WfB6J0oqWdzcEk13U3jju3KIh6zeS7m_FAm8OmlLKqUBKmwuTdaPw-ScJLpJ47LxVHLVEAiUEDL59Jhy4LpJ4ffRuj3ufsMFlFdGR9kMFPBItdXugDhSCDpGUog8TJX23X0kPiD0I5006Y77Ip5Tll_Q0i3tjhLfByMI5WLTXOAkzb2GOvmpYU7vi59ojAbr3IZNSr-GpLWb8L1V1Ah-D4kP87HBqXvvJ9lahBYaxN'
 const TIMEOUT = 30000
 
 class ReadCardRequest {
+
   constructor(amount, device, credit) {
     this.type = 'READ_CARD'
     this.amount = amount
@@ -42,18 +43,19 @@ class ListDevicesRequest {
 
 export class PinpadService {
 
-  constructor(attempts) {
+  constructor(options, attempts) {
     this.connected = false
-    this.attempts = attempts || 5
+    this._attempts = attempts || 5
+    this._environment = new Environment(options)
   }
 
   async connect() {
 
     if (this.connected) return true
 
-    window.location.assign(`paggcertoconnector:${URL_SANDBOX}`)
+    window.location.assign(`paggcertoconnector:${this._environment.PinpadUrl}`)
 
-    for (var i = 0; i < this.attempts; i++) {
+    for (var i = 0; i < this._attempts; i++) {
 
       this.websocket = new SerialWebsocket('ws://127.0.0.1:7777')
       this.connected = await this.websocket.connect()
@@ -152,10 +154,12 @@ export class PinpadService {
     }
   }
 
-  close() {
+  async close() {
+
     if (this.websocket === null) return
 
-    this.websocket.close()
+    await this.websocket.close()
+
     this.websocket = null
   }
 

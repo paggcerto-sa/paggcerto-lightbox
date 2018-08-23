@@ -70,7 +70,7 @@ class InitPaymentForm {
         this._options.pinpad = null
       }
 
-      const pinpad = new PinpadService()
+      const pinpad = new PinpadService(this._options)
 
       if (await pinpad.connect()) {
 
