@@ -43,6 +43,7 @@ class LightboxOptions {
     if (!this._isObject(this._options.payment)) throw new Error('Invalid options.payment: Expected Object.')
     if (!this._isNullOrUndefined(this._options.payment.amount))
       if (!this._isNumber(this._options.payment.amount)) throw new Error('Invalid options.payment.amount: Expected Number.')
+    if (!this._isBoolean(this._options.payment.replicateAmount)) throw new Error('Invalid options.payment.replicateAmount: Expected Boolean.')
     if (!this._isBoolean(this._options.payment.bankSlipEnabled)) throw new Error('Invalid options.payment.bankSlipEnabled: Expected Boolean.')
     if (!this._isBoolean(this._options.payment.creditEnabled)) throw new Error('Invalid options.payment.creditEnabled: Expected Boolean.')
     if (!this._isBoolean(this._options.payment.debitEnabled)) throw new Error('Invalid options.payment.debitEnabled: Expected Boolean.')
