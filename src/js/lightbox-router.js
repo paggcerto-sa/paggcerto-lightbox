@@ -1,4 +1,4 @@
-import { ResolvablePromise } from "./async";
+import { ResolvablePromise } from "./util/async";
 
 export default class LightboxRouter {
 

@@ -2,7 +2,7 @@ import $ from 'jquery'
 import Bins from './sdk/bins'
 import InitPaymentForm from './forms/init-payment-form'
 import { ID, ClassName, Delay, EventName } from './constants'
-import LightboxRouter from './util/lightbox-router'
+import LightboxRouter from './lightbox-router'
 
 const VIEW = `
   <div id="${ID}">
