@@ -2,7 +2,7 @@ import { waitOrTimeout } from '../util/async'
 import SerialWebsocket from './serial-websocket'
 
 const URL_SANDBOX = 'gAAAAABbfGgddqsnR1JSV-ME7O67gWMcro1wm6y24np4z9JsH6JdlbmF0B6BDbkmv40QiHhWibrTeNGqpK3bePZPIWg5rkrKFYln2IbULtTggKeC8wGNNYW6RBzKTZ96aNpzAu2iHwikZ1opvBwmB9MV_Uc3f-AwA2WfB6J0oqWdzcEk13U3jju3KIh6zeS7m_FAm8OmlLKqUBKmwuTdaPw-ScJLpJ47LxVHLVEAiUEDL59Jhy4LpJ4ffRuj3ufsMFlFdGR9kMFPBItdXugDhSCDpGUog8TJX23X0kPiD0I5006Y77Ip5Tll_Q0i3tjhLfByMI5WLTXOAkzb2GOvmpYU7vi59ojAbr3IZNSr-GpLWb8L1V1Ah-D4kP87HBqXvvJ9lahBYaxN'
-const TIMEOUT = 30000
+const TIMEOUT = 5000
 
 class ReadCardRequest {
   constructor(amount, device, credit) {
@@ -85,7 +85,7 @@ export class PinpadService {
         devices.push(device)
       }
 
-      return json.data
+      return devices
     }
 
     return null
@@ -133,7 +133,7 @@ export class PinpadService {
 
       const response = await waitOrTimeout(this.websocket.read(), TIMEOUT)
 
-      if (response === null) return null
+      if (response === null) return { success: false, data: null }
 
       const json = JSON.parse(response.data)
 

@@ -4,6 +4,7 @@ import CardErrorForm from './card-error-form'
 import CardReprovedForm from './card-reproved-form'
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
+import ErrorForm from './error-form'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -93,19 +94,18 @@ class PinpadProcessingForm {
     const installments = this._options.payment.installments
     const token = this._options.token
 
-    let transactionResponse = await this._options.pinpad.pay(
+    const transactionResponse = await this._options.pinpad.pay(
       sellingkey,
       installments,
       token,
       (type, msg) => this._processStatus(type, msg)
     )
 
-    if (transactionResponse === null || !transactionResponse.success) {
-      return this._goTo(CardErrorForm)
+    if (!transactionResponse.success) {
+      return this._handleError(transactionResponse.data)
     }
 
-    transactionResponse = transactionResponse.data
-    this._options.processedPayment = transactionResponse.body
+    this._options.processedPayment = transactionResponse.data.body
 
     if (this._options.processedPayment.status === 'paid') {
        this._goTo(CardApprovedForm)
@@ -130,6 +130,12 @@ class PinpadProcessingForm {
   }
 
   _handleError(errorMessage) {
+
+    if (errorMessage === null) {
+      this._goTo(CardErrorForm)
+      return
+    }
+
     switch(errorMessage.type) {
       case 'OPERATION_CANCELED':
         this._renderGenericErrorMessage("Operacão Cancelada.", "A Operação foi cancelada pelo usuário.")
@@ -148,8 +154,7 @@ class PinpadProcessingForm {
         {
           label: 'Voltar a tela inicial',
           onClick: () => {
-            this._cleanup()
-            this._goTo(InitPaymentForm)
+            this._router.goBackToRoot()
           }
         }
       ]

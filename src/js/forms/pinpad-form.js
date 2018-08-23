@@ -187,7 +187,6 @@ export class PinpadForm {
         {
           label: 'Voltar a tela inicial',
           onClick: () => {
-            this._cleanup()
             this._goTo(InitPaymentForm)
           }
         }
@@ -197,17 +196,9 @@ export class PinpadForm {
     this._router.render(ErrorForm, this._$container, config)
   }
 
-  _redirectToTyped() {
-    this._cleanup()
+  async _redirectToTyped() {
     this._options.payment.redirected = true
     this._goTo(CardOnlineForm)
-  }
-
-  _cleanup() {
-    if (this._options !== null) {
-      this._options.pinpad.close()
-      this._options.pinpad = null
-    }
   }
 }
 

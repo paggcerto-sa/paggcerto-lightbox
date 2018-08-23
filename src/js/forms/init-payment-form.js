@@ -32,7 +32,8 @@ class InitPaymentForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-    this._options.pinpad = null
+    this._options.pinpad = this._options.pinpad || null
+    this._options.payment.redirected = false
     this._router = null
   }
 
@@ -64,6 +65,11 @@ class InitPaymentForm {
 
       await this._tryLoadAcceptedBins()
 
+      if (this._options.pinpad !== null) {
+        await this._options.pinpad.close()
+        this._options.pinpad = null
+      }
+
       const pinpad = new PinpadService()
 
       if (await pinpad.connect()) {
@@ -72,19 +78,16 @@ class InitPaymentForm {
 
         if (devices !== null && devices.length > 0) {
 
-          if (this._options.pinpad !== null) {
-            this._options.pinpad.close()
-          }
-
           this._options.pinpad = pinpad
 
         } else {
-          pinpad.close()
+          await pinpad.close()
         }
       }
 
       this._renderPayMethodForm()
     } catch (e) {
+      console.error(e)
       this._renderUnauthorizedForm()
     }
   }

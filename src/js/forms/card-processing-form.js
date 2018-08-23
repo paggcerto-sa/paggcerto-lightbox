@@ -6,6 +6,7 @@ import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PaymentsApi from '../sdk/payments-api'
 import Payment from '../sdk/payment'
 import { NAMESPACE, ClassName } from '../constants'
+import CardOnlineForm from './card-online-form';
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -60,10 +61,6 @@ class CardProcessingForm {
   }
 
   async _process() {
-
-    if (this._options.pinpad !== null) {
-      return
-    }
 
     const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toCreditCard()

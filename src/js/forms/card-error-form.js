@@ -52,10 +52,10 @@ class CardErrorForm {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
     $btnTryAgain.on(EventName.CLICK, () => {
-      if (this._options.pinpad === null) {
+      if (this._options.pinnpad === null) {
         this._router.render(CardProcessingForm, this._$container, this._options)
       } else {
-        this._router.render(InitPaymentForm, this._$container, this._options)
+        this._router.goBackToRoot()
       }
     })
   }

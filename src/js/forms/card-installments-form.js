@@ -68,7 +68,7 @@ class CardInstallmentsForm {
 
       if (this._formState.invalid) return
 
-      if (this._options.pinpad === null) {
+      if (this._options.pinpad === null || this._options.payment.redirected) {
         this._goTo(CardProcessingForm)
       } else {
         this._goTo(PinpadProcessingForm)

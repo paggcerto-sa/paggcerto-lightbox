@@ -1,52 +1,51 @@
+import { ResolvablePromise } from "../util/async";
 
 export class SerialWebSocket {
   constructor(address) {
-    this.address = address
-    this.msgs = []
-    this.queue = []
-    this.waitPromise = null
-    this.websocket = null
-    this.connected = false
-    this.connectionPromise = null
+    this._address = address
+    this._msgs = []
+    this._queue = []
+    this._waitPromise = null
+    this._websocket = null
+    this._connected = false
+    this._connectionPromise = null
+    this._closePromise = null
   }
 
   connect() {
-    if (this.connectionPromise == null) {
-        this.connectionPromise = new Promise(resolve => {
-          this.websocket = new WebSocket(this.address)
-          this.websocket.addEventListener('open', () => this._onOpen(resolve))
-          this.websocket.addEventListener('message', msg => this._receiveMessage(msg))
-          this.websocket.addEventListener('error' , () => this._onClose(resolve))
-          this.websocket.addEventListener('close' , () => this._onClose(resolve))
-      })
+    if (this._connectionPromise == null) {
+        this._connectionPromise = new ResolvablePromise()
+        this._closePromise = new ResolvablePromise()
+        this._websocket = new WebSocket(this._address)
+        this._websocket.addEventListener('open', () => this._onOpen())
+        this._websocket.addEventListener('message', msg => this._receiveMessage(msg))
+        this._websocket.addEventListener('close' , () => this._onClose())
     }
 
-    return this.connectionPromise
+    return this._connectionPromise.promise
   }
 
-  _onClose(resolveCallback) {
-    resolveCallback(false)
-    this.close()
+  _onClose() {
+    this._cleanup()
+    this._connected = false
+    this._websocket = null
+    this._connectionPromise.resolve(false)
+    this._closePromise.resolve()
   }
 
-  _onError(resolveCallback) {
-    resolveCallback(false)
-    this.close()
-  }
-
-  _onOpen(resolveCallback) {
-    this.connected = true
-    resolveCallback(true)
+  _onOpen() {
+    this._connected = true
+    this._connectionPromise.resolve(true)
   }
 
   _receiveMessage(msg) {
-    if (this.queue.length === 0) {
-      this.msgs.push(msg)
+    if (this._queue.length === 0) {
+      this._msgs.push(msg)
       return
     }
 
-    this.queue[0].resolve(msg)
-    this.queue.splice(0, 1)
+    this._queue[0].resolve(msg)
+    this._queue.splice(0, 1)
   }
 
   async sendAndWait(msg) {
@@ -58,47 +57,42 @@ export class SerialWebSocket {
   }
 
   send(msg) {
-    if (!this.connected) return false
+    if (!this._connected) return false
 
-    this.websocket.send(msg)
+    this._websocket.send(msg)
 
     return true
   }
 
   read() {
-    if (this.msgs.length > 0) {
-      const tmp = this.msgs.splice(0, 1)
+    if (this._msgs.length > 0) {
+      const tmp = this._msgs.splice(0, 1)
       const msg = tmp[0]
       return Promise.resolve(msg)
     }
 
     return new Promise((resolve, reject) => {
-      this.queue.push({resolve, reject})
+      this._queue.push({resolve, reject})
     });
   }
 
-  close() {
-    if (this.websocket === null) return
+  async close() {
 
-    this.connected = false
-
-    this._cleanup()
-
-    if (this.websocket !== null) {
-      this.websocket.close()
+    if (this._websocket !== null) {
+      this._websocket.close()
     }
 
-    this.websocket = null
+    await this._closePromise
   }
 
   _cleanup() {
-    if (this.queue === null) return
+    if (this._queue === null) return
 
-    for(var callback of this.queue) {
+    for(var callback of this._queue) {
         callback.resolve(null)
     }
 
-    this.queue = null
+    this._queue = null
   }
 }
 

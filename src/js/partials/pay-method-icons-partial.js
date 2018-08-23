@@ -25,7 +25,7 @@ class PayMethodIconsPartial {
   render() {
     this._$paymentIcons = $(VIEW)
     this._$container.replaceWith(this._$paymentIcons)
-    this._activeAllIcons()
+    this.activeAllIcons()
   }
 
   activeIcon(payMethod) {
