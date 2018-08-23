@@ -12,7 +12,7 @@ const ProductionUrl = {
   BANK_SLIP_ZIP: 'https://payments.paggcerto.com.br/api/v2/bank-slips/zip?{payments}',
   BINS: 'https://payments.paggcerto.com.br/api/v2/bins',
   PAY_WITH_CARDS: 'https://payments.paggcerto.com.br/api/v2/pay/cards',
-  PAY_WITH_BANK_SLIPS: 'https://payments.paggcerto.com.br/api/v2/pay/bank=slips',
+  PAY_WITH_BANK_SLIPS: 'https://payments.paggcerto.com.br/api/v2/pay/bank-slips',
   SEND_CARD_RECEIPT: 'https://payments.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}'
 }
 
