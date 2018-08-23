@@ -32,8 +32,7 @@ const VIEW = `
           <div class="spinner-bar"></div>
           <div class="icon-logo-sm"></div>
         </div>
-        <div id="${Selector.DEVICE_IMG}" class="hidden">
-          <h1>Digite a senha</h1>
+        <div id="${Selector.DEVICE_IMG}" class="device-icon type-password">
         </div>
       </div>
     </div>

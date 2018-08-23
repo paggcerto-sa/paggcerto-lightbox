@@ -28,8 +28,7 @@ const VIEW = `
         </div>
       </div>
       <div class="col">
-        <!-- imagem da maquininha --->
-        <h1>Insira o cartao</h1>
+        <div class="device-icon insert-card"></div>
       </div>
     </div>
   </div>
@@ -103,6 +102,9 @@ export class PinpadForm {
   }
 
   _handleResponseError(response) {
+
+    if (response.data === null) return this._renderProcessingFail()
+
     switch(response.data.type) {
       case 'UNSUPPORTED_OPERATION': return this._renderOperationNotSupported()
       case 'OPERATION_CANCELED': return this._renderOperationCanceled()
