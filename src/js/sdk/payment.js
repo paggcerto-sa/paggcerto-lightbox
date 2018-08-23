@@ -40,6 +40,7 @@ class Payment {
   toBankSlip() {
     return {
       amount: this._options.payment.amount,
+      replicateAmount: this._options.payment.replicateAmount,
       discount: this._options.payment.bankSlip.discount,
       discountDays: this._options.payment.bankSlip.discountDays,
       fines: this._options.payment.bankSlip.fines,

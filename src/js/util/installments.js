@@ -8,17 +8,24 @@ class Installments {
     this._discount = discount
   }
 
-  asArray() {
+  asArray(replicateAmount = false) {
     const installments = []
 
     for (var number = 1; number <= this._maximumNumber; number++) {
-      const currency = new Currency(this._amount / number)
-      const amount = currency.asNumber()
-      const amountWithDiscount = currency
+      let amount = null
+
+      if (replicateAmount) {
+        amount = this._amount
+      } else {
+        const currency = new Currency(this._amount / number)
+        const amountWithDiscount = currency
         .applyDiscountPercent(this._discount)
         .asNumber()
 
-      if (number > 1 && amountWithDiscount < this._minimummAmount) break
+        if (number > 1 && amountWithDiscount < this._minimummAmount) break
+
+        amount = currency.asNumber()
+      }
 
       installments.push({
         number: number,
