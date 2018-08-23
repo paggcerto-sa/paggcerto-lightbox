@@ -38,9 +38,11 @@ class BankSlipErrorForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
-  render() {
+  render(router) {
+    this._router = router
     this._$container.html(VIEW)
     this._bindButtons()
   }
@@ -49,8 +51,7 @@ class BankSlipErrorForm {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
     $btnTryAgain.on(EventName.CLICK, async () => {
-      const bankSlipProcessingForm = new BankSlipProcessingForm(this._$container, this._options)
-      await bankSlipProcessingForm.render()
+      this._router.goBack()
     })
   }
 }

@@ -2,6 +2,7 @@ import Bins from '../sdk/bins'
 import PayMethodForm from './pay-method-form'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import UnauthorizedForm from './unauthorized-form'
+import PinpadService from '../sdk/pinpad-service'
 import { NAMESPACE, ClassName } from '../constants'
 
 const Selector = {
@@ -31,28 +32,14 @@ class InitPaymentForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._options.pinpad = this._options.pinpad || null
+    this._options.payment.redirected = false
+    this._router = null
   }
 
   async _tryLoadAcceptedBins() {
     this._options.payment.bins = new Bins(this._options)
     await this._options.payment.bins.list()
-  }
-
-  async render() {
-    this._$container.html(VIEW)
-    this._renderPayMethodIcons()
-
-    try {
-      await this._tryLoadAcceptedBins()
-      this._renderPayMethodForm()
-    } catch (e) {
-      this._renderUnauthorizedForm()
-    }
-  }
-
-  _renderPayMethodForm() {
-    const payMethodForm = new PayMethodForm(this._$container, this._options)
-    payMethodForm.render()
   }
 
   _renderPayMethodIcons() {
@@ -61,9 +48,48 @@ class InitPaymentForm {
     this._payMethodIconsPartial.render()
   }
 
+  _renderPayMethodForm() {
+    this._router.render(PayMethodForm, this._$container, this._options)
+  }
+
   _renderUnauthorizedForm() {
-    const unauthorizedForm = new UnauthorizedForm(this._$container)
-    unauthorizedForm.render()
+    this._router.render(UnauthorizedForm, this._$container)
+  }
+
+  async render(router) {
+    this._router = router
+    this._$container.html(VIEW)
+    this._renderPayMethodIcons()
+
+    try {
+
+      await this._tryLoadAcceptedBins()
+
+      if (this._options.pinpad !== null) {
+        await this._options.pinpad.close()
+        this._options.pinpad = null
+      }
+
+      const pinpad = new PinpadService(this._options)
+
+      if (await pinpad.connect()) {
+
+        const devices = await pinpad.listDevices()
+
+        if (devices !== null && devices.length > 0) {
+
+          this._options.pinpad = pinpad
+
+        } else {
+          await pinpad.close()
+        }
+      }
+
+      this._renderPayMethodForm()
+    } catch (e) {
+      console.error(e)
+      this._renderUnauthorizedForm()
+    }
   }
 }
 

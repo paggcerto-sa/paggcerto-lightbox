@@ -1,5 +1,6 @@
 import CardProcessingForm from './card-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
+import InitPaymentForm from './init-payment-form';
 
 const Selector = {
   BTN_TRY_AGAIN: `${NAMESPACE}_btnTryAgain`
@@ -38,9 +39,11 @@ class CardErrorForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
-  render() {
+  async render(router) {
+    this._router = router
     this._$container.html(VIEW)
     this._bindButtons()
   }
@@ -48,9 +51,12 @@ class CardErrorForm {
   _bindButtons() {
     const $btnTryAgain = this._$container.find(`#${Selector.BTN_TRY_AGAIN}`)
 
-    $btnTryAgain.on(EventName.CLICK, async () => {
-      const cardProcessingForm = new CardProcessingForm(this._$container, this._options)
-      await cardProcessingForm.render()
+    $btnTryAgain.on(EventName.CLICK, () => {
+      if (this._options.pinnpad === null) {
+        this._router.render(CardProcessingForm, this._$container, this._options)
+      } else {
+        this._router.goBackToRoot()
+      }
     })
   }
 }

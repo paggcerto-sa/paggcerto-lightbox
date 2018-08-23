@@ -41,9 +41,13 @@ class BankSlipProcessingForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
-  async render() {
+  async render(router) {
+
+    this._router = router
+
     this._$container.html(VIEW)
 
     this._renderInputAmount()
@@ -67,18 +71,20 @@ class BankSlipProcessingForm {
   }
 
   async _process() {
+
     const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toBankSlip()
 
     try {
       this._options.processedPayment = await paymentsApi.payWithBankSlips(payment)
-
-      const bankSlipCreatedForm = new BankSlipCreatedForm(this._$container, this._options)
-      bankSlipCreatedForm.render()
+      this._goTo(BankSlipCreatedForm)
     } catch (e) {
-      const bankSlipErrorForm = new BankSlipErrorForm(this._$container, this._options)
-      bankSlipErrorForm.render()
+      this._goTo(BankSlipErrorForm)
     }
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
   }
 }
 
