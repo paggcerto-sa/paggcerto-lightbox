@@ -6,7 +6,7 @@ class Bins {
     this._paymentsApi = new PaymentsApi(options)
   }
 
-  _isValid(cardNumber) {
+  isValid(cardNumber) {
     const digits = new Textual(cardNumber)
       .onlyNumbers()
       .asString()
@@ -35,8 +35,6 @@ class Bins {
   }
 
   async identify(cardNumber) {
-    if (!this._isValid(cardNumber)) return
-
     for (let i = 0; i < this._binList.bins.length; i++) {
       const bin = this._binList.bins[i]
       const regex = new RegExp(bin.regex)
@@ -45,6 +43,8 @@ class Bins {
         return bin
       }
     }
+
+    return null
   }
 }
 

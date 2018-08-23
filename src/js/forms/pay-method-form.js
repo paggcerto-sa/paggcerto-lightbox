@@ -1,8 +1,10 @@
 import CardOnlineForm from './card-online-form'
 import BankSlipForm from './bank-slip-form'
+import PinpadForm from './pinpad-form'
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
+import { ResolvablePromise } from '../util/async'
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
@@ -49,26 +51,7 @@ class PayMethodForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._$bankSlipButton = this._$container.find(`#${Selector.BTN_BANK_SLIP}`)
-    this._$creditButton = this._$container.find(`#${Selector.BTN_CREDIT}`)
-    this._$debitButton = this._$container.find(`#${Selector.BTN_DEBIT}`)
-
-    if (this._options.payment.onlyBankSlipEnabled) this._payWithBankSlip()
-    if (this._options.payment.onlyCreditEnabled) this._payWithCreditCard()
-    if (this._options.payment.onlyDebitEnabled) this._payWithDebitCard()
-
-    this._$bankSlipButton.on(EventName.CLICK, () => this._payWithBankSlip())
-    this._$creditButton.on(EventName.CLICK, () => this._payWithCreditCard())
-    this._$debitButton.on(EventName.CLICK, () => this._payWithDebitCard())
-
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._toggleMethodButtons()
+    this._router = null
   }
 
   _toggleBankSlipButton() {
@@ -94,7 +77,7 @@ class PayMethodForm {
   _toggleDebitButton() {
     if (!this._options.payment.debitEnabled) {
       this._$debitButton.remove()
-    } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM) {
+    } else if (this._options.payment.amount >= PaymentLimit.DEBIT_AMOUNT_MINIMUM && this._options.pinpad !== null) {
       this._$debitButton.removeAttr('disabled')
     } else {
       this._$debitButton.attr('disabled', true)
@@ -107,18 +90,28 @@ class PayMethodForm {
     this._toggleDebitButton()
   }
 
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+  }
+
   _payWithBankSlip() {
-    const bankSlipForm = new BankSlipForm(this._$container, this._options)
-    bankSlipForm.render()
+    this._options.payment.credit = false
+    this._goTo(BankSlipForm)
   }
 
   _payWithCreditCard() {
-    const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
-    cardOnlineForm.render()
+    this._options.payment.credit = true
+
+    if (this._options.pinpad === null) {
+      this._goTo(CardOnlineForm)
+    } else {
+      this._goTo(PinpadForm)
+    }
   }
 
   _payWithDebitCard() {
-    // TODO
+    this._options.payment.credit = false
+    this._goTo(PinpadForm)
   }
 
   _renderInputAmount() {
@@ -133,6 +126,27 @@ class PayMethodForm {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
     const payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     payMethodIconsPartial.render()
+  }
+
+  async render(router) {
+    this._router = router
+    this._$container.html(VIEW)
+
+    this._$bankSlipButton = this._$container.find(`#${Selector.BTN_BANK_SLIP}`)
+    this._$creditButton = this._$container.find(`#${Selector.BTN_CREDIT}`)
+    this._$debitButton = this._$container.find(`#${Selector.BTN_DEBIT}`)
+
+    if (this._options.payment.onlyBankSlipEnabled) this._payWithBankSlip()
+    if (this._options.payment.onlyCreditEnabled) this._payWithCreditCard()
+    if (this._options.payment.onlyDebitEnabled) this._payWithDebitCard()
+
+    this._$bankSlipButton.on(EventName.CLICK, () => this._payWithBankSlip())
+    this._$creditButton.on(EventName.CLICK, () => this._payWithCreditCard())
+    this._$debitButton.on(EventName.CLICK, () => this._payWithDebitCard())
+
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._toggleMethodButtons()
   }
 }
 

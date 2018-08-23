@@ -109,9 +109,13 @@ class BankSlipForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
-  render() {
+  render(router) {
+
+    this._router = router
+
     this._$container.html(VIEW)
 
     this._assignInitialValues()
@@ -148,8 +152,7 @@ class BankSlipForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.bankSlip = null
-      const payMethodForm = new PayMethodForm(this._$container, this._options)
-      payMethodForm.render()
+      this._goBack()
     })
   }
 
@@ -158,8 +161,7 @@ class BankSlipForm {
 
     $form.on(EventName.SUBMIT, () => {
       if (this._formState.invalid) return
-      const bankSlipInstallmentsForm = new BankSlipInstallmentsForm(this._$container, this._options)
-      bankSlipInstallmentsForm.render()
+      this._goTo(BankSlipInstallmentsForm)
     })
   }
 
@@ -398,6 +400,14 @@ class BankSlipForm {
         message: 'O vencimento é obrigatório e deve ser posterior a data atual (D+1).'
       }
     }))
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+  }
+
+  _goBack() {
+    this._router.goBack()
   }
 }
 

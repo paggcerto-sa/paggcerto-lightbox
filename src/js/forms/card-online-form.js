@@ -6,6 +6,7 @@ import PayMethodForm from './pay-method-form'
 import FormState from '../jquery/form-state'
 import Textual from '../util/textual'
 import { NAMESPACE, ClassName, EventName, PaymentLimit } from '../constants'
+import InitPaymentForm from './init-payment-form';
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -85,22 +86,7 @@ class CardOnlineForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-
-    this._assignInitialValues()
-    this._bindButtons()
-    this._bindForm()
-    this._bindInputCardNumber()
-    this._bindInputCvv()
-    this._bindInputHolderName()
-    this._bindSelectMonth()
-    this._bindSelectYear()
-    this._renderInputAmount()
-    this._renderPayMethodIcons()
-    this._updateFormState()
+    this._router = null
   }
 
   _assignInitialValues() {
@@ -117,8 +103,7 @@ class CardOnlineForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.card = null
-      const payMethodForm = new PayMethodForm(this._$container, this._options)
-      payMethodForm.render()
+      this._goTo(InitPaymentForm)
     })
   }
 
@@ -127,8 +112,7 @@ class CardOnlineForm {
 
     $form.on(EventName.SUBMIT, (e) => {
       if (this._formState.invalid) return
-      const cardInstallmentsForm = new CardInstallmentsForm(this._$container, this._options)
-      cardInstallmentsForm.render()
+      this._goTo(CardInstallmentsForm)
     })
   }
 
@@ -141,8 +125,14 @@ class CardOnlineForm {
         this._options.payment.card.number = $inputCardNumber.val()
 
         const bins = this._options.payment.bins
-        this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
-        this._formState.touch({ cardNumber: true })
+
+        if (bins.isValid(this._options.payment.card.number)) {
+          this._options.payment.card.bin = await bins.identify(this._options.payment.card.number)
+        }
+        else {
+          this._options.payment.card.bin = null
+        }
+
         this._updateFormState()
 
         const cardBrand = this._options.payment.card.bin && this._options.payment.card.bin.cardBrand
@@ -154,7 +144,7 @@ class CardOnlineForm {
         if (this._options.payment.card.number !== '') {
           this._payMethodIconsPartial.activeIcon(cardBrand)
         } else {
-          this._payMethodIconsPartial._activeAllIcons()
+          this._payMethodIconsPartial.activeAllIcons()
         }
       })
       .mask("9999999999999000")
@@ -263,7 +253,12 @@ class CardOnlineForm {
 
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
     this._payMethodIconsPartial.render()
-    this._payMethodIconsPartial._activeAllIcons()
+
+    if (cardBrand === null) {
+      this._payMethodIconsPartial.activeAllIcons()
+    } else {
+      this._payMethodIconsPartial.activeIcon(cardBrand)
+    }
   }
 
   _updateFormState() {
@@ -290,6 +285,30 @@ class CardOnlineForm {
         message: 'CVV é obrigatório e permite somente números.'
       }
     })
+  }
+
+  render(router) {
+    this._router = router
+    this._$container.html(VIEW)
+    this._assignInitialValues()
+    this._bindButtons()
+    this._bindForm()
+    this._bindInputCardNumber()
+    this._bindInputCvv()
+    this._bindInputHolderName()
+    this._bindSelectMonth()
+    this._bindSelectYear()
+    this._renderInputAmount()
+    this._renderPayMethodIcons()
+    this._updateFormState()
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
+  }
+
+  _goBack(times) {
+    this._router.goBack(times)
   }
 }
 

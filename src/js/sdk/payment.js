@@ -19,7 +19,7 @@ class Payment {
     return dueDates
   }
 
-  _getSellingKey() {
+  getSellingKey() {
     if (this._options.payment.payers.length === 0) return null
     return this._options.payment.payers[0].sellingKey
   }
@@ -53,8 +53,14 @@ class Payment {
   }
 
   toCreditCard() {
+    let securityCode = this._options.payment.card.cvv
+
+    if (this._options.payment.card.bin.cardBrand === 'banesecard' && this._options.payment.redirected) {
+      securityCode = '999'
+    }
+
     return {
-      sellingKey: this._getSellingKey(),
+      sellingKey: this.getSellingKey(),
       amount: this._options.payment.amount,
       geolocation: this._options.payment.geolocation,
       cards: [
@@ -63,7 +69,7 @@ class Payment {
           number: this._options.payment.card.number,
           expirationMonth: this._options.payment.card.expirationMonth,
           expirationYear: this._options.payment.card.expirationYear,
-          securityCode: this._options.payment.card.cvv,
+          securityCode: securityCode,
           installments: this._options.payment.installments,
           amountPaid: this._options.payment.amount,
           credit: true

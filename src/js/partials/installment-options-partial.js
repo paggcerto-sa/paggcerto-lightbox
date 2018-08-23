@@ -43,11 +43,12 @@ class InstallmentOptionsPartial {
     this._options.payment.installments = this._options.payment.installments || 1
 
     const amount = this._options.payment.amount
-    const replicateAmount = this._options.payment.replicateAmount
+    const replicateAmount = this._options.payment.replicateAmount && this._options.payment.bankSlip
     const discountPercent = this._options.payment.bankSlip && this._options.payment.bankSlip.discount
     const minimummAmount = this._getMinimumInstallmentAmount()
     const maximumNumber = this._getMaximumInstallmentNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber, discountPercent).asArray(replicateAmount)
+
 
     let $firstInstallment = null
 

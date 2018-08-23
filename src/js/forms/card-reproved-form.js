@@ -1,6 +1,8 @@
 import CardOnlineForm from './card-online-form'
 import PayMethodForm from './pay-method-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
+import InitPaymentForm from './init-payment-form';
+import { PinpadForm } from './pinpad-form';
 
 const Selector = {
   BTN_TRY_ANOTHER_CARD: `${NAMESPACE}_btnTryAnotherCard`,
@@ -45,12 +47,7 @@ class CardReprovedForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
-  }
-
-  render() {
-    this._$container.html(VIEW)
-    this._bindButtons()
-    this._resetCard()
+    this._router = null
   }
 
   _bindButtons() {
@@ -58,18 +55,36 @@ class CardReprovedForm {
     const $_btnTryAnotherMethod = this._$container.find(`#${Selector.BTN_TRY_ANOTHER_METHOD}`)
 
     $btnTryAnotherCard.on(EventName.CLICK, () => {
-      const cardOnlineForm = new CardOnlineForm(this._$container, this._options)
-      cardOnlineForm.render()
+      this._goTo(CardOnlineForm)
+      if (this._options.pinpad !== null) {
+        this._goTo(PinpadForm)
+      } else {
+        this._goTo(CardOnlineForm)
+      }
     })
 
     $_btnTryAnotherMethod.on(EventName.CLICK, () => {
-      const payMethodForm = new PayMethodForm(this._$container, this._options)
-      payMethodForm.render()
+      if (this._options.pinpad !== null) {
+        this._goTo(InitPaymentForm)
+      } else {
+        this._goTo(PayMethodForm)
+      }
     })
   }
 
   _resetCard() {
     this._options.payment.card = null
+  }
+
+  render(router) {
+    this._router = router
+    this._$container.html(VIEW)
+    this._bindButtons()
+    this._resetCard()
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
   }
 }
 

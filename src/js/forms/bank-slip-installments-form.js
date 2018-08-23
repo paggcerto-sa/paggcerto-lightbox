@@ -62,9 +62,13 @@ class BankSlipInstallmentsForm {
   constructor($container, options) {
     this._$container = $container
     this._options = options
+    this._router = null
   }
 
-  render() {
+  render(router) {
+
+    this._router = router
+
     this._$container.html(VIEW)
 
     this._assignInitialValues()
@@ -88,8 +92,7 @@ class BankSlipInstallmentsForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.installments = 1
-      const bankSlipForm = new BankSlipForm(this._$container, this._options)
-      bankSlipForm.render()
+      this._goBack()
     })
   }
 
@@ -98,8 +101,7 @@ class BankSlipInstallmentsForm {
 
     this._$form.on(EventName.SUBMIT, async () => {
       if (this._formState.invalid) return
-      const bankSlipProcessingForm = new BankSlipProcessingForm(this._$container, this._options)
-      await bankSlipProcessingForm.render()
+      this._goTo(BankSlipProcessingForm)
     })
   }
 
@@ -173,6 +175,14 @@ class BankSlipInstallmentsForm {
 
   _updateFormState() {
     this._formState = new FormState(this._$form)
+  }
+
+  _goBack() {
+    this._router.goBack()
+  }
+
+  _goTo(form) {
+    this._router.render(form, this._$container, this._options)
   }
 }
 

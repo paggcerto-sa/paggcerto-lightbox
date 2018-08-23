@@ -2,6 +2,7 @@ import $ from 'jquery'
 import Bins from './sdk/bins'
 import InitPaymentForm from './forms/init-payment-form'
 import { ID, ClassName, Delay, EventName } from './constants'
+import LightboxRouter from './lightbox-router'
 
 const VIEW = `
   <div id="${ID}">
@@ -35,6 +36,12 @@ class Lightbox {
     const $closeButton = this._$lightbox.find(`.${ClassName.DIALOG} .${ClassName.BTN_CLOSE}`)
 
     $closeButton.on(EventName.CLICK, () => {
+
+      if (this._options.pinpad !== null) {
+        this._options.pinpad.close()
+        this._options.pinpad = null
+      }
+
       this._$body.removeClass(`${ClassName.SHOW}`)
       setTimeout(() => this._$lightbox.remove(), 100)
     })
@@ -57,7 +64,8 @@ class Lightbox {
     this._animate()
     this._bindButtons()
 
-    await this._renderInitPayMmentForm()
+    const router = new LightboxRouter()
+    router.render(InitPaymentForm, this._$container, this._options)
   }
 }
 
