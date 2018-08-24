@@ -4,7 +4,8 @@ class Currency {
   }
 
   _toFixed() {
-    return this._amount.toFixed(2)
+    let fixed = Math.floor((this._amount * 100))
+    return (fixed / 100).toFixed(2)
   }
 
   applyDiscountPercent(discount) {
