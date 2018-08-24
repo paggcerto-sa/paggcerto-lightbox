@@ -62,6 +62,7 @@ export class PinpadForm {
     if (devices === null || devices.length === 0) return this._renderProcessingFail()
 
     const device = devices[0].port
+
     const response = await this._options.pinpad.readCard(this._options.payment.amount, device, this._options.payment.credit)
 
     if (!response.success) return this._handleResponseError(response)
@@ -151,7 +152,7 @@ export class PinpadForm {
   _renderInputAmount() {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
-    inputAmountPartial.disabled(!this._options.payment.amountEditable)
+    inputAmountPartial.disabled(true)
     inputAmountPartial.render()
   }
 

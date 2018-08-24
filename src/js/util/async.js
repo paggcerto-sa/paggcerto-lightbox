@@ -4,15 +4,18 @@ export function timeoutAsync(timeout) {
   })
 }
 
+export async function race(...promises) {
+  const result = await Promise.race(promises.map((promise, index) => promise.then(() =>  index)))
+  return { promise: promises[result], index: result }
+}
+
 export async function waitOrTimeout(promise, timeout) {
 
-  const result = await Promise.race([
-    promise.then(() => 1),
-    timeoutAsync(timeout).then(() => 2)
-  ])
+  const timeoutPromise = timeoutAsync(timeout)
+  const result = await race(promise, timeoutPromise)
 
-  if (result === 1) {
-    return await promise
+  if (result.index === 0) {
+    return await result.promise
   }
 
   return null

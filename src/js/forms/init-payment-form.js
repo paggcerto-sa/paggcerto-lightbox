@@ -1,9 +1,9 @@
+import { NAMESPACE, ClassName } from '../constants'
 import Bins from '../sdk/bins'
 import PayMethodForm from './pay-method-form'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
-import UnauthorizedForm from './unauthorized-form'
 import PinpadService from '../sdk/pinpad-service'
-import { NAMESPACE, ClassName } from '../constants'
+import UnauthorizedForm from './unauthorized-form'
 
 const Selector = {
   PAY_METHODS: `${NAMESPACE}_payMethods`
