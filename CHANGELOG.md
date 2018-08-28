@@ -1,3 +1,9 @@
+## v1.0.0-beta.5 (em desenvolvimento)
+### Funcionalidades:
+- Aceitar cartão de 19 posições.
+### _Bug fixes_:
+- Correções gerais na comunicação com a maquininha.
+- Desabilitar campo de valor na seleção de parcelas.
 ## [v1.0.0-beta.4](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.4) (2018-08-23)
 ### Funcionalidades:
 - Pagamento com pinpad.
