@@ -147,7 +147,7 @@ class CardOnlineForm {
           this._payMethodIconsPartial.activeAllIcons()
         }
       })
-      .mask("9999999999999000999")
+      .mask("0000000000000999999")
       .val(this._options.payment.card.number)
       .focus()
   }
