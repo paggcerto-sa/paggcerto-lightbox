@@ -1,6 +1,7 @@
 ## v1.0.0-beta.5 (em desenvolvimento)
 ### Funcionalidades:
 - Aceitar cartão de 19 posições.
+- Impressão de comprovante pagamento.
 ### _Bug fixes_:
 - Correções gerais na comunicação com a maquininha.
 - Desabilitar campo de valor na seleção de parcelas.
