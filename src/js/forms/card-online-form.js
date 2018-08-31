@@ -20,7 +20,7 @@ const Selector = {
 }
 
 const VIEW = `
-  <form novalidate>
+  <form novalidate autocomplete="off">
     <div class="${ClassName.HEADER}">
       Insira os dados do cartão:
       <div class="alert alert-danger d-none"></div>
@@ -37,11 +37,11 @@ const VIEW = `
           <div>
             <div class="form-group">
               <label>Número do cartão:</label>
-              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="16">
+              <input id="${Selector.INPUT_CARD_NUMBER}" type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="16" autocomplete="off">
             </div>
             <div class="form-group">
               <label>Nome do titular do cartão:</label>
-              <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão" maxlength="50">
+              <input id="${Selector.INPUT_HOLDER_NAME}" type="text" class="form-control" placeholder="Como impresso no cartão" maxlength="50" autocomplete="off">
             </div>
             <div class="row">
               <div class="col-8">
@@ -60,7 +60,7 @@ const VIEW = `
               <div class="col-4">
                 <div class="form-group">
                   <label>CVV:</label>
-                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="000" maxlength="3">
+                  <input id="${Selector.INPUT_CVV}"  type="password" class="form-control" placeholder="000" maxlength="3" autocomplete="off">
                 </div>
               </div>
             </div>

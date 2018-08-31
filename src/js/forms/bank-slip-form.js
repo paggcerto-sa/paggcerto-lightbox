@@ -23,7 +23,7 @@ const Selector = {
 }
 
 const VIEW = `
-  <form novalidate>
+  <form novalidate autocomplete="off">
     <div class="${ClassName.HEADER}">
       Informe as condições de pagamento:
       <div class="alert alert-danger d-none"></div>
@@ -42,7 +42,7 @@ const VIEW = `
               <div class="col">
                 <div class="form-group">
                   <label>Vencimento:</label>
-                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control" placeholder="00/00/0000" maxlength="10">
+                  <input id="${Selector.INPUT_DUE_DATE}" type="text" class="form-control" placeholder="00/00/0000" maxlength="10" autocomplete="off">
                 </div>
               </div>
               <div class="col">
@@ -82,7 +82,7 @@ const VIEW = `
               <div class="col">
                 <div class="form-group">
                   <label>Valor do desconto:</label>
-                  <input id="${Selector.INPUT_DISCOUNT}" type="text" class="form-control" maxlength="7">
+                  <input id="${Selector.INPUT_DISCOUNT}" type="text" class="form-control" maxlength="7" autocomplete="off">
                   <small id="${Selector.TEXT_MAXIMUM_DISCOUNT}" class="text-secondary"></small>
                 </div>
               </div>
