@@ -20,7 +20,7 @@ const VIEW = `
 
 const VIEW_INSTALLMENTS = `
   <label>
-    <input type="radio" name="installments">
+    <input type="radio" name="installments" autocomplete="off">
     <span class="installment-option">
       <span class="${ClassName.INSTALLMENT_NUMBER}"></span>
       <span class="${ClassName.INSTALLMENT_VALUE}">

@@ -4,7 +4,7 @@ import { Delay, MaskMoney } from '../constants'
 
 const VIEW = `
   <div class="form-circle form-circle-primary">
-    <input type="text" maxlength="12">
+    <input type="text" maxlength="12" autocomplete="off">
   </div>
 `
 

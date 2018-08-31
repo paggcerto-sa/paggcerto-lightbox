@@ -17,7 +17,7 @@ const Selector = {
 }
 
 const VIEW = `
-  <form novalidate>
+  <form novalidate autocomplete="off">
     <div class="${ClassName.HEADER}">
       Escolha a forma de parcelamento:
     </div>
