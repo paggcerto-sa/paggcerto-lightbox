@@ -1,12 +1,17 @@
 import 'jquery-mask-plugin/dist/jquery.mask.min.js'
 import FormState from '../jquery/form-state'
 import PaymentsApi from '../sdk/payments-api'
-import { NAMESPACE, ClassName, EventName } from '../constants'
+import AccountApi from "../sdk/account-api"
+import { NAMESPACE, ClassName, EventName, MaskMoney } from "../constants"
+import HTMLRECEIPT from '../receipt'
+import moment from 'moment'
+import Currency from '../util/currency'
 
 const Selector = {
   GROUP_SUBMIT: `${NAMESPACE}_groupSubmit`,
   INPUT_EMAIL: `${NAMESPACE}_receipt-email`,
-  INPUT_MOBILE: `${NAMESPACE}_receipt-mobile`
+  INPUT_MOBILE: `${NAMESPACE}_receipt-mobile`,
+  BUTTON_RECEIPT: `${NAMESPACE}_receipt-printed`
 }
 
 const VIEW = `
@@ -20,6 +25,11 @@ const VIEW = `
           <h5 class="mb-4">
             Transação aprovada!
           </h5>
+          <div id="${Selector.BUTTON_RECEIPT}" class="form-group d-flex">
+            <button type="button" class="btn btn-outline-primary">
+            <i class="icon-printer icons"></i> Imprimir comprovante
+            </button>
+          </div>
         </div>
       </div>
       <div class="col py-6">
@@ -82,11 +92,13 @@ class CardApprovedForm {
   }
 
   async render() {
+    await this._presets()
     this._$container.html(VIEW)
 
-    this._assignInitialValues();
+    this._assignInitialValues()
     this._bindInputEmail()
     this._bindInputMobile()
+    this._bindButtonReciept()
     this._bindForm()
     this._updateFormState()
   }
@@ -123,6 +135,64 @@ class CardApprovedForm {
         this._updateFormState()
       })
       .mask('(99) 99999-9999')
+  }
+
+  _bindButtonReciept() {
+    this._$buttonReceipt = this._$container.find(`#${Selector.BUTTON_RECEIPT}`)
+
+    this.HTMLRECEIPT = HTMLRECEIPT.replace("[[CARDBRAND]]", this._options.processedPayment.cardTransactions[0].cardBrand)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CARDFINAL]]", this._options.processedPayment.cardTransactions[0].cardFinal)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[DATA]]", moment(this._options.processedPayment.cardTransactions[0].paidAt).format("DD/MM/YYYY"))
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[NSU]]", this._options.processedPayment.cardTransactions[0].nsu)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CITY]]", this._options.presets.address.city.name)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STATE]]", this._options.presets.address.city.state)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[LINE1]]", this._options.presets.address.line1)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STREETNUMBER]]", this._options.presets.address.streetNumber)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[AMOUNTPAID]]", new Currency(this._options.processedPayment.cardTransactions[0].amountPaid).asString())
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[INSTALLMENTS]]", this._options.processedPayment.cardTransactions[0].installments)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[INSTALLMENTVALUE]]", new Currency(this._options.processedPayment.cardTransactions[0].installmentValue).asString())
+
+    if (this._options.processedPayment.cardTransactions[0].credit) {
+      this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[METHODPAYMENT]]", "Crédito")
+    }
+
+    if (this._options.processedPayment.cardTransactions[0].online) {
+      this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "none")
+      this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "block")
+    }
+
+    if (this._options.presets.holder.company) {
+      if (this._options.presets.holder.company.tradeName) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.tradeName);
+      } else if (this._options.presets.holder.company.fullName) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.fullName);
+      }
+
+      if (this._options.presets.holder.company.taxDocument) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.company.taxDocument)
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CNPJ")
+      }
+    }
+
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CPF")
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.taxDocument)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.fullName)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "block")
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none")
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[METHODPAYMENT]]", "Débito")
+
+    this._$buttonReceipt.on(EventName.CLICK, () => {
+      const receiptWindow = window.open("", "_blank")
+      receiptWindow.document.write(this.HTMLRECEIPT)
+      setTimeout(() => {
+        receiptWindow.print()
+      }, 300)
+    })
+  }
+
+  async _presets() {
+    const accountApi = new AccountApi(this._options)
+    this._options.presets = await accountApi.presets()
   }
 
   _updateFormState() {
