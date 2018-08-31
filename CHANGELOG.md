@@ -1,4 +1,4 @@
-## v1.0.0-beta.5 (em desenvolvimento)
+## [v1.0.0-beta.5](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.5) (2018-08-31)
 ### Funcionalidades:
 - Aceitar cartão de 19 posições.
 - Impressão de comprovante pagamento.
