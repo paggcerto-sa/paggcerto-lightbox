@@ -337,7 +337,7 @@ class BankSlipForm {
     if (!amount) return
 
     const minimumAmount = PaymentLimit.BANK_SLIP_AMOUNT_MINIMUM
-    const discountMaximum = Number((100 - minimumAmount * 100 / amount).toFixed(2))
+    const discountMaximum = Math.floor((100 - minimumAmount * 100 / amount) * 100) / 100
     const discountMaximumText = discountMaximum > 0 ? discountMaximum.toString().replace('.', ',') : null
 
     this._options.payment.bankSlip.discountMaximum = discountMaximum
