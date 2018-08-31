@@ -2,10 +2,10 @@ import 'jquery-mask-plugin/dist/jquery.mask.min.js'
 import FormState from '../jquery/form-state'
 import PaymentsApi from '../sdk/payments-api'
 import AccountApi from "../sdk/account-api"
-import { NAMESPACE, ClassName, EventName, MaskMoney } from "../constants";
+import { NAMESPACE, ClassName, EventName, MaskMoney } from "../constants"
 import HTMLRECEIPT from '../receipt'
 import moment from 'moment'
-import Currency from '../util/currency';
+import Currency from '../util/currency'
 
 const Selector = {
   GROUP_SUBMIT: `${NAMESPACE}_groupSubmit`,
@@ -48,7 +48,7 @@ const VIEW = `
           <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">&#9993</span>
+                  <span class="input-group-text">&#9993;</span>
                 </div>
               <input id="${Selector.INPUT_MOBILE}" type="text" class="form-control" placeholder="Número do celular" maxlength="15">
             </div>
@@ -150,9 +150,9 @@ class CardApprovedForm {
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STATE]]", this._options.presets.address.city.state)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[LINE1]]", this._options.presets.address.line1)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STREETNUMBER]]", this._options.presets.address.streetNumber)
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[AMOUNTPAID]]", new Currency(this._options.processedPayment.cardTransactions[0].amountPaid).asString());
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[AMOUNTPAID]]", new Currency(this._options.processedPayment.cardTransactions[0].amountPaid).asString())
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[INSTALLMENTS]]", this._options.processedPayment.cardTransactions[0].installments)
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[INSTALLMENTVALUE]]", new Currency(this._options.processedPayment.cardTransactions[0].installmentValue).asString());
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[INSTALLMENTVALUE]]", new Currency(this._options.processedPayment.cardTransactions[0].installmentValue).asString())
 
     if (this._options.processedPayment.cardTransactions[0].credit) {
       this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[METHODPAYMENT]]", "Crédito")
@@ -160,11 +160,11 @@ class CardApprovedForm {
 
     if (this._options.processedPayment.cardTransactions[0].online) {
       this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "none")
-      this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "block");
+      this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "block")
     }
 
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "block")
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none");
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[METHODPAYMENT]]", "Débito")
 
     this._$buttonReceipt.on(EventName.CLICK, () => {
@@ -172,7 +172,7 @@ class CardApprovedForm {
       receiptWindow.document.write(this.HTMLRECEIPT)
       setTimeout(() => {
         receiptWindow.print()
-      }, 300);
+      }, 300)
     })
   }
 
