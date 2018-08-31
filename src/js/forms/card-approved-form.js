@@ -144,7 +144,6 @@ class CardApprovedForm {
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CARDFINAL]]", this._options.processedPayment.cardTransactions[0].cardFinal)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[DATA]]", moment(this._options.processedPayment.cardTransactions[0].paidAt).format("DD/MM/YYYY"))
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[NSU]]", this._options.processedPayment.cardTransactions[0].nsu)
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.tradeName)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.company.taxDocument)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CITY]]", this._options.presets.address.city.name)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STATE]]", this._options.presets.address.city.state)
@@ -163,6 +162,15 @@ class CardApprovedForm {
       this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "block")
     }
 
+    if (this._options.presets.holder.company) {
+      if (this._options.presets.holder.company.tradeName) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.tradeName);
+      } else if (this._options.presets.holder.company.fullName) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.fullName);
+      }
+    }
+
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.fullName)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "block")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[METHODPAYMENT]]", "Débito")

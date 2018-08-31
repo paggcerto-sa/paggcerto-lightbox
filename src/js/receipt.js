@@ -10,7 +10,7 @@ const HTMLRECEIPT = `<!DOCTYPE html>
   </head>
   <body style="background-color:white;">
     <div class="w-100 justify-content-center">
-      <div id="invoice" class="d-block px-3 py-4" style="max-width: 380px; font-size: 12px;margin: 50px auto 0px auto; font-family: Roboto;">
+      <div id="invoice" class="d-block px-3 py-4 pt-4" style="max-width: 380px; font-size: 12px;margin: 0 auto; font-family: Roboto;">
         <div class="row justify-content-center">
           <div class="w-50" style="max-width: 120px;">
             <svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.5 106.65">
@@ -46,7 +46,7 @@ const HTMLRECEIPT = `<!DOCTYPE html>
           <p class="text-uppercase mb-0">[[CITY]]-[[STATE]]</p>
           <p>[[LINE1]], [[STREETNUMBER]]</p>
           <div class="d-flex">
-            <p class="mr-auto mb-0">[[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
+            <p class="mr-auto mb-0"><strong>CNPJ:</strong> [[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
           </div>
           <div class="text-center mt-3" style="display:[[VISIBLE-ASS]]">
             <p>Assinatura:  __________________</p>
