@@ -27,7 +27,7 @@ const VIEW = `
           </h5>
           <div id="${Selector.BUTTON_RECEIPT}" class="form-group d-flex">
             <button type="button" class="btn btn-outline-primary">
-            <i class="icon-printer icons"></i> Imprimir Comprovante
+            <i class="icon-printer icons"></i> Imprimir comprovante
             </button>
           </div>
         </div>
@@ -144,7 +144,6 @@ class CardApprovedForm {
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CARDFINAL]]", this._options.processedPayment.cardTransactions[0].cardFinal)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[DATA]]", moment(this._options.processedPayment.cardTransactions[0].paidAt).format("DD/MM/YYYY"))
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[NSU]]", this._options.processedPayment.cardTransactions[0].nsu)
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.company.taxDocument)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[CITY]]", this._options.presets.address.city.name)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[STATE]]", this._options.presets.address.city.state)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[LINE1]]", this._options.presets.address.line1)
@@ -168,8 +167,15 @@ class CardApprovedForm {
       } else if (this._options.presets.holder.company.fullName) {
         this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.company.fullName);
       }
+
+      if (this._options.presets.holder.company.taxDocument) {
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.company.taxDocument)
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CNPJ")
+      }
     }
 
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CPF")
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.taxDocument)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.fullName)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "block")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none")
