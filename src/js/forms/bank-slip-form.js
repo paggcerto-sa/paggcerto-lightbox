@@ -19,8 +19,12 @@ const Selector = {
   SELECT_DISCOUNT_DAYS: `${NAMESPACE}_selectDiscountDays`,
   SELECT_FINES: `${NAMESPACE}_selectFines`,
   SELECT_INTEREST: `${NAMESPACE}_selectInterest`,
-  TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`
+  TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`,
+  INPUT_INSTRUCTIONS: `${NAMESPACE}_instructions`,
+  TEXT_INSTRUCTIONS_COUNT: `${NAMESPACE}_instructionsCount`
 }
+
+const INSTRUCTIONS_PLACEHOLDER = 'Instruções de desconto, juros e multa serão inclusos automaticamente.'
 
 const VIEW = `
   <form novalidate autocomplete="off">
@@ -87,6 +91,15 @@ const VIEW = `
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="${Selector.INPUT_INSTRUCTIONS}">Instruções para o cliente</label>
+                  <textarea id="${Selector.INPUT_INSTRUCTIONS}" class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
+                  <small id="${Selector.TEXT_INSTRUCTIONS_COUNT}" class="text-secondary">0/255</small>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -131,6 +144,7 @@ class BankSlipForm {
     this._renderInputAmount()
     this._renderPayMethodIcons()
     this._updateFormState({})
+    this._bindInstructionsCount()
   }
 
   _assignInitialValues() {
@@ -330,6 +344,22 @@ class BankSlipForm {
       const value = $selectInterest.val()
       this._options.payment.bankSlip.interest = value === '' ? null : Number(value)
     })
+  }
+
+  _bindInstructionsCount() {
+    const instructionsCount = this._$container.find(`#${Selector.TEXT_INSTRUCTIONS_COUNT}`)
+    const instructionsInput = this._$container.find(`#${Selector.INPUT_INSTRUCTIONS}`)
+    let oldValue = ''
+
+    instructionsInput.on('change paster keyup', () => {
+      if (oldValue === instructionsInput.val()) return
+
+      oldValue = instructionsInput.val()
+      const value = oldValue || ''
+
+      instructionsCount.text(`${value.length}/255`)
+      this._options.payment.instructions = value
+    });
   }
 
   _calculateMaximumDiscount() {
