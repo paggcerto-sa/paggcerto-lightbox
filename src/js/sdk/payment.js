@@ -48,7 +48,8 @@ class Payment {
       acceptedUntil: this._options.payment.bankSlip.acceptedUntil,
       payers: this._mapPayers(),
       dates: this._getDueDates(),
-      geolocation: this._options.payment.geolocation
+      geolocation: this._options.payment.geolocation,
+      instructions: this._options.payment.instructions
     }
   }
 
