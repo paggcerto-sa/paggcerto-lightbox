@@ -170,12 +170,12 @@ class CardApprovedForm {
 
       if (this._options.presets.holder.company.taxDocument) {
         this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.company.taxDocument)
-        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CNPJ")
+        this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CNPJ:")
       }
     }
 
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "CPF")
-    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", this._options.presets.holder.taxDocument)
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TYPEDOCUMENT]]", "")
+    this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TAXDOCUMENT]]", "")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[TRADENAME]]", this._options.presets.holder.fullName)
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE]]", "block")
     this.HTMLRECEIPT = this.HTMLRECEIPT.replace("[[VISIBLE-ASS]]", "none")
