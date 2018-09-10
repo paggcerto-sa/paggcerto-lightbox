@@ -46,7 +46,7 @@ const HTMLRECEIPT = `<!DOCTYPE html>
           <p class="text-uppercase mb-0">[[CITY]]-[[STATE]]</p>
           <p>[[LINE1]], [[STREETNUMBER]]</p>
           <div class="d-flex">
-            <p class="mr-auto mb-0"><strong>[[TYPEDOCUMENT]]:</strong> [[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
+            <p class="mr-auto mb-0"><strong>[[TYPEDOCUMENT]]</strong> [[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
           </div>
           <div class="text-left mt-3" style="display:[[VISIBLE-ASS]]">
             <p>Assinatura:   ____________________________________________________</p>
