@@ -347,13 +347,11 @@ class BankSlipForm {
   }
 
   _bindInstructionsCount() {
-
     const instructionsCount = this._$container.find(`#${Selector.TEXT_INSTRUCTIONS_COUNT}`)
     const instructionsInput = this._$container.find(`#${Selector.INPUT_INSTRUCTIONS}`)
     let oldValue = ''
 
     instructionsInput.on('change paster keyup', () => {
-
       if (oldValue === instructionsInput.val()) return
 
       oldValue = instructionsInput.val()
