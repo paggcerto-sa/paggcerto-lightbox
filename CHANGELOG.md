@@ -1,4 +1,4 @@
-## [v1.0.0-beta.6](EM DESENVOLVIMENTO) (2018-09-10)
+## [v1.0.0-beta.6](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.6) (2018-09-12)
 ### Funcionalidades:
 - Adicionado possibilidade de adicionar instruções aos boletos.
 ## [v1.0.0-beta.5](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.5) (2018-08-31)
