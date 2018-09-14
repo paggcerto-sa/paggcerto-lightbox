@@ -1,9 +1,9 @@
 ## [v1.0.0-beta.7](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.7) (2018-09-14)
 ### _Bug Fixes_:
-- Corrigido bug que formatava, incorretamente, o comprovante para impressora térmica.
+- Correção na impressão de comprovante em impressora térmica.
 ## [v1.0.0-beta.6](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.6) (2018-09-12)
 ### Funcionalidades:
-- Adicionado possibilidade de adicionar instruções aos boletos.
+- Campo **instruções** para pagamento com boleto.
 ## [v1.0.0-beta.5](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.5) (2018-08-31)
 ### Funcionalidades:
 - Aceitar cartão de 19 posições.
