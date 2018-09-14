@@ -5,13 +5,11 @@ const HTMLRECEIPT = `<!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/invoice.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link href="https://getadmin4b.com/dist/admin4b.min.css" rel="stylesheet">
   </head>
   <body style="background-color:white;">
-    <div class="w-100 justify-content-center">
-      <div id="invoice" class="d-block px-3 py-4 pt-4" style="max-width: 380px; font-size: 12px;margin: 0 auto; font-family: Roboto;">
-        <div class="row justify-content-center">
+    <div class="w-100">
+      <div id="invoice" style="font-size: 14px;margin: 0 auto; font-family: Roboto;">
+        <div style="text-align: -webkit-center;">
           <div class="w-50" style="max-width: 120px;">
             <svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.5 106.65">
               <defs><style>.cls-1{fill:#000;}</style></defs>
@@ -20,36 +18,42 @@ const HTMLRECEIPT = `<!DOCTYPE html>
             </svg>
           </div>
         </div>
-        <div class="text-center">
+        <div id="url" style="text-align:center;font-size:14px;font-family:Roboto;font-weight:400;">
           <p>www.paggcerto.com.br</p>
         </div>
-        <div class="w-100 text-center mb-4 mt-3">
-          <h6>Comprovante de pagamento</h6>
+        <div style="text-align: center !important; margin-bottom: 1.5rem !important; margin-top: .5rem !important; width:100% !important; display:block;">
+          <h6 style="text-transform: uppercase !important; font-size: 1rem;">Comprovante de pagamento</h6>
         </div>
-        <div class="w-100 d-flex mb-3">
-          <div class="mr-auto">
-            <p class="text-uppercase mb-0">[[CARDBRAND]] - [[METHODPAYMENT]]</p>
-            <p class="mb-0">Data: [[DATA]]</p>
-            <p class="mb-0">*** **** **** **** [[CARDFINAL]]</p>
+        <div style="display:flex!important;display: -ms-flexbox!important; width:100%; margin-bottom: 1rem !important; font-size: .875rem;">
+          <div style="margin-right: auto !important;">
+            <p style="display: block;text-transform:uppercase !important; margin-bottom:0">[[CARDBRAND]] - [[METHODPAYMENT]]<br></p>
+            <p style="display: block;margin-bottom:0">Data: [[DATA]]<br></p>
+            <p style="display: block;margin-bottom:0">*** **** **** **** [[CARDFINAL]]</p>
           </div>
-          <div class="text-center">
-            <h5 class="font-weight-bold mb-0 text-nowrap">[[AMOUNTPAID]]</h5>
-            <p class="text-nowrap mb-0">[[INSTALLMENTS]] x [[INSTALLMENTVALUE]]</p>
+          <div style="text-align: center!important; margin-left: 1.5rem!important;">
+            <h5 style="font-weight: 700!important;white-space: nowrap!important; margin-bottom: 0!important; font-size: 1.15rem; line-height: 1.2;">[[AMOUNTPAID]]</h5>
+            <p style="white-space: nowrap!important;margin-bottom: 0!important;">[[INSTALLMENTS]] x [[INSTALLMENTVALUE]]</p>
           </div>
         </div>
         <hr>
-        <div class="text-center p-2 border border-dark rounded" style="display:[[VISIBLE]]">
-          <p class="font-weight-bold mb-0">Aprovação realizada mediante<br>uso de senha.</p>
+        <div style="text-align:center !important; padding: 0.5rem !important; border-radius: 0.25rem !important;border: 1px solid #343a40 !important; display:[[VISIBLE]];">
+          <p style="font-weight: 700 !important;margin-bottom: 0 !important;">Aprovação realizada mediante<br>uso de senha.</p>
         </div>
-        <div class="mt-3">
-          <h6 class="text-uppercase font-weight-bold mb-0">[[TRADENAME]]</h6>
-          <p class="text-uppercase mb-0">[[CITY]]-[[STATE]]</p>
-          <p>[[LINE1]], [[STREETNUMBER]]</p>
-          <div class="d-flex">
-            <p class="mr-auto mb-0"><strong>[[TYPEDOCUMENT]]</strong> [[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
+        <div style="margin-top: 1rem !important;">
+          <h6 style="text-transform: uppercase!important;margin-bottom: 0!important; margin-top: 0; font-weight: 700!important;font-size: 1rem;">[[TRADENAME]]</h6>
+          <p style="text-transform:uppercase!important;margin-bottom:0!important;">[[CITY]]-[[STATE]]</p>
+          <p style="margin-top:0!important; margin-bottom:1rem!important;">[[LINE1]], [[STREETNUMBER]]</p>
+          <div style="display:flex!important;">
+            <p style="margin-right:auto!important; margin-bottom:0 !important;"><strong>[[TYPEDOCUMENT]]</strong> [[TAXDOCUMENT]]</p><p class="mb-0"><strong>NSU:</strong> [[NSU]]</p>
           </div>
-          <div class="text-left mt-3" style="display:[[VISIBLE-ASS]]">
-            <p>Assinatura:   ____________________________________________________</p>
+          <div>
+          <div style="text-align:left !important; margin-top:1rem !important; margin-bottom:3rem!important; display:[[VISIBLE-ASS]];">
+            <p>Assinatura:</p>
+            <p>____________________________________________________________________</p>
+          </div>
+          <div style="text-align:center !important;">
+          NÃO É UM COMPROVANTE FISCAL.
+          </div>
           </div>
         </div>
       </div>
