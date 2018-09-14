@@ -1,3 +1,6 @@
+## v1.0.0-beta.7(DEVELOPMENT) (2018-09-14)
+### _Bug Fixes_:
+- Corrigido bug que formatava, incorretamente, o comprovante para impressora térmica.
 ## [v1.0.0-beta.6](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.6) (2018-09-12)
 ### Funcionalidades:
 - Adicionado possibilidade de adicionar instruções aos boletos.
