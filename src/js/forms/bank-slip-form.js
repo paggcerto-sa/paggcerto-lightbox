@@ -197,7 +197,7 @@ class BankSlipForm {
 
     $inputCheckPrintInstructions.on('click', () => {
       this._options.payment.bankSlip.addNoteToInstructions = $inputCheckPrintInstructions.is(':checked')
-    });
+    })
   }
 
   _bindInputDiscount () {
