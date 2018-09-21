@@ -21,7 +21,8 @@ const Selector = {
   SELECT_INTEREST: `${NAMESPACE}_selectInterest`,
   TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`,
   INPUT_INSTRUCTIONS: `${NAMESPACE}_instructions`,
-  TEXT_INSTRUCTIONS_COUNT: `${NAMESPACE}_instructionsCount`
+  TEXT_INSTRUCTIONS_COUNT: `${NAMESPACE}_instructionsCount`,
+  INPUT_CHECK_PRINT_INSTRUCTIONS: `${NAMESPACE}_inputCheckPrintInstructions`
 }
 
 const INSTRUCTIONS_PLACEHOLDER = 'Instruções de desconto, juros e multa serão inclusos automaticamente.'
@@ -94,9 +95,19 @@ const VIEW = `
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label for="${Selector.INPUT_INSTRUCTIONS}">Instruções para o cliente</label>
-                  <textarea id="${Selector.INPUT_INSTRUCTIONS}" class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
+                  <label for="${Selector.INPUT_INSTRUCTIONS}">Descrição do pagamento</label>
+                  <textarea id="${Selector.INPUT_INSTRUCTIONS}" rows="3"class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
                   <small id="${Selector.TEXT_INSTRUCTIONS_COUNT}" class="text-secondary">0/255</small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                <label class="switch switch-to-success">
+                  <input id="${Selector.CHECK_PRINT_INSTRUCTIONS}" type="checkbox">
+                  <span class="switch-slider"></span>&nbsp;Instrução de pagamento
+                  </label>
                 </div>
               </div>
             </div>
@@ -125,7 +136,7 @@ class BankSlipForm {
     this._router = null
   }
 
-  render(router) {
+  render (router) {
 
     this._router = router
 
@@ -145,18 +156,20 @@ class BankSlipForm {
     this._renderPayMethodIcons()
     this._updateFormState({})
     this._bindInstructionsCount()
+    this._checkPrintInstructions()
   }
 
-  _assignInitialValues() {
+  _assignInitialValues () {
     this._options.payment.bankSlip = this._options.payment.bankSlip || {
       acceptedUntil: 0,
-      discountText: '0,00 %'
+      discountText: '0,00 %',
+      addNoteToInstructions: false
     }
 
     this._calculateMaximumDiscount()
   }
 
-  _bindButtons() {
+  _bindButtons () {
     const $btnGoBack = this._$container.find(`#${Selector.BTN_GO_BACK}`)
 
     if (this._options.payment.onlyBankSlipEnabled) {
@@ -170,7 +183,7 @@ class BankSlipForm {
     })
   }
 
-  _bindForm() {
+  _bindForm () {
     const $form = this._$container.find('form')
 
     $form.on(EventName.SUBMIT, () => {
@@ -179,7 +192,15 @@ class BankSlipForm {
     })
   }
 
-  _bindInputDiscount() {
+  _checkPrintInstructions () {
+    const $inputCheckPrintInstructions = this._$container.find(`#${Selector.CHECK_PRINT_INSTRUCTIONS}`)
+
+    $inputCheckPrintInstructions.on('click', () => {
+      this._options.payment.bankSlip.addNoteToInstructions = $inputCheckPrintInstructions.is(':checked')
+    });
+  }
+
+  _bindInputDiscount () {
     const $inputDiscount = this._$container.find(`#${Selector.INPUT_DISCOUNT}`)
 
     $inputDiscount
@@ -194,12 +215,12 @@ class BankSlipForm {
       })
       .val(this._options.payment.bankSlip.discountText)
 
-      if (typeof this._options.payment.bankSlip.discountDays !== 'number') {
-        $inputDiscount.attr('disabled', true)
-      }
+    if (typeof this._options.payment.bankSlip.discountDays !== 'number') {
+      $inputDiscount.attr('disabled', true)
+    }
   }
 
-  _bindInputDueDate() {
+  _bindInputDueDate () {
     const $inputDueDate = this._$container.find(`#${Selector.INPUT_DUE_DATE}`)
 
     $inputDueDate
@@ -216,14 +237,14 @@ class BankSlipForm {
       .focus()
   }
 
-  _bindMaximumDiscount() {
+  _bindMaximumDiscount () {
     const $discountMaximum = this._$container.find(`#${Selector.TEXT_MAXIMUM_DISCOUNT}`)
     const discountMaximumText = this._options.payment.bankSlip.discountMaximumText
 
     $discountMaximum.text(`Máximo ${discountMaximumText || '0,00'} %`)
   }
 
-  _bindSelectAcceptedUntil() {
+  _bindSelectAcceptedUntil () {
     const $selectAcceptedUntil = this._$container.find(`#${Selector.SELECT_ACCEPTED_UNTIL}`)
     const $selectFines = this._$container.find(`#${Selector.SELECT_FINES}`)
     const $selectInterest = this._$container.find(`#${Selector.SELECT_INTEREST}`)
@@ -231,8 +252,8 @@ class BankSlipForm {
     for (let days = 0; days <= 25; days++) {
       const acceptedUntilText =
         days === 0 ? 'Não aceitar' :
-        days === 1 ? `Até ${days} dia` :
-        `Até ${days} dias`;
+          days === 1 ? `Até ${days} dia` :
+            `Até ${days} dias`;
 
       const $option = $('<option/>').attr('value', days).text(acceptedUntilText)
       $selectAcceptedUntil.append($option)
@@ -258,15 +279,15 @@ class BankSlipForm {
     })
   }
 
-  _bindSelectDiscountDays() {
+  _bindSelectDiscountDays () {
     const $selectDiscountDays = this._$container.find(`#${Selector.SELECT_DISCOUNT_DAYS}`)
     const $inputDiscount = this._$container.find(`#${Selector.INPUT_DISCOUNT}`)
 
     for (let days = 0; days <= 30; days++) {
       const discountDaysText =
         days === 0 ? 'Até o vencimento' :
-        days === 1 ? `Até ${days} dia antes` :
-        `Até ${days} dias antes`;
+          days === 1 ? `Até ${days} dia antes` :
+            `Até ${days} dias antes`;
 
       const $option = $('<option/>').attr('value', days).text(discountDaysText)
       $selectDiscountDays.append($option)
@@ -294,7 +315,7 @@ class BankSlipForm {
     })
   }
 
-  _bindSelectFines() {
+  _bindSelectFines () {
     const $selectFines = this._$container.find(`#${Selector.SELECT_FINES}`)
     const finesOptions = [.25, .5, .75].concat(Array.from(Array(20), (val, index) => index + 1))
 
@@ -320,7 +341,7 @@ class BankSlipForm {
     })
   }
 
-  _bindSelectInterest() {
+  _bindSelectInterest () {
     const $selectInterest = this._$container.find(`#${Selector.SELECT_INTEREST}`)
     const interestOptions = [.25, .5, .75].concat(Array.from(Array(20), (val, index) => index + 1))
 
@@ -346,7 +367,7 @@ class BankSlipForm {
     })
   }
 
-  _bindInstructionsCount() {
+  _bindInstructionsCount () {
     const instructionsCount = this._$container.find(`#${Selector.TEXT_INSTRUCTIONS_COUNT}`)
     const instructionsInput = this._$container.find(`#${Selector.INPUT_INSTRUCTIONS}`)
     let oldValue = ''
@@ -362,7 +383,7 @@ class BankSlipForm {
     });
   }
 
-  _calculateMaximumDiscount() {
+  _calculateMaximumDiscount () {
     const amount = this._options.payment.amount
     if (!amount) return
 
@@ -374,22 +395,22 @@ class BankSlipForm {
     this._options.payment.bankSlip.discountMaximumText = discountMaximumText
   }
 
-  _isValidDiscount() {
+  _isValidDiscount () {
     const discountDaysNull = typeof this._options.payment.bankSlip.discountDays !== 'number'
     if (discountDaysNull) return true
 
     const discount = this._options.payment.bankSlip.discount
-    const discountMaximum =  this._options.payment.bankSlip.discountMaximum
+    const discountMaximum = this._options.payment.bankSlip.discountMaximum
 
     return discount > 0 && discount <= discountMaximum
   }
 
-  _isValidDueDate() {
+  _isValidDueDate () {
     const dueDate = this._options.payment.bankSlip.dueDate
     return !!dueDate && moment(dueDate).isAfter(new Date())
   }
 
-  _renderInputAmount() {
+  _renderInputAmount () {
     const $inputAmount = this._$container.find(`#${Selector.INPUT_AMOUNT}`)
     const disabled = !(this._options.payment.amountEditable && this._options.payment.onlyBankSlipEnabled)
 
@@ -405,7 +426,7 @@ class BankSlipForm {
     this._inputAmountPartial.render()
   }
 
-  _renderPayMethodIcons() {
+  _renderPayMethodIcons () {
     const $payMethods = this._$container.find(`#${Selector.PAY_METHODS}`)
 
     this._payMethodIconsPartial = new PayMethodIconsPartial($payMethods)
@@ -413,7 +434,7 @@ class BankSlipForm {
     this._payMethodIconsPartial.activeIcon('bank-slip')
   }
 
-  _updateFormState() {
+  _updateFormState () {
     this._formState = this._formState || new FormState(this._$container)
     this._formState.update(Object.assign({
       amount: {
@@ -432,11 +453,11 @@ class BankSlipForm {
     }))
   }
 
-  _goTo(form) {
+  _goTo (form) {
     this._router.render(form, this._$container, this._options)
   }
 
-  _goBack() {
+  _goBack () {
     this._router.goBack()
   }
 }
