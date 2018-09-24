@@ -5,27 +5,24 @@ import moment from 'moment'
 import BankSlipInstallmentsForm from './bank-slip-installments-form'
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
-import PayMethodForm from './pay-method-form'
 import FormState from '../jquery/form-state'
 import { NAMESPACE, ClassName, EventName, MaskMoney, PaymentLimit } from '../constants'
 
 const Selector = {
+  ADD_NOTE_TO_INSTRUCITONS: `${NAMESPACE}_addNoteToInstructions`,
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
   INPUT_DUE_DATE: `${NAMESPACE}_inputDueDate`,
   INPUT_DISCOUNT: `${NAMESPACE}_inputDiscount`,
+  INPUT_NOTE: `${NAMESPACE}_inputNote`,
   PAY_METHODS: `${NAMESPACE}_payMethods`,
   SELECT_ACCEPTED_UNTIL: `${NAMESPACE}_selectAcceptedUntil`,
   SELECT_DISCOUNT_DAYS: `${NAMESPACE}_selectDiscountDays`,
   SELECT_FINES: `${NAMESPACE}_selectFines`,
   SELECT_INTEREST: `${NAMESPACE}_selectInterest`,
   TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`,
-  INPUT_NOTE: `${NAMESPACE}_note`,
-  NOTE_LENGTH_COUNT: `${NAMESPACE}_notLengthCount`,
-  ADD_NOTE_TO_INSTRUCITONS: `${NAMESPACE}_addNoteToInstructions`
+  TEXT_NOTE_COUNT: `${NAMESPACE}_noteCount`
 }
-
-const INSTRUCTIONS_PLACEHOLDER = 'Instruções de desconto, juros e multa serão inclusos automaticamente.'
 
 const VIEW = `
   <form novalidate autocomplete="off">
@@ -92,24 +89,20 @@ const VIEW = `
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="${Selector.INPUT_NOTE}">Descrição do pagamento</label>
-                  <textarea id="${Selector.INPUT_NOTE}" rows="3"class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
-                  <small id="${Selector.NOTE_LENGTH_COUNT}" class="text-secondary">0/255</small>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="${Selector.INPUT_NOTE}">
+                Descrição do pagamento:
+                <small id="${Selector.TEXT_NOTE_COUNT}" class="text-secondary">0/255</small>
+              </label>
+              <textarea id="${Selector.INPUT_NOTE}" rows="2"class="form-control" style="resize: none;" maxlength="255"></textarea>
+              <small class="text-secondary">Desconto, juros e multa são impressos no boleto.</small>
             </div>
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                <label class="switch switch-to-success">
-                  <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
-                  <span class="switch-slider"></span>&nbsp;Instrução de pagamento
-                  </label>
-                </div>
-              </div>
+            <div class="form-group">
+              <label>Imprimir descrição nas instruções do boleto?</label><br>
+              <label class="switch switch-to-success">
+                <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
+                <span class="switch-slider"></span>
+              </label>
             </div>
           </div>
         </div>
@@ -147,6 +140,7 @@ class BankSlipForm {
     this._bindForm()
     this._bindInputDiscount()
     this._bindInputDueDate()
+    this._bindInputNote()
     this._bindMaximumDiscount()
     this._bindSelectAcceptedUntil()
     this._bindSelectFines()
@@ -155,7 +149,6 @@ class BankSlipForm {
     this._renderInputAmount()
     this._renderPayMethodIcons()
     this._updateFormState({})
-    this._bindInstructionsCount()
     this._checkAddNoteToInstructions()
   }
 
@@ -192,10 +185,20 @@ class BankSlipForm {
     })
   }
 
+  _bindInputNote () {
+    const $inputNote = this._$container.find(`#${Selector.INPUT_NOTE}`)
+    const $inputNoteCount = this._$container.find(`#${Selector.TEXT_NOTE_COUNT}`)
+
+    $inputNote.on(EventName.CHANGE, () => {
+      this._options.payment.note = $inputNote.val()
+      $inputNoteCount.text(`${this._options.payment.note.length}/255`)
+    });
+  }
+
   _checkAddNoteToInstructions() {
     const $addNoteToInstructions = this._$container.find(`#${Selector.ADD_NOTE_TO_INSTRUCITONS}`)
 
-    $addNoteToInstructions.on('click', () => {
+    $addNoteToInstructions.on(EventName.CHANGE, () => {
       this._options.payment.bankSlip.addNoteToInstructions = $addNoteToInstructions.is(':checked')
     })
   }
@@ -365,22 +368,6 @@ class BankSlipForm {
       const value = $selectInterest.val()
       this._options.payment.bankSlip.interest = value === '' ? null : Number(value)
     })
-  }
-
-  _bindInstructionsCount () {
-    const notLengthCount = this._$container.find(`#${Selector.NOTE_LENGTH_COUNT}`)
-    const noteInput = this._$container.find(`#${Selector.INPUT_NOTE}`)
-    let oldValue = ''
-
-    noteInput.on('change paster keyup', () => {
-      if (oldValue === noteInput.val()) return
-
-      oldValue = noteInput.val()
-      const value = oldValue || ''
-
-      notLengthCount.text(`${value.length}/255`)
-      this._options.payment.note = value
-    });
   }
 
   _calculateMaximumDiscount () {
