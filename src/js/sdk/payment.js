@@ -40,6 +40,7 @@ class Payment {
   toBankSlip() {
     return {
       amount: this._options.payment.amount,
+      note: this._options.payment.note,
       replicateAmount: this._options.payment.replicateAmount,
       discount: this._options.payment.bankSlip.discount,
       discountDays: this._options.payment.bankSlip.discountDays,
@@ -49,7 +50,7 @@ class Payment {
       payers: this._mapPayers(),
       dates: this._getDueDates(),
       geolocation: this._options.payment.geolocation,
-      instructions: this._options.payment.instructions
+      instructions: this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
     }
   }
 
@@ -63,6 +64,7 @@ class Payment {
     return {
       sellingKey: this.getSellingKey(),
       amount: this._options.payment.amount,
+      note: this._options.payment.note,
       geolocation: this._options.payment.geolocation,
       cards: [
         {
