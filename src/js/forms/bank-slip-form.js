@@ -20,9 +20,9 @@ const Selector = {
   SELECT_FINES: `${NAMESPACE}_selectFines`,
   SELECT_INTEREST: `${NAMESPACE}_selectInterest`,
   TEXT_MAXIMUM_DISCOUNT: `${NAMESPACE}_discountMaximum`,
-  INPUT_INSTRUCTIONS: `${NAMESPACE}_instructions`,
-  TEXT_INSTRUCTIONS_COUNT: `${NAMESPACE}_instructionsCount`,
-  INPUT_CHECK_PRINT_INSTRUCTIONS: `${NAMESPACE}_inputCheckPrintInstructions`
+  INPUT_NOTE: `${NAMESPACE}_note`,
+  NOTE_LENGTH_COUNT: `${NAMESPACE}_notLengthCount`,
+  ADD_NOTE_TO_INSTRUCITONS: `${NAMESPACE}_addNoteToInstructions`
 }
 
 const INSTRUCTIONS_PLACEHOLDER = 'Instruções de desconto, juros e multa serão inclusos automaticamente.'
@@ -95,9 +95,9 @@ const VIEW = `
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label for="${Selector.INPUT_INSTRUCTIONS}">Descrição do pagamento</label>
-                  <textarea id="${Selector.INPUT_INSTRUCTIONS}" rows="3"class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
-                  <small id="${Selector.TEXT_INSTRUCTIONS_COUNT}" class="text-secondary">0/255</small>
+                  <label for="${Selector.INPUT_NOTE}">Descrição do pagamento</label>
+                  <textarea id="${Selector.INPUT_NOTE}" rows="3"class="form-control" style="resize: none;" maxlength="255" placeholder="${INSTRUCTIONS_PLACEHOLDER}"></textarea>
+                  <small id="${Selector.NOTE_LENGTH_COUNT}" class="text-secondary">0/255</small>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ const VIEW = `
               <div class="col">
                 <div class="form-group">
                 <label class="switch switch-to-success">
-                  <input id="${Selector.CHECK_PRINT_INSTRUCTIONS}" type="checkbox">
+                  <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
                   <span class="switch-slider"></span>&nbsp;Instrução de pagamento
                   </label>
                 </div>
@@ -156,7 +156,7 @@ class BankSlipForm {
     this._renderPayMethodIcons()
     this._updateFormState({})
     this._bindInstructionsCount()
-    this._checkPrintInstructions()
+    this._checkAddNoteToInstructions()
   }
 
   _assignInitialValues () {
@@ -192,11 +192,11 @@ class BankSlipForm {
     })
   }
 
-  _checkPrintInstructions () {
-    const $inputCheckPrintInstructions = this._$container.find(`#${Selector.CHECK_PRINT_INSTRUCTIONS}`)
+  _checkAddNoteToInstructions() {
+    const $addNoteToInstructions = this._$container.find(`#${Selector.ADD_NOTE_TO_INSTRUCITONS}`)
 
-    $inputCheckPrintInstructions.on('click', () => {
-      this._options.payment.bankSlip.addNoteToInstructions = $inputCheckPrintInstructions.is(':checked')
+    $addNoteToInstructions.on('click', () => {
+      this._options.payment.bankSlip.addNoteToInstructions = $addNoteToInstructions.is(':checked')
     })
   }
 
@@ -252,8 +252,8 @@ class BankSlipForm {
     for (let days = 0; days <= 25; days++) {
       const acceptedUntilText =
         days === 0 ? 'Não aceitar' :
-          days === 1 ? `Até ${days} dia` :
-            `Até ${days} dias`;
+        days === 1 ? `Até ${days} dia` :
+        `Até ${days} dias`;
 
       const $option = $('<option/>').attr('value', days).text(acceptedUntilText)
       $selectAcceptedUntil.append($option)
@@ -286,8 +286,8 @@ class BankSlipForm {
     for (let days = 0; days <= 30; days++) {
       const discountDaysText =
         days === 0 ? 'Até o vencimento' :
-          days === 1 ? `Até ${days} dia antes` :
-            `Até ${days} dias antes`;
+        days === 1 ? `Até ${days} dia antes` :
+        `Até ${days} dias antes`;
 
       const $option = $('<option/>').attr('value', days).text(discountDaysText)
       $selectDiscountDays.append($option)
@@ -368,18 +368,18 @@ class BankSlipForm {
   }
 
   _bindInstructionsCount () {
-    const instructionsCount = this._$container.find(`#${Selector.TEXT_INSTRUCTIONS_COUNT}`)
-    const instructionsInput = this._$container.find(`#${Selector.INPUT_INSTRUCTIONS}`)
+    const notLengthCount = this._$container.find(`#${Selector.NOTE_LENGTH_COUNT}`)
+    const noteInput = this._$container.find(`#${Selector.INPUT_NOTE}`)
     let oldValue = ''
 
-    instructionsInput.on('change paster keyup', () => {
-      if (oldValue === instructionsInput.val()) return
+    noteInput.on('change paster keyup', () => {
+      if (oldValue === noteInput.val()) return
 
-      oldValue = instructionsInput.val()
+      oldValue = noteInput.val()
       const value = oldValue || ''
 
-      instructionsCount.text(`${value.length}/255`)
-      this._options.payment.instructions = value
+      notLengthCount.text(`${value.length}/255`)
+      this._options.payment.note = value
     });
   }
 
