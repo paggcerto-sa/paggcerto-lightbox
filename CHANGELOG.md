@@ -1,3 +1,6 @@
+## [v1.0.0-beta.8](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.8) (2018-09-15)
+### Funcionalidades:
+- Adiciona campo **descrição do pagamento** com opção de imprimir nas instruções do boleto.
 ## [v1.0.0-beta.7](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.7) (2018-09-14)
 ### _Bug Fixes_:
 - Correção na impressão de comprovante em impressora térmica.
