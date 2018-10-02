@@ -14,6 +14,7 @@ const Selector = {
   TEXT_ACCEPTED_UNTIL: `${NAMESPACE}_acceptedUntil`,
   TEXT_CHARGES: `${NAMESPACE}_charges`,
   TEXT_DISCOUNT: `${NAMESPACE}_discount`,
+  INPUT_NOTE: `${NAMESPACE}_note`,
 }
 
 const VIEW = `
@@ -39,6 +40,7 @@ const VIEW = `
               <div><small id="${Selector.TEXT_ACCEPTED_UNTIL}"></small></div>
               <div><small id="${Selector.TEXT_CHARGES}"></small></div>
               <div><small id="${Selector.TEXT_DISCOUNT}"></small></div>
+              <div><small class="wrap-modal" id="${Selector.INPUT_NOTE}"></small></div>
             </div>
           </div>
         </div>
@@ -78,6 +80,7 @@ class BankSlipInstallmentsForm {
     this._bindTextAcceptedUntil()
     this._bindTextCharges()
     this._bindTextDiscount()
+    this._bindInputNote()
     this._renderInputAmount()
     this._renderPayMethodIcons()
     this._updateFormState()
@@ -157,6 +160,15 @@ class BankSlipInstallmentsForm {
     const instruction = discountText ? `Desconto de ${discountText}% ${discountDaysText}.` : 'Título sem desconto.'
 
     $discount.text(instruction)
+  }
+
+  _bindInputNote(){
+    const $note = this._$container.find(`#${Selector.INPUT_NOTE}`)
+    const inputNote = this._options.payment.note
+
+    if (this._options.payment.bankSlip.addNoteToInstructions) {
+      $note.text(inputNote)
+    }
   }
 
   _renderInputAmount() {
