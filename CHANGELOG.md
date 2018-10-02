@@ -1,3 +1,9 @@
+## v1.0.0-beta.9 (em desenvolvimento)
+### _Bug fixes_:
+- Contador de caracteres do campo **descrição do pagamento** não estava contabilizando.
+- Campo **descrição do pagamento** em branco quando volta da tela de parcelas.
+- Checkbox para imprimir instrução sendo desmarcado quando volta da tela de parcelas.
+- Descrição do pagamento não estava sendo exibido nas instruções.
 ## [v1.0.0-beta.8](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.8) (2018-09-24)
 ### Funcionalidades:
 - Adiciona campo **descrição do pagamento** com opção de imprimir nas instruções do boleto.
