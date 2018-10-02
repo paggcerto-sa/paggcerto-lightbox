@@ -265,8 +265,8 @@ class BankSlipForm {
     for (let days = 0; days <= 25; days++) {
       const acceptedUntilText =
         days === 0 ? 'Não aceitar' :
-          days === 1 ? `Até ${days} dia` :
-            `Até ${days} dias`;
+        days === 1 ? `Até ${days} dia` :
+        `Até ${days} dias`;
 
       const $option = $('<option/>').attr('value', days).text(acceptedUntilText)
       $selectAcceptedUntil.append($option)
@@ -299,8 +299,8 @@ class BankSlipForm {
     for (let days = 0; days <= 30; days++) {
       const discountDaysText =
         days === 0 ? 'Até o vencimento' :
-          days === 1 ? `Até ${days} dia antes` :
-            `Até ${days} dias antes`;
+        days === 1 ? `Até ${days} dia antes` :
+        `Até ${days} dias antes`;
 
       const $option = $('<option/>').attr('value', days).text(discountDaysText)
       $selectDiscountDays.append($option)
