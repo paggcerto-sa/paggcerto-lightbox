@@ -1,4 +1,4 @@
-## [v1.0.0-beta.9] (em desenvolvimento)
+## v1.0.0-beta.9 (em desenvolvimento)
 ### _Bug Fixes_:
 - Contador de caracteres do campo descrição do pagamento não estava contabilizando.
 - Campo descrição do pagamento em branco quando volta da tela de parcelas.
