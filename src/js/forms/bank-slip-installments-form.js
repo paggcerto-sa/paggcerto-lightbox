@@ -166,8 +166,10 @@ class BankSlipInstallmentsForm {
     const $note = this._$container.find(`#${Selector.INPUT_NOTE}`)
     const inputNote = this._options.payment.note
 
+    const instruction = `Descrição do pagamento: ${inputNote}`
+
     if (this._options.payment.bankSlip.addNoteToInstructions) {
-      $note.text(inputNote)
+      $note.text(instruction)
     }
   }
 
