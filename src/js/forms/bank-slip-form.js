@@ -95,7 +95,7 @@ const VIEW = `
                 <small id="${Selector.TEXT_NOTE_COUNT}" class="text-secondary">0/255</small>
               </label>
               <textarea id="${Selector.INPUT_NOTE}" rows="2"class="form-control" style="resize: none;" maxlength="255"></textarea>
-              <small class="text-secondary">Desconto, juros e multa são impressos no boleto.</small>
+              <small class="text-secondary">Desconto, juros e multa serão impressos no(s) boleto(s).</small>
             </div>
             <div class="form-group">
               <label>Imprimir descrição nas instruções do boleto?</label><br>
@@ -172,6 +172,7 @@ class BankSlipForm {
 
     $btnGoBack.on(EventName.CLICK, () => {
       this._options.payment.bankSlip = null
+      this._options.payment.note = null
       this._goBack()
     })
   }
@@ -189,18 +190,27 @@ class BankSlipForm {
     const $inputNote = this._$container.find(`#${Selector.INPUT_NOTE}`)
     const $inputNoteCount = this._$container.find(`#${Selector.TEXT_NOTE_COUNT}`)
 
-    $inputNote.on(EventName.CHANGE, () => {
+    $inputNote.on(EventName.KEY_UP, () => {
       this._options.payment.note = $inputNote.val()
       $inputNoteCount.text(`${this._options.payment.note.length}/255`)
-    });
+    })
+    .val(this._options.payment.note)
+
+    if (this._options.payment.note != undefined || this._options.payment.note != null) {
+      $inputNoteCount.text(`${this._options.payment.note.length}/255`)
+    }
   }
 
-  _checkAddNoteToInstructions() {
+  _checkAddNoteToInstructions () {
     const $addNoteToInstructions = this._$container.find(`#${Selector.ADD_NOTE_TO_INSTRUCITONS}`)
 
     $addNoteToInstructions.on(EventName.CHANGE, () => {
       this._options.payment.bankSlip.addNoteToInstructions = $addNoteToInstructions.is(':checked')
     })
+
+    if (this._options.payment.bankSlip.addNoteToInstructions) {
+      $addNoteToInstructions.attr('checked', true);
+    }
   }
 
   _bindInputDiscount () {
