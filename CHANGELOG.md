@@ -1,3 +1,6 @@
+## [v1.0.0-beta.10](Em desenvolvimento) (2018-10-16)
+### Funcionalidades:
+- Adiciona contatos do pagador ao json com as informações do mesmo.
 ## [v1.0.0-beta.9](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.9) (2018-10-04)
 ### _Bug Fixes_:
 - Contador de caracteres do campo **descrição do pagamento** não estava contabilizando.
@@ -28,7 +31,7 @@
 - Correção na emissão de boletos.
 ## [v1.0.0-beta.3](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.3) (2018-08-23)
 ### Funcionalidades:
-- Configuração para replicar ou dividr valor de prestações no boleto (carnê).
+- Configuração para replicar ou dividir valor de prestações no boleto (carnê).
 ### _Bug fixes_:
 - Correção do juros máximo permitido por lei.
 - Período de vencimento das parcelas do boleto calculando com um mês a mais.
