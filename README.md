@@ -24,7 +24,9 @@ paggcerto.lightbox({
     payers: [{
       sellingKey: null,
       fullName: 'Maria dos Santos',
-      taxDocument: '123.123.123-87'
+      taxDocument: '123.123.123-87',
+      email: 'maria@email.com',
+      mobile: '(79)99999-9999'
     }]
   },
   abort: function () {
