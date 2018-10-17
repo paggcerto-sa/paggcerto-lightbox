@@ -1,4 +1,4 @@
-## v1.0.0-beta.10 (Em desenvolvimento)
+## [v1.0.0-beta.10](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.10) (2018-10-17)
 ### Funcionalidades:
 - Contatos do pagador nas opções do lightbox.
 ## [v1.0.0-beta.9](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.9) (2018-10-04)
