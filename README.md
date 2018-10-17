@@ -82,6 +82,8 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 | `sellingKey`  | `string` | Código que associa o seu ID ao pagamento processado pela Paggcerto (opcional). |
 | `fullName`    | `string` | Nome de quem está pagando (pessoa ou empresa).                                 |
 | `taxDocument` | `string` | CPF/CNPJ de quem está pagando.                                                 |
+| `mobile`      | `string` | Numero de telefone celular de quem está pagando.                               |
+| `email`       | `string` | Email de quem está pagando.                                                    |
 
 ### Eventos (opcionais)
 
