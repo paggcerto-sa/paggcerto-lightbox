@@ -28,6 +28,8 @@ class Payment {
     return this._options.payment.payers.map(payer => {
       payer.name = this._trim(payer.fullName)
       payer.taxDocument = this._trim(payer.taxDocument)
+      payer.email = this._trim(payer.email)
+      payer.mobile = this._trim(payer.mobile)
 
       return payer
     })

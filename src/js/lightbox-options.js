@@ -55,6 +55,8 @@ class LightboxOptions {
         if (!this._isString(payer.sellingKey)) throw new Error(`Invalid options.payment.payers[${index}].sellingKey: Expected String.`)
       if (!this._isString(payer.fullName)) throw new Error(`Invalid options.payment.payers[${index}].name: Expected String.`)
       if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
+      if (!this._isNullOrUndefined(payer.mobile) && !this._isString(payer.mobile)) throw new Error(`Invalid options.payment.payers[${index}].mobile: Expected String.`)
+      if (!this._isNullOrUndefined(payer.email) && !this._isString(payer.email)) throw new Error(`Invalid options.payment.payers[${index}].mobile: Expected String.`)
     })
 
     if (!this._isNullOrUndefined(this._options.abort))

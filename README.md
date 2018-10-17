@@ -24,7 +24,9 @@ paggcerto.lightbox({
     payers: [{
       sellingKey: null,
       fullName: 'Maria dos Santos',
-      taxDocument: '123.123.123-87'
+      taxDocument: '123.123.123-87',
+      email: 'maria@email.com',
+      mobile: '(79) 99999-9999'
     }]
   },
   abort: function () {
@@ -80,6 +82,8 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 | `sellingKey`  | `string` | Código que associa o seu ID ao pagamento processado pela Paggcerto (opcional). |
 | `fullName`    | `string` | Nome de quem está pagando (pessoa ou empresa).                                 |
 | `taxDocument` | `string` | CPF/CNPJ de quem está pagando.                                                 |
+| `mobile`      | `string` | Celular do pagador (opcional). Possibilita envio de notificações por SMS.      |
+| `email`       | `string` | E-mail do pagador (opcional). Possibilita envio de notificações por e-mail.    |
 
 ### Eventos (opcionais)
 
