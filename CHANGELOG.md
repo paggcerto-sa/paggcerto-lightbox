@@ -1,6 +1,6 @@
-## [v1.0.0-beta.10](Em desenvolvimento) (2018-10-16)
+## v1.0.0-beta.10 (Em desenvolvimento)
 ### Funcionalidades:
-- Adiciona contatos do pagador ao json com as informações do mesmo.
+- Contatos do pagador nas opções do lightbox.
 ## [v1.0.0-beta.9](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.9) (2018-10-04)
 ### _Bug Fixes_:
 - Contador de caracteres do campo **descrição do pagamento** não estava contabilizando.
