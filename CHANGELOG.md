@@ -1,4 +1,4 @@
-## v1.0.0-beta.11 (em desenvolvimento)
+## [v1.0.0-beta.11](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.11) (2018-10-18)
 ### Funcionalidades:
 - Valor mínimo do boleto foi ajustado para R$ 6,00
 ## [v1.0.0-beta.10](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.10) (2018-10-17)
