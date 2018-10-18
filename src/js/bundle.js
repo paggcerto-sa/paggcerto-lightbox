@@ -1,5 +1,5 @@
 /*!
- * Paggcerto v1.0.0-beta.10
+ * Paggcerto v1.0.0-beta.11
  * Copyright 2018 Paggcerto
  */
 
