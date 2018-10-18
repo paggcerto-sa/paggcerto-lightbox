@@ -58,7 +58,7 @@ paggcerto.lightbox({
 
 | Propriedade        | Tipo   | Descrição                                                                                                            |
 | ------------------ | ------ | ---------------------------------------------------------------------------------------------- |
-| `bankSlipEnabled`  | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com boleto.  Mínimo R$ 10,00.          |
+| `bankSlipEnabled`  | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com boleto.  Mínimo R$ 6,00.           |
 | `creditEnabled`    | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de crédito. Mínimo R$ 1,00. |
 | `debitEnabled`     | `bool` | Exibe (`true`) ou oculta (`false`) a opção de pagamento com cartão de débito. Mínimo R$ 1,00.  |
 | `replicateAmount`  | `bool` | Indica se o valor do boleto deve ser replicado ou dividido. Ex.: R$100 em 10 boletos de R$100 (replicado) ou em 10 boletos de R$10 cada (dividido). |
@@ -101,4 +101,4 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 
 ## Bugs e funcionalidades
 
-Por favor, sinta-se a vontade para [inicar uma issue](https://github.com/paggcerto-sa/paggcerto-lightbox/issues).
+Por favor, sinta-se a vontade para [iniciar uma issue](https://github.com/paggcerto-sa/paggcerto-lightbox/issues).
