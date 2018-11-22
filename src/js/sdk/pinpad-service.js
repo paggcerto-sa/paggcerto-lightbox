@@ -19,10 +19,11 @@ class ReadCardRequest {
 }
 
 class PaymentRequest {
-  constructor(sellingkey, installments, token) {
+  constructor(sellingkey, installments, ask_password, token) {
     this.type = 'TRANSACTION'
     this.sellingkey = sellingkey
     this.installments = installments
+    this.ask_password = ask_password
     this.token = token
   }
 
@@ -121,11 +122,11 @@ export class PinpadService {
     }
   }
 
-  async pay(sellingkey, installments, token, statusCallback) {
+  async pay(sellingkey, installments, token, ask_password, statusCallback) {
 
     statusCallback = statusCallback || (() => {})
 
-    const paymentRequest = new PaymentRequest(sellingkey, installments, token)
+    const paymentRequest = new PaymentRequest(sellingkey, installments, ask_password, token)
 
     if (!this.websocket.send(paymentRequest.toString())) {
       return null

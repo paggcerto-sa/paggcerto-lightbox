@@ -70,6 +70,8 @@ class PinpadProcessingForm {
 
     spinner.toggleClass('d-none')
     deviceImg.toggleClass('d-none')
+
+    this._setTitle(PROCESSING_MSG)
   }
 
   _setTitle(msg) {
@@ -78,7 +80,6 @@ class PinpadProcessingForm {
 
   _processStatus(type, msg) {
     if (type === 'DEVICE_MSG' && msg === 'RETIRE O CARTAO') {
-      this._setTitle(PROCESSING_MSG)
       this._toggleSpinner()
     }
   }
@@ -87,16 +88,20 @@ class PinpadProcessingForm {
 
     if (this._options.pinpad === null) {
       return this._goTo(CardErrorForm)
+    } else if (this._options.ask_password === false) {
+      this._toggleSpinner()
     }
 
     const sellingkey = this._options.sellingkey
     const installments = this._options.payment.installments
     const token = this._options.token
+    const ask_password = this._options.ask_password !== false
 
     const transactionResponse = await this._options.pinpad.pay(
       sellingkey,
       installments,
       token,
+      ask_password,
       (type, msg) => this._processStatus(type, msg)
     )
 
