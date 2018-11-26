@@ -145,7 +145,6 @@ class BankSlipForm {
     this._bindSelectAcceptedUntil()
     this._bindSelectFines()
     this._bindSelectInterest()
-    this._bindSelectDiscountDays()
     this._renderInputAmount()
     this._renderPayMethodIcons()
     this._updateFormState({})
@@ -243,6 +242,7 @@ class BankSlipForm {
         this._options.payment.bankSlip.dueDate = dueDateMoment.isValid() ? dueDateMoment.toDate() : null
         this._options.payment.bankSlip.dueDateText = dueDateText
         this._formState.touch({ dueDate: true })
+        this._bindSelectDiscountDays()
         this._updateFormState()
       })
       .mask("99/99/9999")
@@ -295,18 +295,31 @@ class BankSlipForm {
   _bindSelectDiscountDays () {
     const $selectDiscountDays = this._$container.find(`#${Selector.SELECT_DISCOUNT_DAYS}`)
     const $inputDiscount = this._$container.find(`#${Selector.INPUT_DISCOUNT}`)
+    const diffMaxDays = 30
 
-    for (let days = 0; days <= 30; days++) {
-      const discountDaysText =
-        days === 0 ? 'Até o vencimento' :
-        days === 1 ? `Até ${days} dia antes` :
-        `Até ${days} dias antes`;
+    $selectDiscountDays.attr("disabled", true)
 
-      const $option = $('<option/>').attr('value', days).text(discountDaysText)
-      $selectDiscountDays.append($option)
+    if (this._isValidDueDate()) {
+      $selectDiscountDays.removeAttr("disabled");
+      const $inputDueDate = this._$container.find(`#${Selector.INPUT_DUE_DATE}`)
+      const dueDateMoment = moment($inputDueDate.val(), "DD/MM/YYYY", true)
+      var diffDays = (moment().diff(dueDateMoment, "days") * -1) + 1
+      diffDays = diffDays >= 30 ? diffMaxDays : diffDays
 
-      if (this._options.payment.bankSlip.discountDays === days) {
-        $option.attr('selected', true)
+      $selectDiscountDays.children("option:not(:first)").remove();
+
+      for (let days = 0; days <= diffDays; days++) {
+          const discountDaysText =
+            days === 0 ? 'Até o vencimento' :
+            days === 1 ? `Até ${days} dia antes` :
+            `Até ${days} dias antes`;
+
+          const $option = $('<option/>').attr('value', days).text(discountDaysText)
+          $selectDiscountDays.append($option)
+
+          if (this._options.payment.bankSlip.discountDays === days) {
+            $option.attr('selected', true)
+          }
       }
     }
 
