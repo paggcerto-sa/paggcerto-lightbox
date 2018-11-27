@@ -1,3 +1,7 @@
+## [v1.0.0-beta.12](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.12) (2018-11-27)
+### _Bug Fixes_:
+- O campo oferecer desconto não estava sendo validado ao escolher a data de vencimento.
+
 ## [v1.0.0-beta.11](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.11) (2018-10-18)
 ### Funcionalidades:
 - Valor mínimo do boleto foi ajustado para R$ 6,00
