@@ -79,6 +79,8 @@ export class PinpadForm {
 
     if (this._shouldForceChip()) return this._renderForceChipUse()
 
+    if (this._shouldProcessBaneseCredit()) this._processBaneseCredit()
+
     this._goTo(CardInstallmentForm)
   }
 
@@ -91,15 +93,22 @@ export class PinpadForm {
     this._goTo(PinpadProcessingForm)
   }
 
+  _processBaneseCredit() {
+    this._options.ask_password = false
+  }
+
   _shouldRedirectToOnline() {
     return !this._options.payment.card.bin.emvSupported ||
-      this._isBaneseCard() ||
       this._isAmexCard() ||
       this._isHiperCard()
   }
 
   _shouldForceChip() {
     return this._cardInformation.hasChip && !this._cardInformation.chipWasUsed
+  }
+
+  _shouldProcessBaneseCredit() {
+    return this._options.payment.credit && this._isBaneseCard()
   }
 
   _handleResponseError(response) {
