@@ -89,9 +89,9 @@ $input-group-addon-border-color: $blue;
 
 // Lightbox
 
-$lightbox-icons: url("http://lightbox.paggcerto.com.br/dist/lightbox-icons.svg");
-$lightbox-icon-insert-card: url("http://lightbox.paggcerto.com.br/dist/insert-card.svg");
-$lightbox-icon-type-password: url("http://lightbox.paggcerto.com.br/dist/type-password.svg");
+$lightbox-icons: url("https://raw.githubusercontent.com/paggcerto-sa/paggcerto-lightbox/master/dist/lightbox-icons.svg?sanitize=true");
+$lightbox-icon-insert-card: url("https://raw.githubusercontent.com/paggcerto-sa/paggcerto-lightbox/master/dist/insert-card.svg?sanitize=true");
+$lightbox-icon-type-password: url("https://raw.githubusercontent.com/paggcerto-sa/paggcerto-lightbox/master/dist/type-password.svg?sanitize=true");
 $lightbox-font-family: Arial, sans-serif;
 $lightbox-font-size: 1rem;
 $lightbox-bg: $white;
