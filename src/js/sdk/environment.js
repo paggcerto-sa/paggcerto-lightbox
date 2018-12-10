@@ -1,11 +1,11 @@
 const SandboxUrl = {
-  BANK_SLIP_PDF: 'http://payments.sandbox.paggcerto.com.br/api/v2/bank-slips/pdf/{paymentId}',
-  BANK_SLIP_ZIP: 'http://payments.sandbox.paggcerto.com.br/api/v2/bank-slips/zip?{payments}',
-  BINS: 'http://payments.sandbox.paggcerto.com.br/api/v2/bins',
-  PAY_WITH_CARDS: 'http://payments.sandbox.paggcerto.com.br/api/v2/pay/cards',
-  PAY_WITH_BANK_SLIPS: 'http://payments.sandbox.paggcerto.com.br/api/v2/pay/bank-slips',
-  SEND_CARD_RECEIPT: 'http://payments.sandbox.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}',
-  PRESETS: 'http://account.sandbox.paggcerto.com.br/api/v2/presets'
+  BANK_SLIP_PDF: 'https://payments.sandbox.paggcerto.com.br/api/v2/bank-slips/pdf/{paymentId}',
+  BANK_SLIP_ZIP: 'https://payments.sandbox.paggcerto.com.br/api/v2/bank-slips/zip?{payments}',
+  BINS: 'https://payments.sandbox.paggcerto.com.br/api/v2/bins',
+  PAY_WITH_CARDS: 'https://payments.sandbox.paggcerto.com.br/api/v2/pay/cards',
+  PAY_WITH_BANK_SLIPS: 'https://payments.sandbox.paggcerto.com.br/api/v2/pay/bank-slips',
+  SEND_CARD_RECEIPT: 'https://payments.sandbox.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}',
+  PRESETS: 'https://account.sandbox.paggcerto.com.br/api/v2/presets'
 }
 
 const ProductionUrl = {
