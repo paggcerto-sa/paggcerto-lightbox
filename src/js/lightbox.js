@@ -10,6 +10,9 @@ const VIEW = `
     <div class="${ClassName.DIALOG}">
       <button type="button" class="${ClassName.BTN_CLOSE}"></button>
       <div class="${ClassName.CONTENT}"></div>
+      <a>
+        <span class="security-ambient"><i class="icon-shield"></i> Ambiente Seguro</span>
+      </a>
       <a href="https://www.paggcerto.com.br/" target="_blank">
         <span class="icon-logo"></span>
       </a>
