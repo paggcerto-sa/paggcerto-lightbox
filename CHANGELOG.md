@@ -1,4 +1,4 @@
-## [v1.0.0] (2018-12-10)
+## [v1.0.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0) (2018-12-10)
 ### Funcionalidades:
 - Atualizado endereço de icones para referencias ícones https.
 - Adicionado selo de segurança.
