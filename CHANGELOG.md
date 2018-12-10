@@ -1,3 +1,8 @@
+## [v1.0.0] (2018-12-10)
+### Funcionalidades:
+- Atualizado endereço de icones para referencias ícones https.
+- Adicionado selo de segurança.
+
 ## [v1.0.0-beta.12](https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.0.0-beta.12) (2018-11-27)
 ### _Bug Fixes_:
 - O campo oferecer desconto não estava sendo validado ao escolher a data de vencimento.
