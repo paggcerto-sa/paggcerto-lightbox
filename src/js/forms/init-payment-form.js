@@ -4,6 +4,7 @@ import PayMethodForm from './pay-method-form'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PinpadService from '../sdk/pinpad-service'
 import UnauthorizedForm from './unauthorized-form'
+import ErrorOptionsForm from "./error-options-form";
 
 const Selector = {
   PAY_METHODS: `${NAMESPACE}_payMethods`
@@ -56,10 +57,19 @@ class InitPaymentForm {
     this._router.render(UnauthorizedForm, this._$container)
   }
 
+  _renderErrorOptionsForm () {
+    this._router.render(ErrorOptionsForm, this._$container, this._options)
+  }
+
   async render(router) {
     this._router = router
     this._$container.html(VIEW)
     this._renderPayMethodIcons()
+
+    if (this._options.errors) {
+      this._renderErrorOptionsForm()
+      return
+    }
 
     try {
 
@@ -70,18 +80,17 @@ class InitPaymentForm {
         this._options.pinpad = null
       }
 
-      const pinpad = new PinpadService(this._options)
+      if (this._options.payment.deviceEnabled) {
+        const pinpad = new PinpadService(this._options)
 
-      if (await pinpad.connect()) {
+        if (await pinpad.connect()) {
+          const devices = await pinpad.listDevices()
 
-        const devices = await pinpad.listDevices()
-
-        if (devices !== null && devices.length > 0) {
-
-          this._options.pinpad = pinpad
-
-        } else {
-          await pinpad.close()
+          if (devices !== null && devices.length > 0) {
+            this._options.pinpad = pinpad;
+          } else {
+            await pinpad.close();
+          }
         }
       }
 

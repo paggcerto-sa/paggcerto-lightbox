@@ -10,7 +10,8 @@ import CardOnlineForm from './card-online-form';
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
-  PAY_METHODS: `${NAMESPACE}_payMethods`
+  PAY_METHODS: `${NAMESPACE}_payMethods`,
+  PAYMENT_METHOD: `${NAMESPACE}_payMethod`
 }
 
 const VIEW = `
@@ -23,7 +24,7 @@ const VIEW = `
       <div class="col border-right">
         <div class="form-group text-center">
           <span id="${Selector.INPUT_AMOUNT}"></span>
-          <span class="pay-method-text">Crédito</span>
+          <span id="${Selector.PAYMENT_METHOD}" class="pay-method-text">Crédito</span>
         </div>
       </div>
       <div class="col">
@@ -51,6 +52,12 @@ class CardProcessingForm {
     this._inputAmountPartial = new InputAmountPartial($inputAmount, this._options)
     this._inputAmountPartial.disabled(true)
     this._inputAmountPartial.render()
+    const $spanMethod = this._$container.find(`#${Selector.PAYMENT_METHOD}`)
+    if (this._options.payment.credit === false) {
+        $spanMethod.html("Débito")
+    } else {
+        $spanMethod.html("Crédito")
+    }
   }
 
   _renderPayMethodIcons() {

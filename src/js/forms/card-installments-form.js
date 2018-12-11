@@ -6,7 +6,6 @@ import InstallmentOptionsPartial from '../partials/installment-options-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PinpadProcessingForm from './pinpad-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
-import { ResolvablePromise } from '../util/async';
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,

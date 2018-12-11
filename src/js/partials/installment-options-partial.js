@@ -86,7 +86,10 @@ class InstallmentOptionsPartial {
 
   _getMaximumInstallmentNumber() {
     if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
-    if (this._isCreditCard()) return this._options.payment.card.bin.maximumInstallment
+    if (this._isCreditCard()) {
+      if (this._options.payment.card.bin.maximumInstallment < this._options.payment.card.installments) return this._options.payment.card.bin.maximumInstallment
+      return this._options.payment.card.installments
+    }
   }
 
   _getDueDatePeriodText(installments) {
