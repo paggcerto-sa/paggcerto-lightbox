@@ -7,6 +7,7 @@ import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import FormState from '../jquery/form-state'
 import { NAMESPACE, ClassName, EventName, MaskMoney, PaymentLimit } from '../constants'
+import { _isNullOrUndefined } from '../../js/util/annotations'
 
 const Selector = {
   ADD_NOTE_TO_INSTRUCITONS: `${NAMESPACE}_addNoteToInstructions`,
@@ -127,10 +128,10 @@ class BankSlipForm {
     this._$container = $container
     this._options = options
     this._router = null
+    this._firstbind = true
   }
 
   render (router) {
-
     this._router = router
 
     this._$container.html(VIEW)
@@ -149,6 +150,7 @@ class BankSlipForm {
     this._renderPayMethodIcons()
     this._updateFormState({})
     this._checkAddNoteToInstructions()
+    this._firstbind = false
   }
 
   _assignInitialValues () {
@@ -198,6 +200,12 @@ class BankSlipForm {
     if (this._options.payment.note != undefined || this._options.payment.note != null) {
       $inputNoteCount.text(`${this._options.payment.note.length}/255`)
     }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.note) && this._firstbind) {
+      $inputNote.val(this._options.payment.bankSlip.note)
+      this._options.payment.note = this._options.payment.bankSlip.note
+      $inputNoteCount.text(`${this._options.payment.note.length}/255`)
+    }
   }
 
   _checkAddNoteToInstructions () {
@@ -230,6 +238,11 @@ class BankSlipForm {
     if (typeof this._options.payment.bankSlip.discountDays !== 'number') {
       $inputDiscount.attr('disabled', true)
     }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.discount) && this._firstbind) {
+      $inputDiscount.val(this._options.payment.bankSlip.discount + '%')
+      this._updateFormState()
+    }
   }
 
   _bindInputDueDate () {
@@ -248,6 +261,12 @@ class BankSlipForm {
       .mask("99/99/9999")
       .val(this._options.payment.bankSlip.dueDateText)
       .focus()
+
+    if (this._options.payment.bankSlip != null && this._firstbind) {
+      $inputDueDate.val(this._options.payment.bankSlip.dueDate)
+      this._options.payment.bankSlip.dueDate = moment(this._options.payment.bankSlip.dueDate, "DD/MM/YYYY")
+      $inputDueDate.trigger(EventName.KEY_UP)
+    }
   }
 
   _bindMaximumDiscount () {
@@ -317,7 +336,11 @@ class BankSlipForm {
           const $option = $('<option/>').attr('value', days).text(discountDaysText)
           $selectDiscountDays.append($option)
 
-          if (this._options.payment.bankSlip.discountDays === days) {
+          if (this._options.payment.bankSlip.discountDays === days && this._firstbind) {
+            $option.attr('selected', true)
+          }
+
+          if (this._options.payment.bankSlip.discountDays === days && !this._firstbind) {
             $option.attr('selected', true)
           }
       }

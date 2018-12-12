@@ -3,7 +3,20 @@ import Environment from './sdk/environment'
 import TaxDocument from './util/taxdocument'
 import Email from './util/email'
 import Phone from './util/phone'
+import DueDate from './util/dateDue'
 import { PaymentLimit } from './constants'
+
+import {
+  _isArray,
+  _isBoolean,
+  _isNullOrUndefined,
+  _isNumber,
+  _isNumberPositive,
+  _isObject,
+  _isString,
+  _isFunction,
+  _isNumberPositiveOrNeutral } from "./util/annotations"
+import DateDue from './util/dateDue';
 
 class LightboxOptions {
   constructor(options) {
@@ -11,91 +24,13 @@ class LightboxOptions {
     this._options.errors = []
   }
 
-  _isArray(value) {
-    return value instanceof Array
-  }
-
-  _isBoolean(value) {
-    return typeof value === 'boolean'
-  }
-
-  _isNullOrUndefined(value) {
-    return value === undefined || value === null
-  }
-
-  _isNumber(value) {
-    return typeof value === 'number'
-  }
-
-  _isNumberPositive(value) {
-    var isNumber = this._isNumber(value)
-    if (!isNumber) return false
-
-    var _isNumberPositive = value <= 0
-    return !_isNumberPositive && isNumber
-  }
-
-  _isObject(value) {
-    return typeof value === 'object'
-  }
-
-  _isString(value) {
-    return typeof value === 'string'
-  }
-
-  _isFunction(value) {
-    return typeof value === 'function'
-  }
-
   _validate() {
-    if (!this._isObject(this._options)) throw new Error('Invalid options: Expected Object.')
-    if (!this._isString(this._options.environment)) this._options.errors.push({ "message": "O campo de configuração de ambiente está invalido." })
-    if (this._options.environment !== Environment.Sandbox && this._options.environment !== Environment.Production) {
-      this._options.errors.push({ "message": "O ambiente que está rodando não é homolgado pela paggcerto."})
-    }
-    if (!this._isString(this._options.token)) throw new Error('Invalid options.token: Expected String.')
-    if (!this._isObject(this._options.payment)) throw new Error('Invalid options.payment: Expected Object.')
-    if (!this._isNullOrUndefined(this._options.payment.amount))
-      if (!this._isNumber(this._options.payment.amount)) this._options.errors.push({ "message": "O valor do pagamento não é numérico." })
-    if (!this._isBoolean(this._options.payment.replicateAmount)) this._options.errors.push({ "message": "O campo de configuração do mudança de valor está inválido." })
-    if (!this._isBoolean(this._options.payment.bankSlipEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com boleto está inválido." })
-    if (!this._isBoolean(this._options.payment.creditEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com cartão de crédito está inválido." })
-    if (!this._isBoolean(this._options.payment.debitEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com cartão de débito está inválido." })
-    if (!this._isArray(this._options.payment.payers)) throw new Error('Invalid options.payment.payers: Expected Array.')
-    if (!this._isBoolean(this._options.payment.deviceEnabled) && !this._isNullOrUndefined(this._options.payment.deviceEnabled)) throw new Error("Invalid options.payment.deviceEnabled: Expected Boolean.");
-    if (!this._isNullOrUndefined(this._options.payment.card)) {
-      if (!this._isNullOrUndefined(this._options.payment.card.installments) && !this._isNumberPositive(this._options.payment.card.installments)) {
-         this._options.errors.push({ "message": `A quantidade de parcelas deve ser positiva`})
-      }
-      if (this._options.payment.card.installments > PaymentLimit.CREDIT_INSTALLMENTS_MAXIMUM) {
-        this._options.errors.push({ "message": `Quantidade maxima de parcelas é ${ PaymentLimit.CREDIT_INSTALLMENTS_MAXIMUM }.`})
-      }
-    }
-
-    this._options.payment.payers.forEach((payer, index) => {
-      if (!this._isObject(payer)) throw new Error(`Invalid options.payment.payers[${index}]: Expected Object.`)
-      if (!this._isNullOrUndefined(payer.sellingKey))
-        if (!this._isString(payer.sellingKey)) throw new Error(`Invalid options.payment.payers[${index}].sellingKey: Expected String.`)
-      if (!this._isString(payer.fullName)) this._options.errors.push({ "message": `O nome do pagador do indice ${index} está inválido.` })
-      if (!this._isString(payer.taxDocument)) throw new Error(`Invalid options.payment.payers[${index}].taxDocument: Expected String.`)
-      if (!new TaxDocument(payer.taxDocument).isValid()) this._options.errors.push({ "message": `O documento do pagador ${payer.fullName} está inválido.` })
-      if (!this._isNullOrUndefined(payer.mobile) && !this._isString(payer.mobile)) throw new Error(`Invalid options.payment.payers[${index}].mobile: Expected String.`)
-      if (!this._isNullOrUndefined(payer.email) && !this._isString(payer.email)) throw new Error(`Invalid options.payment.payers[${index}].mobile: Expected String.`)
-      if (!this._isNullOrUndefined(payer.email)) {
-        if (!new Email(payer.email).isValid()) this._options.errors.push({ "message": `O email do pagador ${payer.fullName} está inválido.` })
-      }
-
-      if (!this._isNullOrUndefined(payer.mobile)) {
-        if (!new Phone(payer.mobile).isValid()) this._options.errors.push({ "message": `O celular do pagador ${payer.fullName} está inválido.` })
-      }
-    })
-
-    if (!this._isNullOrUndefined(this._options.abort))
-      if (!this._isFunction(this._options.abort)) throw new Error('Invalid options.abort: Expected Function.')
-    if (!this._isNullOrUndefined(this._options.success))
-      if (!this._isFunction(this._options.success)) throw new Error('Invalid options.success: Expected Function.')
-    if (!this._isNullOrUndefined(this._options.fail))
-      if (!this._isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
+    this._validateEnvironment()
+    this._validatePaymentConfig()
+    this._validatePayers()
+    this._validateCard()
+    this._validateBankSlip()
+    this._validateFunctionsCallBacks()
   }
 
   _rewriteValues() {
@@ -109,10 +44,10 @@ class LightboxOptions {
 
   _setDefaultValues() {
     this._options.payment = this._options.payment || {}
-    this._options.payment.bankSlip = this._isNullOrUndefined(this._options.payment.bankSlip) ? null : this._options.payment.bankSlip
-    this._options.payment.card = this._isNullOrUndefined(this._options.payment.card) ? null : this._options.payment.card
+    this._options.payment.bankSlip = _isNullOrUndefined(this._options.payment.bankSlip) ? null : this._options.payment.bankSlip
+    this._options.payment.card = _isNullOrUndefined(this._options.payment.card) ? null : this._options.payment.card
     this._options.payment.amountText = new Currency(this._options.payment.amount).asString()
-    this._options.payment.deviceEnabled = this._isNullOrUndefined(this._options.payment.deviceEnabled) ? true : this._options.payment.deviceEnabled
+    this._options.payment.deviceEnabled = _isNullOrUndefined(this._options.payment.deviceEnabled) ? true : this._options.payment.deviceEnabled
   }
 
   _setHelperValues() {
@@ -124,7 +59,7 @@ class LightboxOptions {
     this._options.payment.onlyCreditEnabled = creditEnabled && !(debitEnabled || bankSlipEnabled)
     this._options.payment.onlyDebitEnabled = debitEnabled && !(creditEnabled || bankSlipEnabled)
     this._options.payment.allMethodsDisabled = !(bankSlipEnabled || creditEnabled || debitEnabled)
-    this._options.payment.amountEditable = this._isNullOrUndefined(this._options.payment.amount)
+    this._options.payment.amountEditable = _isNullOrUndefined(this._options.payment.amount)
   }
 
   _setCurrentLocation() {
@@ -136,6 +71,163 @@ class LightboxOptions {
         }
       })
     }
+  }
+
+  _validateCard() {
+    if (_isNullOrUndefined(this._options.payment.card)) return
+    if (!_isObject(this._options.payment.card)) {
+      this._options.errors.push({ "message": `O formato para configurar pagamento com cartão está invalido.` })
+      return
+    }
+    if (!_isNullOrUndefined(this._options.payment.card.installments) && !_isNumberPositive(this._options.payment.card.installments)) {
+      this._options.errors.push({ "message": `A quantidade de parcelas deve ser positiva` })
+      return
+    }
+    else if (this._options.payment.card.installments > PaymentLimit.CREDIT_INSTALLMENTS_MAXIMUM) {
+      this._options.errors.push({ "message": `Quantidade máxima de parcelas é ${PaymentLimit.CREDIT_INSTALLMENTS_MAXIMUM}.` })
+    }
+  }
+
+  _validateBankSlip () {
+    if (_isNullOrUndefined(this._options.payment.bankSlip)) return
+    if (!_isObject(this._options.payment.bankSlip)) {
+      this._options.errors.push({ "message": `O formato para configurar pagamento com boleto está inválido.` })
+      return
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.dueDate)) {
+      var dueDate = new DateDue(this._options.payment.bankSlip.dueDate)
+
+      if (!dueDate.isValid()) {
+        this._options.errors.push({ "message": `O formato da data de vencimento do boleto está inválido ou a data deve ser posterior a data atual (D+1).` })
+        return
+      }
+      if (dueDate._diffDays > PaymentLimit.MAX_DUE_DAYS) this._options.errors.push({ "message": `O campo data de vencimento do boleto ultrapassou a quantidade máxima de dias permitido que é  ${PaymentLimit.MAX_DUE_DAYS}.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.addNoteToInstructions)) {
+      if (!_isBoolean(this._options.payment.bankSlip.addNoteToInstructions)) this._options.errors.push({ "message": `O campo para habilitar informações na instrução está inválido.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.note)) {
+      if (!_isString(this._options.payment.bankSlip.note)) {
+        this._options.errors.push({ "message": `O campo descrição do pagamento do boleto está inválido.` })
+        return
+      }
+      if (this._options.payment.bankSlip.note.length > PaymentLimit.MAX_CARACTERES_INSTRUCTIONS) this._options.errors.push({ "message": `O tamanho máximo permitido para o campo de descrição do pagamento é ${PaymentLimit.MAX_CARACTERES_INSTRUCTIONS}.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.acceptedUntil)) {
+      if (!_isNumberPositiveOrNeutral(this._options.payment.bankSlip.acceptedUntil)) {
+        this._options.errors.push({ "message": `O formato do campo para aceitar após o vencimento está inválido.` })
+        return
+      }
+      if (this._options.payment.bankSlip.acceptedUntil > PaymentLimit.MAX_ACCEPTED_UNTIL) this._options.errors.push({ "message": `A quantidade de dias máximo permitido para aceitar após vencimento é ${PaymentLimit.MAX_ACCEPTED_UNTIL}.` })
+      if (this._options.payment.bankSlip.acceptedUntil == 0 && !_isNullOrUndefined(this._options.payment.bankSlip.interest)) this._options.errors.push({ "message": `Não é permitido aplicar juros. Porque o boleto não está configurado para aceitar após vencimento.` })
+      if (this._options.payment.bankSlip.acceptedUntil == 0 && !_isNullOrUndefined(this._options.payment.bankSlip.fines)) this._options.errors.push({ "message": `Não é permitido aplicar multa. Porque o boleto não está configurado para aceitar após vencimento.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.discountDays)) {
+      if (!_isNumberPositiveOrNeutral(this._options.payment.bankSlip.discountDays)) {
+        this._options.errors.push({ "message": `O formato do campo para dias de desconto está inválido.` })
+        return
+      }
+      if (this._options.payment.bankSlip.discountDays > PaymentLimit.MAX_DISCOUNT_DAYS) this._options.errors.push({ "message": `A quantidade de dias máximo permitido para descontos é ${PaymentLimit.MAX_DISCOUNT_DAYS}.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.interest)) {
+      if (!_isNumberPositive(this._options.payment.bankSlip.interest)) {
+        this._options.errors.push({ "message": `O formato do campo para o valor de multa está inválido.` })
+        return
+      }
+      if (this._options.payment.bankSlip.interest < PaymentLimit.MIN_BANK_SLIP_INTEREST) this._options.errors.push({ "message": `O valor minimo para juros é ${PaymentLimit.MIN_BANK_SLIP_INTEREST}%.` })
+      if (this._options.payment.bankSlip.interest > PaymentLimit.MAX_BANK_SLIP_INTEREST) this._options.errors.push({ "message": `O valor máximo para juros é ${PaymentLimit.MAX_BANK_SLIP_INTEREST}%.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.fines)) {
+      if (!_isNumberPositive(this._options.payment.bankSlip.fines)) {
+        this._options.errors.push({ "message": `O formato do campo para o valor de multa está inválido.` })
+        return
+      }
+      if (this._options.payment.bankSlip.fines < PaymentLimit.MIN_BANK_SLIP_FINES) this._options.errors.push({ "message": `O valor minimo para multa é ${PaymentLimit.MIN_BANK_SLIP_FINES}%.` })
+      if (this._options.payment.bankSlip.fines > PaymentLimit.MAX_BANK_SLIP_FINES) this._options.errors.push({ "message": `O valor máximo para multa é ${PaymentLimit.MAX_BANK_SLIP_FINES}%.` })
+    }
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.discount)) {
+      if (!_isNumberPositive(this._options.payment.bankSlip.discount)) {
+        this._options.errors.push({ "message": `O formato do campo para o valor do desconto está inválido.` })
+        return
+      }
+
+      if (_isNullOrUndefined(this._options.payment.bankSlip.discountDays)) this._options.errors.push({ "message": `Não é possivel adicionar desconto ao boleto, pois não está configurado a quantidade de dias para desconto.` })
+    }
+  }
+
+  _validatePayers() {
+    if (!_isArray(this._options.payment.payers)) {
+      this._options.errors.push({ "message": "O formato dos pagadores está inválido." })
+      return
+    }
+
+    this._options.payment.payers.forEach((payer, index) => {
+      if (!_isObject(payer)) this._options.errors.push({ "message": `O formato do pagador está incorreto.` })
+      if (!_isNullOrUndefined(payer.sellingKey))
+        if (!_isString(payer.sellingKey)) this._options.errors.push({ "message": `O formato da chave de venda do pagador do indice ${index} está incorreto.` })
+      if (!_isString(payer.fullName)) this._options.errors.push({ "message": `O nome do pagador do indice ${index} está inválido.` })
+      if (!_isString(payer.taxDocument)) this._options.errors.push({ "message": `O formato do documento do pagador ${payer.fullName} está incorreto.` })
+      if (!new TaxDocument(payer.taxDocument).isValid()) this._options.errors.push({ "message": `O documento do pagador ${payer.fullName} está inválido.` })
+      if (!_isNullOrUndefined(payer.mobile) && !_isString(payer.mobile)) this._options.errors.push({ "message": `O celular do pagador ${payer.fullName} está inválido.` })
+      if (!_isNullOrUndefined(payer.email) && !_isString(payer.email)) this._options.errors.push({ "message": `O email do pagador ${payer.fullName} está inválido.` })
+      if (!_isNullOrUndefined(payer.email)) {
+        if (!new Email(payer.email).isValid()) this._options.errors.push({ "message": `O email do pagador ${payer.fullName} está inválido.` })
+      }
+
+      if (!_isNullOrUndefined(payer.mobile)) {
+        if (!new Phone(payer.mobile).isValid()) this._options.errors.push({ "message": `O celular do pagador ${payer.fullName} está inválido.` })
+      }
+    })
+  }
+
+  _validateFunctionsCallBacks() {
+    if (!_isNullOrUndefined(this._options.abort))
+      if (!_isFunction(this._options.abort)) throw new Error('Invalid options.abort: Expected Function.')
+    if (!_isNullOrUndefined(this._options.success))
+      if (!_isFunction(this._options.success)) throw new Error('Invalid options.success: Expected Function.')
+    if (!_isNullOrUndefined(this._options.fail))
+      if (!_isFunction(this._options.fail)) throw new Error('Invalid options.fail: Expected Function.')
+  }
+
+  _validatePaymentConfig() {
+    if (!_isObject(this._options.payment)) this._options.errors.push({ "message": "O formato do pagamento está inválido." })
+    if (!_isNullOrUndefined(this._options.payment.amount))
+      if (!_isNumber(this._options.payment.amount)) this._options.errors.push({ "message": "O valor do pagamento não é numérico." })
+    if (!_isBoolean(this._options.payment.replicateAmount)) this._options.errors.push({ "message": "O campo de configuração da mudança de valor está inválido." })
+    if (!_isBoolean(this._options.payment.bankSlipEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com boleto está inválido." })
+    if (!_isBoolean(this._options.payment.creditEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com cartão de crédito está inválido." })
+    if (!_isBoolean(this._options.payment.debitEnabled)) this._options.errors.push({ "message": "O campo para habilitar a venda com cartão de débito está inválido." })
+    if (!_isBoolean(this._options.payment.deviceEnabled) && !_isNullOrUndefined(this._options.payment.deviceEnabled)) this._options.errors.push({ "message": "O formato para configuração da maquinha está incorreto." })
+
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.installments)) {
+      if (!_isNumberPositive(this._options.payment.bankSlip.installments)) {
+        this._options.errors.push({ "message": `O quandidade de parcela do pagamento varia entre 1 a 12 parcelas.` })
+        return
+      }
+
+      if (this._options.payment.bankSlip.installments > PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM) {
+        this._options.errors.push({ "message": `O valor máximo para parcelas de boleto é ${PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM}.` })
+      } else  {
+        this._options.payment.installments = this._options.payment.bankSlip.installments
+      }
+    }
+  }
+
+  _validateEnvironment() {
+    if (!_isObject(this._options)) this._options.errors.push({ "message": "O formato da configuração do ligthbox está incorreto." })
+    if (!_isString(this._options.environment)) this._options.errors.push({ "message": "O campo de configuração de ambiente está invalido." })
+    if (this._options.environment !== Environment.Sandbox && this._options.environment !== Environment.Production) {
+      this._options.errors.push({ "message": `O ambiente ${this._options.environment} que está rodando não é homologado pela paggcerto.` })
+    }
+    if (!_isString(this._options.token)) this._options.errors.push({ "message": "O formato do token está inválido." })
   }
 
   asObject() {

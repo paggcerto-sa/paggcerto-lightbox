@@ -66,7 +66,7 @@ class InitPaymentForm {
     this._$container.html(VIEW)
     this._renderPayMethodIcons()
 
-    if (this._options.errors) {
+    if (this._options.errors.length > 0) {
       this._renderErrorOptionsForm()
       return
     }
