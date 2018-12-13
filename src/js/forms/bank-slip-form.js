@@ -129,6 +129,8 @@ class BankSlipForm {
     this._options = options
     this._router = null
     this._firstbind = true
+    this._options.payment.isBankSlip = true
+    this._options.payment.isCard = !this._options.payment.isBankSlip
   }
 
   render (router) {
@@ -180,6 +182,11 @@ class BankSlipForm {
 
   _bindForm () {
     const $form = this._$container.find('form')
+
+    if (this._options.payment.bankSlip.avoidSteps) {
+      this._goTo(BankSlipInstallmentsForm)
+      return
+    }
 
     $form.on(EventName.SUBMIT, () => {
       if (this._formState.invalid) return

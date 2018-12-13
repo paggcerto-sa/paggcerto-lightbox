@@ -27,13 +27,14 @@ class LightboxOptions {
   _validate() {
     this._validateEnvironment()
     this._validatePaymentConfig()
+    this._validateBankSlip()
     this._validatePayers()
     this._validateCard()
-    this._validateBankSlip()
     this._validateFunctionsCallBacks()
   }
 
   _rewriteValues() {
+    if (_isNullOrUndefined(this._options.payment.payers) || !_isArray(this._options.payment.payers)) return
     const hasAtLeastOnePayer = this._options.payment.payers.length > 0
     const haveAtMostOnePayer = this._options.payment.payers.length <= 1
 
@@ -97,6 +98,11 @@ class LightboxOptions {
       return
     }
 
+    if (_isNullOrUndefined(this._options.payment.payers)) {
+      this._options.errors.push({ 'message': `Não é possivel efetuar pagamento com boleto sem ter os pagadores.` })
+      return
+    }
+
     if (!_isNullOrUndefined(this._options.payment.bankSlip.dueDate)) {
       var dueDate = new DateDue(this._options.payment.bankSlip.dueDate)
 
@@ -105,6 +111,18 @@ class LightboxOptions {
         return
       }
       if (dueDate._diffDays > PaymentLimit.MAX_DUE_DAYS) this._options.errors.push({ 'message': `O campo data de vencimento do boleto ultrapassou a quantidade máxima de dias permitido que é  ${PaymentLimit.MAX_DUE_DAYS}.` })
+    }
+
+    if (!_isBoolean(this._options.payment.bankSlip.avoidSteps) && !_isNullOrUndefined(this._options.payment.bankSlip.avoidSteps)) this._options.errors.push({ 'message': `O campo para habilitar geração de pdf do pagamento com boleto está no formato incorreto.` })
+
+    if (_isNullOrUndefined(this._options.payment.bankSlip.avoidSteps)) {
+      this._options.payment.bankSlip.avoidSteps = false
+    }
+
+    if (_isNullOrUndefined(this._options.payment.bankSlip.dueDate) || _isNullOrUndefined(this._options.payment.amount)
+      && _isBoolean(this._options.payment.bankSlip.avoidSteps) && this._options.payment.bankSlip.avoidSteps == true) {
+      this._options.errors.push({ 'message': `Não possível gerar pdf de um pagamento com boleto se não tiver um valor ou data de vencimento.`})
+      return
     }
 
     if (!_isNullOrUndefined(this._options.payment.bankSlip.addNoteToInstructions)) {
@@ -225,8 +243,6 @@ class LightboxOptions {
         }
         if (this._options.payment.bankSlip.installments > PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM) {
           this._options.errors.push({ 'message': `O valor máximo para parcelas de boleto é ${PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM}.` })
-        } else  {
-          this._options.payment.installments = this._options.payment.bankSlip.installments
         }
       }
     }

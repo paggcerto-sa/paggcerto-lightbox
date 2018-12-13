@@ -1,5 +1,6 @@
 import moment from 'moment'
 import Textual from '../util/textual'
+import { _isNullOrUndefined } from '../util/annotations'
 
 class Payment {
   constructor(options) {
@@ -8,7 +9,7 @@ class Payment {
 
   _getDueDates() {
     const firstDueDate = this._options.payment.bankSlip.dueDate
-    const installments = this._options.payment.installments
+    const installments = this._getInstallments()
     const dueDates = []
 
     for (let installment = 0; installment < installments; installment++) {
@@ -37,6 +38,13 @@ class Payment {
 
   _trim(text) {
     return new Textual(text).clearWhiteSpaces().asString()
+  }
+
+  _getInstallments() {
+    if (this._options.payment.bankSlip.avoidSteps) {
+      if (!_isNullOrUndefined(this._options.payment.bankSlip.installments)) return this._options.payment.bankSlip.installments
+    }
+    return this._options.payment.installments
   }
 
   toBankSlip() {

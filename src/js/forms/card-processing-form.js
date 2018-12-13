@@ -54,9 +54,9 @@ class CardProcessingForm {
     this._inputAmountPartial.render()
     const $spanMethod = this._$container.find(`#${Selector.PAYMENT_METHOD}`)
     if (this._options.payment.credit === false) {
-        $spanMethod.html("Débito")
+        $spanMethod.text("Débito")
     } else {
-        $spanMethod.html("Crédito")
+        $spanMethod.text("Crédito")
     }
   }
 

@@ -24,7 +24,7 @@ const VIEW = `
       <div class="col border-right">
         <div class="form-group text-center">
           <span id="${Selector.INPUT_AMOUNT}"></span>
-          <span class="pay-method-text">Crédito</span>
+          <span class="pay-method-text">Débito</span>
         </div>
       </div>
       <div class="col">

@@ -3,6 +3,8 @@ import moment from 'moment'
 import Installments from '../util/installments'
 import Currency from '../util/currency'
 import { EventName, PaymentLimit } from '../constants'
+import { _isNullOrUndefined } from '../util/annotations'
+
 
 const ClassName = {
   INSTALLMENT_NUMBER: 'installment-number',
@@ -40,15 +42,14 @@ class InstallmentOptionsPartial {
   render() {
     this._$installmentOptions = $(VIEW)
     this._$container.replaceWith(this._$installmentOptions)
-    this._options.payment.installments = this._options.payment.installments || 1
+    this._options.payment.installments = _isNullOrUndefined(this._options.payment.installments) ? 1 : this._options.payment.installments
 
     const amount = this._options.payment.amount
     const replicateAmount = this._options.payment.replicateAmount && this._options.payment.bankSlip
     const discountPercent = this._options.payment.bankSlip && this._options.payment.bankSlip.discount
     const minimummAmount = this._getMinimumInstallmentAmount()
-    const maximumNumber = this._options.payment.bankSlip.installments || this._getMaximumInstallmentNumber()
+    const maximumNumber = this._getMaximumInstallmentNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber, discountPercent).asArray(replicateAmount)
-
 
     let $firstInstallment = null
 
@@ -72,11 +73,11 @@ class InstallmentOptionsPartial {
   }
 
   _isCreditCard() {
-    return !!this._options.payment.card
+    return !!this._options.payment.card && this._options.payment.isCard
   }
 
   _isBankSlip() {
-    return !!this._options.payment.bankSlip
+    return !!this._options.payment.bankSlip && this._options.payment.isBankSlip
   }
 
   _getMinimumInstallmentAmount() {
@@ -85,15 +86,21 @@ class InstallmentOptionsPartial {
   }
 
   _getMaximumInstallmentNumber() {
-    if (this._isBankSlip()) return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
+    if (this._isBankSlip()) {
+      if (!_isNullOrUndefined(this._options.payment.bankSlip)) {
+        if (!_isNullOrUndefined(this._options.payment.bankSlip.installments)) return this._options.payment.bankSlip.installments
+      }
+      return PaymentLimit.BANK_SLIP_INSTALLMENTS_MAXIMUM
+    }
     if (this._isCreditCard()) {
+      if (_isNullOrUndefined(this._options.payment.card.installments)) return this._options.payment.card.bin.maximumInstallment
       if (this._options.payment.card.bin.maximumInstallment < this._options.payment.card.installments) return this._options.payment.card.bin.maximumInstallment
       return this._options.payment.card.installments
     }
   }
 
   _getDueDatePeriodText(installments) {
-    if (!this._options.payment.bankSlip) return ''
+    if (!this._options.payment.bankSlip || !this._isBankSlip()) return ''
 
     const firstDueDate = this._options.payment.bankSlip.dueDate
     const firstDueDateText = moment(firstDueDate).format('DD/MM/YYYY')

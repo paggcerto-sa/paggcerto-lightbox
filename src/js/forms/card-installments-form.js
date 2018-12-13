@@ -51,6 +51,8 @@ class CardInstallmentsForm {
     this._$container = $container
     this._options = options
     this._router = null
+    this._options.payment.isCard = true
+    this._options.payment.isBankSlip = !this._options.payment.isCard
   }
 
   _bindButtons() {

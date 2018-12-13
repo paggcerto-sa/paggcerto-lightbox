@@ -84,18 +84,36 @@
   "environment": "sandbox",
   "token": "AccessToken",
   "payment": {
-    "amount": null,
+    "amount": 10,
     "replicateAmount": true,
     "bankSlipEnabled": true,
     "creditEnabled": true,
     "debitEnabled": true,
-    "payers": [{
-      "sellingKey": null,
-      "fullName": "Maria dos Santos",
-      "taxDocument": "123.123.123-87",
-      "email": "maria@email.com",
-      "mobile": "(79) 99999-9999"
-    }]
+    "deviceEnabled": false,
+    "card": {
+      "installments": 10
+    },
+    "bankSlip": {
+      "dueDate": "data de vencimento do boleto",
+      "discountDays": 0,
+      "interest": 1,
+      "fines": 1,
+      "addNoteToInstructions": true,
+      "note": "teste com lightbox da paggcerto",
+      "acceptedUntil": 01,
+      "installments": 3,
+      "discount": 14.28,
+      "avoidSteps": false
+    },
+    "payers": [
+      {
+        "sellingKey": null,
+        "fullName": "Maria dos Santos",
+        "taxDocument": "123.123.123-87",
+        "email": "maria@email.com",
+        "mobile": "(79) 99999-9999"
+      }
+    ]
   }
 }</textarea>
   </div>
