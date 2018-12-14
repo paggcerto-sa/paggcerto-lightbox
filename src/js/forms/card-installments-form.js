@@ -6,7 +6,6 @@ import InstallmentOptionsPartial from '../partials/installment-options-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PinpadProcessingForm from './pinpad-processing-form'
 import { NAMESPACE, ClassName, EventName } from '../constants'
-import { ResolvablePromise } from '../util/async';
 
 const Selector = {
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
@@ -52,6 +51,8 @@ class CardInstallmentsForm {
     this._$container = $container
     this._options = options
     this._router = null
+    this._options.payment.isCard = true
+    this._options.payment.isBankSlip = !this._options.payment.isCard
   }
 
   _bindButtons() {

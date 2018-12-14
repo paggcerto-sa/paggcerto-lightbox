@@ -6,6 +6,7 @@ import InitPaymentForm from './init-payment-form';
 import InputAmountPartial from '../partials/input-amount-partial'
 import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PinpadProcessingForm from './pinpad-processing-form';
+import { _isNullOrUndefined } from '../util/annotations';
 
 const Selector = {
   BTN_BANK_SLIP: `${NAMESPACE}_btnBankSlip`,
@@ -129,7 +130,10 @@ export class PinpadForm {
       bin: await this._options.payment.bins.identify(this._cardInformation.cardNumber),
       holderName: this._cardInformation.holderName,
       expirationMonth: new Date(this._cardInformation.expirationDate).getMonth() + 1,
-      expirationYear: new Date(this._cardInformation.expirationDate).getFullYear()
+      expirationYear: new Date(this._cardInformation.expirationDate).getFullYear(),
+      installments: _isNullOrUndefined(this._options.payment.card) ? null
+        : _isNullOrUndefined(this._options.payment.card.installments) ? null
+        : this._options.payment.card.installments
     }
   }
 

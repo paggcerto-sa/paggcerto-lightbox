@@ -15,7 +15,7 @@ const ProductionUrl = {
   PAY_WITH_CARDS: 'https://payments.paggcerto.com.br/api/v2/pay/cards',
   PAY_WITH_BANK_SLIPS: 'https://payments.paggcerto.com.br/api/v2/pay/bank-slips',
   SEND_CARD_RECEIPT: 'https://payments.paggcerto.com.br/api/v2/card-transactions/send-receipt/{nsu}',
-  PRESETS: 'https://account.paggcerto.com.br/api/v2/presets'
+  PRESETS: 'https://account.paggcerto.com.br/api/v2/presets',
 }
 
 class Environment {

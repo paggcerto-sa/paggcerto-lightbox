@@ -102,6 +102,11 @@ class BankSlipInstallmentsForm {
   _bindForm() {
     this._$form = this._$container.find('form')
 
+    if (this._options.payment.bankSlip.avoidSteps) {
+      this._goTo(BankSlipProcessingForm)
+      return
+    }
+
     this._$form.on(EventName.SUBMIT, async () => {
       if (this._formState.invalid) return
       this._goTo(BankSlipProcessingForm)
