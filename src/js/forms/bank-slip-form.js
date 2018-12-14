@@ -129,8 +129,6 @@ class BankSlipForm {
     this._options = options
     this._router = null
     this._firstbind = true
-    this._options.payment.isBankSlip = true
-    this._options.payment.isCard = !this._options.payment.isBankSlip
   }
 
   render (router) {

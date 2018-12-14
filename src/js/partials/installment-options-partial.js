@@ -45,8 +45,8 @@ class InstallmentOptionsPartial {
     this._options.payment.installments = _isNullOrUndefined(this._options.payment.installments) ? 1 : this._options.payment.installments
 
     const amount = this._options.payment.amount
-    const replicateAmount = this._options.payment.replicateAmount && this._options.payment.bankSlip
-    const discountPercent = this._options.payment.bankSlip && this._options.payment.bankSlip.discount
+    const replicateAmount = this._options.payment.replicateAmount && this._options.payment.bankSlip && this._options.payment.isBankSlip
+    const discountPercent = this._options.payment.bankSlip && this._options.payment.bankSlip.discount && this._options.payment.isBankSlip
     const minimummAmount = this._getMinimumInstallmentAmount()
     const maximumNumber = this._getMaximumInstallmentNumber()
     const installments = new Installments(amount, minimummAmount, maximumNumber, discountPercent).asArray(replicateAmount)
