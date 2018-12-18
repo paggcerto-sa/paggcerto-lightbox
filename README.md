@@ -21,11 +21,11 @@ paggcerto.lightbox({
     bankSlipEnabled: true,
     creditEnabled: true,
     debitEnabled: true,
-    deviceEnabled: false
+    deviceEnabled: false,
     "card":{
       installments: 10
     },
-     "bankSlip": {
+    "bankSlip": {
       dueDate: "20/12/2018",
       discountDays: 10,
       interest: 0.25,
@@ -121,7 +121,7 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 | `sellingKey`  | `string` | Código que associa o seu ID ao pagamento processado pela Paggcerto (opcional). |
 | `fullName`    | `string` | Nome de quem está pagando (pessoa ou empresa).                                 |
 | `taxDocument` | `string` | CPF/CNPJ de quem está pagando (obrigátorio). Nos formatos: CPF - 000.000.000-00 e CNPJ - 00.000.000/0000-00                                   |
-| `mobile`      | `string` | Celular do pagador (opcional). Possibilita envio de notificações por SMS.      |
+| `mobile`      | `string` | Celular do pagador (opcional). Possibilita envio de notificações por SMS. No formato: (99) 99999-9999 |
 | `email`       | `string` | E-mail do pagador (opcional). Possibilita envio de notificações por e-mail.    |
 
 ### Eventos (opcionais)
