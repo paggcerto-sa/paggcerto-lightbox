@@ -1,3 +1,12 @@
+# [v1.1.0] (2018-12-18)
+### Funcionalidades:
+- Habilitar e desabilitar o PINPAD/MPOS.
+- Configurar quantidade máximas de parcelas permitidas no cartão.
+- Permite a configuração de venda com boleto.
+### _Bug Fixes_:
+- Bandeira elo agora é identificada corretamente.
+- Label incorreto quando usando débito na PINPAD/MPOS.
+
 # [v1.0.1] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/V1.0.1) (2018-12-10)
 ### _Bug Fixes_:
 - Urls de sandbox agora são https.
