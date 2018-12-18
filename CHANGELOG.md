@@ -1,4 +1,4 @@
-# [v1.1.0] (2018-12-18)
+# [v1.1.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.1.0) (2018-12-18)
 ### Funcionalidades:
 - Habilitar e desabilitar o PINPAD/MPOS.
 - Configurar quantidade máximas de parcelas permitidas no cartão.
