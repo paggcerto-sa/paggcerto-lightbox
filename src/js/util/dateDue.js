@@ -20,7 +20,7 @@ class DateDue {
     this._due = moment(this._str, 'DD/MM/YYYY')
     this._diffDays = this._due.diff(this._today, 'days', true) + 1
 
-    if (!_isNumberPositive(this._diffDays) || this._diffDays <= 1) return false
+    if (!_isNumberPositive(this._diffDays) || this._diffDays < 0) return false
 
     return result
   }

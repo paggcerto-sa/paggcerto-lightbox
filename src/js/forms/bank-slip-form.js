@@ -446,7 +446,8 @@ class BankSlipForm {
 
   _isValidDueDate () {
     const dueDate = this._options.payment.bankSlip.dueDate
-    return !!dueDate && moment(dueDate).isAfter(new Date())
+    const dueDateString = moment(dueDate).format('YYYY-MM-DD')
+    return !!dueDate && moment(dueDateString).isSameOrAfter(moment().format('YYYY-MM-DD'), ['year', 'month', 'day'])
   }
 
   _renderInputAmount () {
@@ -487,7 +488,7 @@ class BankSlipForm {
       },
       dueDate: {
         valid: this._isValidDueDate(),
-        message: 'O vencimento é obrigatório e deve ser posterior a data atual (D+1).'
+        message: 'O vencimento é obrigatório e deve ser igual ou superior a data atual.'
       }
     }))
   }
