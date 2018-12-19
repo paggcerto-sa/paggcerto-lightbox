@@ -107,7 +107,7 @@ class LightboxOptions {
       var dueDate = new DateDue(this._options.payment.bankSlip.dueDate)
 
       if (!dueDate.isValid()) {
-        this._options.errors.push({ 'message': `O formato da data de vencimento do boleto está inválido ou a data deve ser posterior a data atual (D+1).` })
+        this._options.errors.push({ 'message': `O formato da data de vencimento do boleto está inválido ou o vencimento deve ser igual ou superior a data atual.` })
         return
       }
       if (dueDate._diffDays > PaymentLimit.MAX_DUE_DAYS) this._options.errors.push({ 'message': `O campo data de vencimento do boleto ultrapassou a quantidade máxima de dias permitido que é  ${PaymentLimit.MAX_DUE_DAYS}.` })
