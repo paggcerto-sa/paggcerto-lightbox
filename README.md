@@ -103,7 +103,7 @@ Comportamento do lightbox quanto aos métodos de pagamento:
 
 |Propriedade     | Tipo     | Descrição
 | -------------  | -------- | ------------------------------------------------------------------------------ |
-| `dueDate` | `string` | Data do vencimento, sendo essa data D+1 e com formato: "DD/MM/YYYY". Este parâmetro possui o limite de 365 dias. Ex.: Um boleto emitido no dia 17/12/2018 o limite máximo para seu vencimento é 17/12/2019 (obrigatório). |
+| `dueDate` | `string` | Data do vencimento, essa data pode ser a partir da emissão do boleto e com formato: "DD/MM/YYYY". Este parâmetro possui o limite de 365 dias. Ex.: Um boleto emitido no dia 17/12/2018 o limite máximo para seu vencimento é 17/12/2019 (obrigatório). |
 | `discountDays` | `number`| Até quantos dias, anteriores a data de vencimento, será aplicado o desconto. O número de dias deve ser de 0 a 30 (opcional). |
 | `interest` | `number`| Valor do juros cobrado ao mês após o vencimento do boleto. Esse valor está em porcentagem e deve ser de 0.25 a 20 (opcional).|
 | `fines`| `number` | Valor da multa cobrada após o vencimento do boleto. Esse valor está em porcentagem e deve ser de 0.25 a 20 (opcional).|
