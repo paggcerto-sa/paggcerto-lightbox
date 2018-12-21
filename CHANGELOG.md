@@ -1,4 +1,4 @@
-# [v1.2.0] (2018-12-21)
+# [v1.2.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/V1.2.0) (2018-12-21)
 ### Funcionalidades:
 - Removido limitação que impedia a emissão de boletos com datas de vencimentos para o mesmo dia.
 
