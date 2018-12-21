@@ -1,3 +1,7 @@
+# [v1.2.0] (2018-12-21)
+### Funcionalidades:
+- Removido limitação que impedia a emissão de boletos com datas de vencimentos para o mesmo dia.
+
 # [v1.1.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.1.0) (2018-12-18)
 ### Funcionalidades:
 - Habilitar e desabilitar o PINPAD/MPOS.
