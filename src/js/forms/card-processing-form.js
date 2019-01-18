@@ -6,7 +6,7 @@ import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PaymentsApi from '../sdk/payments-api'
 import Payment from '../sdk/payment'
 import { NAMESPACE, ClassName } from '../constants'
-import CardOnlineForm from './card-online-form';
+import CardOnlineForm from './card-online-form'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -54,9 +54,9 @@ class CardProcessingForm {
     this._inputAmountPartial.render()
     const $spanMethod = this._$container.find(`#${Selector.PAYMENT_METHOD}`)
     if (this._options.payment.credit === false) {
-        $spanMethod.text("Débito")
+      $spanMethod.text("Débito")
     } else {
-        $spanMethod.text("Crédito")
+      $spanMethod.text("Crédito")
     }
   }
 
@@ -68,20 +68,22 @@ class CardProcessingForm {
   }
 
   async _process() {
-
     const paymentsApi = new PaymentsApi(this._options)
     const payment = new Payment(this._options).toCreditCard()
 
     try {
       this._options.processedPayment = await paymentsApi.payWithCards(payment)
 
-      if (this._options.processedPayment.status === 'paid') {
+      if (this._options.processedPayment.status === "paid") {
         this._goTo(CardApprovedForm)
+        this._options.success(this._options.processedPayment)
       } else {
         this._goTo(CardReprovedForm)
+        this._options.fail(this._options.processedPayment)
       }
     } catch (e) {
       this._goTo(CardErrorForm)
+      this._options.fail(this._options.processedPayment)
     }
   }
 
