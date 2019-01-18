@@ -78,8 +78,10 @@ class BankSlipProcessingForm {
     try {
       this._options.processedPayment = await paymentsApi.payWithBankSlips(payment)
       this._goTo(BankSlipCreatedForm)
+      this._options.success(this._options.processedPayment)
     } catch (e) {
       this._goTo(BankSlipErrorForm)
+      this._options.fail(this._options.processedPayment)
     }
   }
 
