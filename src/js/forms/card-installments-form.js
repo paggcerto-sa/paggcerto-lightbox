@@ -65,7 +65,9 @@ class CardInstallmentsForm {
 
     this._$form = this._$container.find('form')
 
-    this._$form.on(EventName.SUBMIT, () => {
+    this._$form.on(EventName.SUBMIT, (event) => {
+
+      event.preventDefault()
 
       if (this._formState.invalid) return
 
