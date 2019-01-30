@@ -1,3 +1,7 @@
+# [v1.2.1] (2019-30-01)
+### _Bug Fixes_:
+- Corrigido bug que impedia o funcionamento correto do pagamento com cartão na venda online no Microsoft Edge
+
 # [v1.2.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/V1.2.0) (2018-12-21)
 ### Funcionalidades:
 - Removido limitação que impedia a emissão de boletos com datas de vencimentos para o mesmo dia.
