@@ -114,7 +114,7 @@ const VIEW = `
                   <input id="${Selector.PERMIT_SECOND_BANK_SLIP}" type="checkbox">
                   <span class="switch-slider"></span>
                 </label>
-                <label class="align-middle mb-0" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Permitir emissão de segunda via pelo cliente</label><br>
+                <label class="align-middle mb-0">Permitir emissão de segunda via pelo cliente</label><br>
               </div>
             </div>
           </div>
