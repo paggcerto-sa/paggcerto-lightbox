@@ -98,12 +98,23 @@ const VIEW = `
               <textarea id="${Selector.INPUT_NOTE}" rows="2"class="form-control" style="resize: none;" maxlength="255"></textarea>
               <small class="text-secondary">Desconto, juros e multa serão impressos no(s) boleto(s).</small>
             </div>
-            <div class="form-group">
-              <label>Imprimir descrição nas instruções do boleto?</label><br>
-              <label class="switch switch-to-success">
-                <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
-                <span class="switch-slider"></span>
-              </label>
+            <div class="form-inline mb-3">
+              <div class="form-group">
+                <label class="switch switch-sm switch-to-success mr-3 align-middle">
+                  <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
+                  <span class="switch-slider"></span>
+                </label>
+                <label class="align-middle mb-0">Imprimir descrição nas instruções do boleto</label><br>
+              </div>
+            </div>
+            <div class="form-inline">
+              <div class="form-group">
+                <label class="switch switch-sm switch-to-success mr-3 align-middle">
+                  <input type="checkbox">
+                  <span class="switch-slider"></span>
+                </label>
+                <label class="align-middle mb-0" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Permitir emissão de segunda via pelo cliente</label><br>
+              </div>
             </div>
           </div>
         </div>
