@@ -11,6 +11,7 @@ import { _isNullOrUndefined } from '../../js/util/annotations'
 
 const Selector = {
   ADD_NOTE_TO_INSTRUCITONS: `${NAMESPACE}_addNoteToInstructions`,
+  PERMIT_SECOND_BANK_SLIP: `${NAMESPACE}_permitSecondBankSlip`,
   BTN_GO_BACK: `${NAMESPACE}_btnGoBack`,
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
   INPUT_DUE_DATE: `${NAMESPACE}_inputDueDate`,
@@ -86,7 +87,7 @@ const VIEW = `
                 <div class="form-group">
                   <label>Valor do desconto:</label>
                   <input id="${Selector.INPUT_DISCOUNT}" type="text" class="form-control" maxlength="7" autocomplete="off">
-                  <small id="${Selector.TEXT_MAXIMUM_DISCOUNT}" class="text-secondary"></small>
+                  <small id="${Selector.TEXT_MAXIMUM_DISCOUNT}" class="text-secondary position-absolute"></small>
                 </div>
               </div>
             </div>
@@ -98,12 +99,23 @@ const VIEW = `
               <textarea id="${Selector.INPUT_NOTE}" rows="2"class="form-control" style="resize: none;" maxlength="255"></textarea>
               <small class="text-secondary">Desconto, juros e multa serão impressos no(s) boleto(s).</small>
             </div>
-            <div class="form-group">
-              <label>Imprimir descrição nas instruções do boleto?</label><br>
-              <label class="switch switch-to-success">
-                <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
-                <span class="switch-slider"></span>
-              </label>
+            <div class="form-inline mb-3">
+              <div class="form-group">
+                <label class="switch switch-sm switch-to-success mr-3 align-middle">
+                  <input id="${Selector.ADD_NOTE_TO_INSTRUCITONS}" type="checkbox">
+                  <span class="switch-slider"></span>
+                </label>
+                <label class="align-middle mb-0">Imprimir descrição nas instruções do boleto</label><br>
+              </div>
+            </div>
+            <div class="form-inline">
+              <div class="form-group">
+                <label class="switch switch-sm switch-to-success mr-3 align-middle">
+                  <input id="${Selector.PERMIT_SECOND_BANK_SLIP}" type="checkbox">
+                  <span class="switch-slider"></span>
+                </label>
+                <label class="align-middle mb-0">Permitir emissão de segunda via pelo cliente</label><br>
+              </div>
             </div>
           </div>
         </div>
@@ -150,6 +162,7 @@ class BankSlipForm {
     this._renderPayMethodIcons()
     this._updateFormState({})
     this._checkAddNoteToInstructions()
+    this._checkPermitSecondBankSlip()
     this._firstbind = false
   }
 
@@ -157,7 +170,8 @@ class BankSlipForm {
     this._options.payment.bankSlip = this._options.payment.bankSlip || {
       acceptedUntil: 0,
       discountText: '0,00 %',
-      addNoteToInstructions: false
+      addNoteToInstructions: false,
+      permitSecondBankSlip: false
     }
 
     this._calculateMaximumDiscount()
@@ -222,6 +236,18 @@ class BankSlipForm {
 
     if (this._options.payment.bankSlip.addNoteToInstructions) {
       $addNoteToInstructions.attr('checked', true);
+    }
+  }
+
+  _checkPermitSecondBankSlip () {
+    const $permitSecondBankSlip = this._$container.find(`#${Selector.PERMIT_SECOND_BANK_SLIP}`)
+
+    $permitSecondBankSlip.on(EventName.CHANGE, () => {
+      this._options.payment.bankSlip.permitSecondBankSlip = $permitSecondBankSlip.is(':checked')
+    })
+
+    if (this._options.payment.bankSlip.permitSecondBankSlip) {
+      $permitSecondBankSlip.attr('checked', true);
     }
   }
 

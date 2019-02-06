@@ -129,6 +129,10 @@ class LightboxOptions {
       if (!_isBoolean(this._options.payment.bankSlip.addNoteToInstructions)) this._options.errors.push({ 'message': `O campo para habilitar informações na instrução está inválido.` })
     }
 
+    if (!_isNullOrUndefined(this._options.payment.bankSlip.permitSecondBankSlip)) {
+      if (!_isBoolean(this._options.payment.bankSlip.permitSecondBankSlip)) this._options.errors.push({ 'message': `O campo para habilitar emissão de segunda via está inválido.` })
+    }
+
     if (!_isNullOrUndefined(this._options.payment.bankSlip.note)) {
       if (!_isString(this._options.payment.bankSlip.note)) {
         this._options.errors.push({ 'message': `O campo descrição do pagamento do boleto está inválido.` })

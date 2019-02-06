@@ -31,6 +31,7 @@ paggcerto.lightbox({
       interest: 0.25,
       fines: 0.25,
       addNoteToInstructions: false,
+      permitSecondBankSlip: false,
       note: " ",
       acceptedUntil:1,
       installments: 3,
