@@ -60,7 +60,8 @@ class Payment {
       payers: this._mapPayers(),
       dates: this._getDueDates(),
       geolocation: this._options.payment.geolocation,
-      instructions: this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
+      instructions: this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null,
+      secondBankSlip: this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
     }
   }
 
