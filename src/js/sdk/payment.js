@@ -60,7 +60,19 @@ class Payment {
       bankSlip.instructions = this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
       bankSlip.secondBankSlip = this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
       bankSlips.push(bankSlip)
+      bankSlip = {
+        amount: 0,
+        discount: 0,
+        dueDate: '',
+        fines: 0,
+        interest: 0,
+        discountDays: 0,
+        acceptedUntil: 0,
+        instructions: '',
+        secondBankSlip: null
+      }
     }
+    console.log(bankSlips)
     return bankSlips
   }
 
