@@ -1,3 +1,7 @@
+# [v1.3.0] (2019-02-08)
+### Funcionalidades:
+- Adicionado botão de permissão de emissão de segunda via de boleto pelo cliente.
+
 # [v1.2.1] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/V1.2.1) (2019-30-01)
 ### _Bug Fixes_:
 - Corrigido bug que impedia o funcionamento correto do pagamento com cartão na venda online no Microsoft Edge
