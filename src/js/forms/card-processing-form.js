@@ -7,6 +7,9 @@ import PaymentsApi from '../sdk/payments-api'
 import Payment from '../sdk/payment'
 import { NAMESPACE, ClassName } from '../constants'
 import CardOnlineForm from './card-online-form'
+import {
+  _isNullOrUndefined,
+  _isFunction } from '../../js/util/annotations'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -76,14 +79,26 @@ class CardProcessingForm {
 
       if (this._options.processedPayment.status === "paid") {
         this._goTo(CardApprovedForm)
-        this._options.success(this._options.processedPayment)
+        if (!_isFunction(this._options.success)){
+          console.error('Invalid options.success: Expected Function.')
+        } else {
+          this._options.success(this._options.processedPayment)
+        }
       } else {
         this._goTo(CardReprovedForm)
-        this._options.fail(this._options.processedPayment)
+        if (!_isFunction(this._options.fail)){
+          console.error('Invalid options.fail: Expected Function.')
+        } else {
+          this._options.fail(this._options.processedPayment)
+        }
       }
     } catch (e) {
       this._goTo(CardErrorForm)
-      this._options.fail(this._options.processedPayment)
+      if (!_isFunction(this._options.fail)){
+        console.error('Invalid options.fail: Expected Function.')
+      } else {
+        this._options.fail(this._options.processedPayment)
+      }
     }
   }
 
