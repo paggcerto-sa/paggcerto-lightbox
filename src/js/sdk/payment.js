@@ -2,6 +2,20 @@ import moment from 'moment'
 import Textual from '../util/textual'
 import { _isNullOrUndefined } from '../util/annotations'
 
+class BankSlip {
+  constructor() {
+    this.amount = 0,
+    this.discount = 0,
+    this.dueDate = '',
+    this.fines = 0,
+    this.interest = 0,
+    this.discountDays = 0,
+    this.acceptedUntil = 0,
+    this.instructions = '',
+    this.secondBankSlip = null
+  }
+}
+
 class Payment {
   constructor(options) {
     this._options = options
@@ -38,17 +52,7 @@ class Payment {
   _createBankSlipList() {
     const installments = this._getInstallments()
     var bankSlips = []
-    var bankSlip = {
-      amount: 0,
-      discount: 0,
-      dueDate: '',
-      fines: 0,
-      interest: 0,
-      discountDays: 0,
-      acceptedUntil: 0,
-      instructions: '',
-      secondBankSlip: null
-    }
+    var bankSlip = new BankSlip()
     for (var i = 0; i < installments; i++) {
       bankSlip.amount = this._options.payment.replicateAmount ? this._options.payment.amount : (this._options.payment.amount/installments).toFixed(2)
       bankSlip.discount = this._options.payment.bankSlip.discount
@@ -60,17 +64,7 @@ class Payment {
       bankSlip.instructions = this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
       bankSlip.secondBankSlip = this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
       bankSlips.push(bankSlip)
-      bankSlip = {
-        amount: 0,
-        discount: 0,
-        dueDate: '',
-        fines: 0,
-        interest: 0,
-        discountDays: 0,
-        acceptedUntil: 0,
-        instructions: '',
-        secondBankSlip: null
-      }
+      bankSlip = new BankSlip()
     }
     return bankSlips
   }
