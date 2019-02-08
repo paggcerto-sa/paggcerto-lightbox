@@ -1,4 +1,4 @@
-# [v1.3.0] (2019-02-08)
+# [v1.3.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.3.0) (2019-02-08)
 ### Funcionalidades:
 - Adicionado botão de permissão de emissão de segunda via de boleto pelo cliente.
 
