@@ -7,19 +7,6 @@ class Payment {
     this._options = options
   }
 
-  _getDueDates() {
-    const firstDueDate = this._options.payment.bankSlip.dueDate
-    const installments = this._getInstallments()
-    const dueDates = []
-
-    for (let installment = 0; installment < installments; installment++) {
-      const dueDate = moment(firstDueDate).add(installment, 'M').toDate()
-      dueDates.push(dueDate)
-    }
-
-    return dueDates
-  }
-
   getSellingKey() {
     if (this._options.payment.payers.length === 0) return null
     return this._options.payment.payers[0].sellingKey
@@ -31,6 +18,7 @@ class Payment {
       payer.taxDocument = this._trim(payer.taxDocument)
       payer.email = this._trim(payer.email)
       payer.mobile = this._trim(payer.mobile)
+      payer.bankSlips = this._createBankSlipList()
 
       return payer
     })
@@ -47,21 +35,39 @@ class Payment {
     return this._options.payment.installments
   }
 
+  _createBankSlipList() {
+    const installments = this._getInstallments()
+    var bankSlips = []
+    var bankSlip = {
+      amount: 0,
+      discount: 0,
+      dueDate: '',
+      fines: 0,
+      interest: 0,
+      discountDays: 0,
+      acceptedUntil: 0,
+      instructions: '',
+      secondBankSlip: null
+    }
+    for (var i = 0; i < installments; i++) {
+      bankSlip.amount = this._options.payment.replicateAmount ? this._options.payment.amount : (this._options.payment.amount/installments).toFixed(2)
+      bankSlip.discount = this._options.payment.bankSlip.discount
+      bankSlip.dueDate = moment(this._options.payment.bankSlip.dueDate).add(i, 'M').toDate()
+      bankSlip.fines = this._options.payment.bankSlip.fines
+      bankSlip.interest = this._options.payment.bankSlip.interest
+      bankSlip.discountDays = this._options.payment.bankSlip.discountDays
+      bankSlip.acceptedUntil = this._options.payment.bankSlip.acceptedUntil
+      bankSlip.instructions = this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
+      bankSlip.secondBankSlip = this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
+      bankSlips.push(bankSlip)
+    }
+    return bankSlips
+  }
+
   toBankSlip() {
     return {
-      amount: this._options.payment.amount,
       note: this._options.payment.note,
-      replicateAmount: this._options.payment.replicateAmount,
-      discount: this._options.payment.bankSlip.discount,
-      discountDays: this._options.payment.bankSlip.discountDays,
-      fines: this._options.payment.bankSlip.fines,
-      interest: this._options.payment.bankSlip.interest,
-      acceptedUntil: this._options.payment.bankSlip.acceptedUntil,
-      payers: this._mapPayers(),
-      dates: this._getDueDates(),
-      geolocation: this._options.payment.geolocation,
-      instructions: this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null,
-      secondBankSlip: this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
+      payers: this._mapPayers()
     }
   }
 

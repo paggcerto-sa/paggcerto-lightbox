@@ -5,6 +5,9 @@ import PayMethodIconsPartial from '../partials/pay-method-icons-partial'
 import PaymentsApi from '../sdk/payments-api'
 import Payment from '../sdk/payment'
 import { NAMESPACE, ClassName } from '../constants'
+import {
+  _isNullOrUndefined,
+  _isFunction } from '../../js/util/annotations'
 
 const Selector = {
   INPUT_AMOUNT: `${NAMESPACE}_inputAmount`,
@@ -78,10 +81,18 @@ class BankSlipProcessingForm {
     try {
       this._options.processedPayment = await paymentsApi.payWithBankSlips(payment)
       this._goTo(BankSlipCreatedForm)
-      this._options.success(this._options.processedPayment)
+      if (!_isFunction(this._options.success)){
+        console.error('Invalid options.success: Expected Function.')
+      } else {
+        this._options.success(this._options.processedPayment)
+      }
     } catch (e) {
       this._goTo(BankSlipErrorForm)
-      this._options.fail(this._options.processedPayment)
+      if (!_isFunction(this._options.fail)){
+        console.error('Invalid options.fail: Expected Function.')
+      } else {
+        this._options.fail(this._options.processedPayment)
+      }
     }
   }
 
