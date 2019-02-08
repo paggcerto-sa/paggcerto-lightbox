@@ -72,7 +72,6 @@ class Payment {
         secondBankSlip: null
       }
     }
-    console.log(bankSlips)
     return bankSlips
   }
 
