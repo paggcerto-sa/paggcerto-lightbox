@@ -62,7 +62,7 @@ class Payment {
       bankSlip.discountDays = this._options.payment.bankSlip.discountDays
       bankSlip.acceptedUntil = this._options.payment.bankSlip.acceptedUntil
       bankSlip.instructions = this._options.payment.bankSlip.addNoteToInstructions ? this._options.payment.note : null
-      bankSlip.secondBankSlip = this._options.payment.bankSlip.permitSecondBankSlip ? 0 : null
+      bankSlip.secondBankSlip = this._options.payment.bankSlip.permitSecondBankSlip ? 1 : null
       bankSlips.push(bankSlip)
       bankSlip = new BankSlip()
     }
