@@ -1,4 +1,4 @@
-# [v1.3.1] (2019-02-12)
+# [v1.3.1] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.3.1) (2019-02-12)
 ### _Bug Fixes_:
 - Correção de bug de callbacks.
 - Alteração no formato de envio de dados para a api.
