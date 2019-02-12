@@ -1,3 +1,8 @@
+# [v1.3.1] (2019-02-12)
+### _Bug Fixes_:
+- Correção de bug de callbacks.
+- Alteração no formato de envio de dados para a api.
+
 # [v1.3.0] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.3.0) (2019-02-08)
 ### Funcionalidades:
 - Adicionado botão de permissão de emissão de segunda via de boleto pelo cliente.
