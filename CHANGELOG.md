@@ -1,3 +1,7 @@
+# [v1.3.2] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/1.3.2) (2019-04-17)
+### __Bug Fixes__:
+- Correção de bug que impedia correto funcionamento do lightbox caso apenas uma das modalidades estivesse habilitada.
+
 # [v1.3.1] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/v1.3.1) (2019-02-12)
 ### _Bug Fixes_:
 - Correção de bug de callbacks.
