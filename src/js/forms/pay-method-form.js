@@ -136,9 +136,9 @@ class PayMethodForm {
     this._$creditButton = this._$container.find(`#${Selector.BTN_CREDIT}`)
     this._$debitButton = this._$container.find(`#${Selector.BTN_DEBIT}`)
 
-    if (this._options.payment.onlyBankSlipEnabled) this._payWithBankSlip()
-    if (this._options.payment.onlyCreditEnabled) this._payWithCreditCard()
-    if (this._options.payment.onlyDebitEnabled) this._payWithDebitCard()
+    if (this._options.payment.onlyBankSlipEnabled && this._options.payment.amount !== null) this._payWithBankSlip()
+    if (this._options.payment.onlyCreditEnabled && this._options.payment.amount !== null) this._payWithCreditCard()
+    if (this._options.payment.onlyDebitEnabled && this._options.payment.amount !== null) this._payWithDebitCard()
 
     this._$bankSlipButton.on(EventName.CLICK, () => this._payWithBankSlip())
     this._$creditButton.on(EventName.CLICK, () => this._payWithCreditCard())
