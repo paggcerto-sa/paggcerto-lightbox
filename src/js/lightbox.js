@@ -13,7 +13,7 @@ const VIEW = `
       <a>
         <span class="security-ambient"><i class="icon-shield"></i> Ambiente Seguro</span>
       </a>
-      <div class="icon-proccessed">Processado pela</div>
+      <div class="icon-proccessed-by">Processado pela</div>
       <a href="https://www.pagcerto.com.br/" target="_blank">
       <span class="icon-logo"></span>
       </a>
