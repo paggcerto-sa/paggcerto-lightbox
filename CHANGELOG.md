@@ -1,3 +1,10 @@
+# [v1.3.2] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/1.3.2) (2020-01-31)
+### __Bug Fixes__:
+- Removido a logo da Pagcerto do comprovante de pagamento
+- Trocado o site no comprovante por "Processado pela Pagcerto"
+- Trocado logo antiga da Pagcerto pela nova
+- Removido Bandeira Banese
+
 # [v1.3.2] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/1.3.2) (2019-04-17)
 ### __Bug Fixes__:
 - Correção de bug que impedia correto funcionamento do lightbox caso apenas uma das modalidades estivesse habilitada.
