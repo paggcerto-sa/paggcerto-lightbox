@@ -33,7 +33,6 @@ const VIEW = `
       <div class="col">
         <div class="spinner">
           <div class="spinner-bar"></div>
-          <div class="icon-logo-sm"></div>
         </div>
       </div>
     </div>
