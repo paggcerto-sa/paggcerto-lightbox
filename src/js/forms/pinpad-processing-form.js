@@ -30,7 +30,6 @@ const VIEW = `
       <div class="col">
         <div id="${Selector.SPINNER}" class="spinner d-none">
           <div class="spinner-bar"></div>
-          <div class="icon-logo-sm"></div>
         </div>
         <div id="${Selector.DEVICE_IMG}" class="device-icon type-password">
         </div>

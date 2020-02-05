@@ -77,15 +77,6 @@
   opacity: .75;
 }
 
-.icon-logo-sm
-{
-  @include icon;
-  background-position: -162px -111px;
-  background-size: 600px 141px;
-  height: 36px;
-  width: 36px;
-}
-
 .icon-mark
 {
   @include icon;

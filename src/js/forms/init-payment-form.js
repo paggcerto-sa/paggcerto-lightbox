@@ -19,7 +19,6 @@ const VIEW = `
       <div class="col py-6">
         <div class="spinner">
           <div class="spinner-bar"></div>
-          <div class="icon-logo-sm"></div>
         </div>
       </div>
     </div>
