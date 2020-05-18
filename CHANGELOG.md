@@ -1,3 +1,7 @@
+# [v1.3.3] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/1.3.3) (2020-05-18)
+### __Bug Fixes__:
+- Trocando os domínios das url paggcerto para pagcerto.
+
 # [v1.3.2] (https://github.com/paggcerto-sa/paggcerto-lightbox/releases/tag/1.3.2) (2020-01-31)
 ### __Bug Fixes__:
 - Removido a logo da Pagcerto do comprovante de pagamento
